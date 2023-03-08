@@ -5,20 +5,20 @@
       <input
         type="text"
         class="form-control"
-        id="exampleInputEmail1"
+        id="cropName"
         aria-describedby="emailHelp"
         placeholder="Crop Name"
         v-model="cropName"
       />
     </div>
     <div class="form-group">
-      <label for="exampleInputPassword1">Shell Life</label>
+      <label for="exampleInputPassword1">Shelf Life</label>
       <input
         type="text"
         class="form-control"
-        id="exampleInputPassword1"
-        placeholder="Password"
-        v-model="shellLife"
+        id="shelfLife"
+        placeholder="Shelf Life in Days"
+        v-model="shelfLife"
       />
     </div>
     <div class="form-group">
@@ -26,7 +26,7 @@
       <input
         type="number"
         class="form-control"
-        id="exampleInputPassword1"
+        id="price"
         placeholder="Price"
         v-model="price"
       />
@@ -36,8 +36,8 @@
       <input
         type="number"
         class="form-control"
-        id="exampleInputPassword1"
-        placeholder="Price"
+        id="quantity"
+        placeholder="Quantity"
         v-model="quantity"
       />
     </div>
@@ -46,7 +46,7 @@
       <input
         type="number"
         class="form-control"
-        id="exampleInputPassword1"
+        id="height"
         placeholder="Height"
         v-model="height"
       />
@@ -64,7 +64,7 @@ export default {
   data() {
     return {
       cropName: "",
-      shellLife: "",
+      shelfLife: "",
       price: "",
       quantity: "",
       height: "",
@@ -80,7 +80,7 @@ export default {
       axios
         .post("http://127.0.0.1:5000/inventory", {
           crop: `${this.cropName}`,
-          shellLife: `${this.shellLife}`,
+          shelfLife: `${this.shelfLife}`,
           price: `${this.price}`,
           quantity:`${this.quantity}`,
           height : `${this.height}`
