@@ -6,6 +6,7 @@ import sys
 import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+import mysql.connector as sql
 
 app = Flask(__name__)
 CORS(app)
@@ -26,10 +27,15 @@ def receiveLog():
         print()
         return jsonify({"code": 400, "message": "Activity log input should be in JSON."}), 400 # Bad Request
 
-def processLog(order):
+def processLog(purchase_request):
+    conn=sql.connect(host='localhost',user='root', password='',database='PURCHASE_ACTIVITY')
     print("Recording a log:")
-    print(order)
+    cursor= conn.cursor()
+    sql="INSERT INTO purchase_activity (customer_id, crop_purchase, delivery_staff_id, customer_location, transaction_amount) VALUES (%s, %s)" 
+    val=??
+    cursor.execute(sql, val)
     print() # print a new line feed as a separator
+    print(cursor.rowcount,'record inserted')
 
 
 if __name__ == "__main__":  # execute this program only if it is run as a script (not by 'import')
