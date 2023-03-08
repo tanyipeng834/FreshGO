@@ -1,9 +1,10 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
 
 
 app = Flask(__name__)
-
+CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/inventory'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -32,27 +33,29 @@ class Inventory(db.Model):
         return {"isbn13": self.id, "Crop Name": self.name, "Shell Life": self.shell_life, "Price": self.price, "Quantity": self.quantity, "Height": self.height}
 
 
-@app.route("/inventory")
+@app.route("/inventory", methods=["GET", "POST"])
 def get_all_crops():
-    inventory = Inventory.query.all()
-    if len(inventory):
+    if request.method == "GET":
+
+        inventory = Inventory.query.all()
+        if len(inventory):
+            return jsonify(
+                {
+                    "code": 200,
+                    "data": {
+                        "inventory": [crop.json() for crop in inventory]
+                    }
+                }
+            )
         return jsonify(
             {
-                "code": 200,
-                "data": {
-                    "inventory": [crop.json() for crop in inventory]
-                }
+                "code": 404,
+                "message": "There are no crops."
             }
-        )
-    return jsonify(
-        {
-            "code": 404,
-            "message": "There are no crops."
-        }
-    ), 404
-
-@app.route("/inventory")
-
+        ), 404
+    else:
+        data = request.get_json()
+        print(data)
 
 
 if __name__ == '__main__':
