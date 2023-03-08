@@ -34,7 +34,7 @@ DROP TABLE IF EXISTS `inventory`;
 CREATE TABLE IF NOT EXISTS `inventory` (
   `name` varchar(15) NOT NULL,
   `shell_life` varchar(15) NOT NULL,
-  `id` int(11) NOT NULL,
+  `crop_id` int(11) NOT NULL,
   `price` decimal(10,2) NOT NULL,
   `height` decimal(10,2) NOT NULL,
   `quantity` int(5) DEFAULT NULL,
