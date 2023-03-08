@@ -14,27 +14,22 @@ db = SQLAlchemy(app)
 class Inventory(db.Model):
     __tablename__ = 'inventory'
     id = db.Column(db.Integer, primary_key=True)
-    name  = db.Column(db.String(15), nullable=False)
+    name = db.Column(db.String(15), nullable=False)
     shell_life = db.Column(db.String(15), nullable=False)
     price = db.Column(db.Float(precision=2), nullable=False)
     quantity = db.Column(db.Integer)
     height = db.Column(db.Float(precision=2))
 
-
-
-    def __init__(self, id, name, shell_life,price, quantity,height):
+    def __init__(self, id, name, shell_life, price, quantity, height):
         self.id = id
         self.name = name
-        self.shell_life =shell_life 
+        self.shell_life = shell_life
         self.price = price
-        self.quantity= quantity
+        self.quantity = quantity
         self.height = height
 
-
     def json(self):
-        return {"isbn13": self.id, "Crop Name": self.name, "Shell Life" : self.shell_life, "Price": self.price, "Quantity": self.quantity,"Height":self.height}
-    
-
+        return {"isbn13": self.id, "Crop Name": self.name, "Shell Life": self.shell_life, "Price": self.price, "Quantity": self.quantity, "Height": self.height}
 
 
 @app.route("/inventory")
@@ -52,12 +47,13 @@ def get_all_crops():
     return jsonify(
         {
             "code": 404,
-            "message": "There are no books."
+            "message": "There are no crops."
         }
     ), 404
 
+@app.route("/inventory")
 
- 
+
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
