@@ -31,9 +31,15 @@ def processLog(purchase_request):
     conn=sql.connect(host='localhost',user='root', password='',database='PURCHASE_ACTIVITY')
     print("Recording a log:")
     cursor= conn.cursor()
-    sql="INSERT INTO purchase_activity (customer_id, crop_purchase, delivery_staff_id, customer_location, transaction_amount) VALUES (%s, %s)" 
-    val=??
+    sql="INSERT INTO purchase_activity (customer_id, crop_purchase, delivery_staff_id, customer_location, transaction_amount) VALUES (%s, %s)"
+    customer_id=0
+    crop_purchase=[]
+    delivery_staff_id=0
+    customer_location=''
+    transaction_amount=0
+    val=(customer_id, crop_purchase, delivery_staff_id, customer_location, transaction_amount)
     cursor.execute(sql, val)
+    conn.commit()
     print() # print a new line feed as a separator
     print(cursor.rowcount,'record inserted')
 
