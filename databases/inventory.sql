@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `inventory` (
   `price` decimal(10,2) NOT NULL,
   `height` decimal(10,2) NOT NULL,
   `quantity` int(5) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`crop_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
