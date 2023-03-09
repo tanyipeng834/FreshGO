@@ -54,9 +54,13 @@ def get_all_crops():
             }
         ), 404
     else:
+        
+        # This will allow the farmer to create a crop in the database
         data = request.get_json()
-        print(data)
+        print(type(data))
+        
 
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
+    print("Hello World")
