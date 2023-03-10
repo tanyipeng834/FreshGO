@@ -1,11 +1,13 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from os import environ
+import json
 
 
 app = Flask(__name__)
 CORS(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/inventory'
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
@@ -30,7 +32,7 @@ class Inventory(db.Model):
         self.height = height
 
     def json(self):
-        return {"isbn13": self.id, "Crop Name": self.name, "Shell Life": self.shell_life, "Price": self.price, "Quantity": self.quantity, "Height": self.height}
+        return {"Crop Id": self.id, "Crop Name": self.name, "Shell Life": self.shell_life, "Price": self.price, "Quantity": self.quantity, "Height": self.height}
 
 
 @app.route("/inventory", methods=["GET", "POST"])
@@ -54,9 +56,16 @@ def get_all_crops():
             }
         ), 404
     else:
+
+        # This will allow the farmer to create a crop in the database
         data = request.get_json()
-        print(data)
+        data = json.loads(json)
+        crop_name = data['name']
+        # Check if there is a crop with a similar name in the database
+        if (inventory.query.filter_by(name=crop_name).first()):
+            # Now we will create a crop object
 
 
 if __name__ == '__main__':
-    app.run(port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
+    print("Hello World")
