@@ -1,7 +1,7 @@
 <template>
   <form method="POST">
     <div class="form-group">
-      <label for="inputCropName"">Crop Name</label>
+      <label for="inputCropName">Crop Name</label>
       <input
         type="text"
         class="form-control"
