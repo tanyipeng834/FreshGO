@@ -1,7 +1,7 @@
 <template>
   <form method="POST">
     <div class="form-group">
-      <label for="exampleInputEmail1">Crop Name</label>
+      <label for="inputCropName"">Crop Name</label>
       <input
         type="text"
         class="form-control"
@@ -12,7 +12,7 @@
       />
     </div>
     <div class="form-group">
-      <label for="exampleInputPassword1">Shelf Life</label>
+      <label for="inputShelfLife">Shelf Life</label>
       <input
         type="text"
         class="form-control"
@@ -22,7 +22,7 @@
       />
     </div>
     <div class="form-group">
-      <label for="exampleInputPassword1">Price($)</label>
+      <label for="inputPrice">Price($)</label>
       <input
         type="number"
         class="form-control"
@@ -32,7 +32,7 @@
       />
     </div>
     <div class="form-group">
-      <label for="exampleInputPassword1">Quantity</label>
+      <label for="inputQuantity">Quantity</label>
       <input
         type="number"
         class="form-control"
@@ -42,7 +42,7 @@
       />
     </div>
     <div class="form-group">
-      <label for="exampleInputPassword1">Height</label>
+      <label for="inputHeight">Height</label>
       <input
         type="number"
         class="form-control"
