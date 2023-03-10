@@ -79,8 +79,8 @@ export default {
       console.log(this.cropName);
       axios
         .post("http://127.0.0.1:5000/inventory", {
-          crop: `${this.cropName}`,
-          shelfLife: `${this.shelfLife}`,
+          name: `${this.cropName}`,
+          shelf_life: `${this.shell_life}`,
           price: `${this.price}`,
           quantity:`${this.quantity}`,
           height : `${this.height}`
