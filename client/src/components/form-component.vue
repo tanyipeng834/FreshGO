@@ -80,7 +80,7 @@ export default {
       axios
         .post("http://127.0.0.1:5000/inventory", {
           name: `${this.cropName}`,
-          shelf_life: `${this.shell_life}`,
+          shelf_life: `${this.shelf_life}`,
           price: `${this.price}`,
           quantity:`${this.quantity}`,
           height : `${this.height}`
