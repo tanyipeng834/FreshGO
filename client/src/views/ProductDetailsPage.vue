@@ -8,6 +8,14 @@
         <h3 id="price">${{ product.price }}</h3>
         <p>Quantity in Stock: {{ product.quantityInStock }}</p>
         <p>Shelf Life: {{ product.shelfLife }}</p>
+
+        <div class="custom-select" style="width:200px;">
+          Select Quantity:
+          <select>
+            <option value="0">0</option>
+          </select>
+        </div>
+        <br>
         <button id="add-to-cart">Add to Cart</button>
       </div>
     </div>
