@@ -1,10 +1,28 @@
 <template>
-    <h1>This is the Product Details Page</h1>
+    <div id="page wrap">
+      <div id="img-wrap">
+        <img v-bind:src="product.imageURL" />
+      </div>
+      <div id="product-details">
+        <h1>{{ product.name }}</h1>
+        <h3 id="price">${{ product.price }}</h3>
+        <p>Quantity in Stock: {{ product.quantityInStock }}</p>
+        <p>Shelf Life: {{ product.shelfLife }}</p>
+        <button id="add-to-cart">Add to Cart</button>
+      </div>
+    </div>
 </template>
 
 <script>
+import {products} from '../fakeProductsData';
+
 export default {
     name: "ProductDetailsPage",
+    data() {
+      return {
+        product: products.find((p) => p.id === this.$route.params.id),
+      };
+    }
 } ;
 </script>
 
