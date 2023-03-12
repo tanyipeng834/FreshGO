@@ -1,7 +1,7 @@
 // this is just a sample data to ensure that the front end works, replace with data from database
-import caixinhua from './assets/caixinhua';
-import thaibasil from './assets/thaibasil';
-import kangkong from './assets/kangkong';
+import caixinhua from './assets/caixinhua.jpg';
+import thaibasil from './assets/thaibasil.jpg';
+import kangkong from './assets/kangkong.jpg';
 
 export const products = [{
     id: '1',
