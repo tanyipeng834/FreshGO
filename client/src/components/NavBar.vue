@@ -1,15 +1,33 @@
 <template>
     <div class="header" id="navbar">
-        <a href="#default" class="logo">CompanyLogo</a>
+        <router-link to="/products"><h1>AppName</h1>
+        </router-link>
         <div class="header-right">
-            <a class="active" href="#home">Home</a>
-            <a href="#contact">Contact</a>
-            <a href="#about">About</a>
+            <router-link to="/cart" >
+                <button id="shoppingCartButton">Shopping Cart</button>
+            </router-link>
         </div>
     </div>
 </template>
 
+<script>
+export default {
+    name:'NavBar',
+}
+</script>
+
 <style scoped>
+    #shoppingCartButton {
+        background-color: #ffffff00; 
+        border: none;
+        color: black;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+    }
+
     #navbar{
         overflow: hidden;
         background-color: #77DD77;
