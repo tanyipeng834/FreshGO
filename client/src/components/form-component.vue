@@ -42,7 +42,7 @@
       />
     </div>
     <div class="form-group">
-      <label for="inputHeight">Height</label>
+      <label for="inputHeight">Height(cm)</label>
       <input
         type="number"
         class="form-control"
