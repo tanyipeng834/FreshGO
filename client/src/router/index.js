@@ -4,6 +4,7 @@ import HomeView from '../views/HomeView.vue'
 import CartPage from '../views/CartPage.vue'
 import ProductDetailsPage from '../views/ProductDetailsPage.vue'
 import ProductsPage from '../views/ProductsPage.vue'
+import NotFoundPage from '../views/NotFoundPage.vue'
 
 const routes = [
   {
@@ -12,6 +13,7 @@ const routes = [
     component: HomeView,
   },
   {
+    // home page
     path: '/',
     redirect: '/products',
   },
@@ -31,13 +33,18 @@ const routes = [
     name: 'Cart',
     component: CartPage,
   },
-  {
-    path: '/about',
-    name: 'about',
+  //{
+  //  path: '/about',
+  //  name: 'about',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
   
+  //}, 
+  {
+    //keep it last, if there is no link found
+    path: '/:pathMatch(.*)*',
+    component: NotFoundPage,
   }
 ]
 
