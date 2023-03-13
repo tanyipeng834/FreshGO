@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
 // import every page you have here & add the routes
 import HomeView from '../views/HomeView.vue'
-import CartPage from '../views/CartPage.vue'
-import ProductDetailsPage from '../views/ProductDetailsPage.vue'
-import ProductsPage from '../views/ProductsPage.vue'
+import CartPage from '../views/CustomerUI/CartPage.vue'
+import ProductDetailsPage from '../views/CustomerUI/ProductDetailsPage.vue'
+import ProductsPage from '../views/CustomerUI/ProductsPage.vue'
 import NotFoundPage from '../views/NotFoundPage.vue'
-import PaymentPage from '../views/PaymentPage.vue'
+import PaymentPage from '../views/CustomerUI/PaymentPage.vue'
 
 const routes = [
   {

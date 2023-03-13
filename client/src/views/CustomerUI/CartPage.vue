@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import {cartItems} from '../fakeProductsData';
+import {cartItems} from '../../fakeProductsData.js';
 
 export default {
     name: "CartPage",

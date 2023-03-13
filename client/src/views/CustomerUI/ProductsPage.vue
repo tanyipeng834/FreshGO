@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import {products} from '../fakeProductsData'
+import {products} from '../../fakeProductsData.js'
 export default {
     name: "ProductsPage",
     data() {
