@@ -3,14 +3,9 @@
 </template>
 
 <script>
-//export default {
-//    name: "PaymentPage",
-//    data() {
-//        return {
-//           payment,
-//        };
-//    }
-//} ;
+export default {
+    name: "PaymentPage",
+} ;
 </script>
 
 <style>
