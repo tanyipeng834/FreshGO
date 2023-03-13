@@ -9,6 +9,42 @@ import PaymentPage from '../views/CustomerUI/PaymentPage.vue'
 
 const routes = [
   {
+    path: '/',
+    name: 'Home',
+    component: Home
+  },
+  {
+    path: '/about',
+    name: 'About',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: function () {
+      return import(/* webpackChunkName: "about" */ '../views/About.vue')
+    }
+  },
+  {
+    path: '/secure',
+    name: 'Secure',
+    component: function () {
+      return import(/* webpackChunkName: "about" */ '../views/Secure.vue')
+    }
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: function () {
+      return import(/* webpackChunkName: "about" */ '../views/Login.vue')
+    }
+  },
+  {
+    path: '/Signup',
+    name: 'Signup',
+    component: function () {
+      return import(/* webpackChunkName: "about" */ '../views/Signup.vue')
+    }
+  },
+  {
     path: '/home',
     name: 'HomeView',
     component: HomeView,
