@@ -16,20 +16,12 @@ db = SQLAlchemy(app)
 
 class Inventory(db.Model):
     __tablename__ = 'inventory'
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(15), nullable=False)
     shell_life = db.Column(db.String(15), nullable=False)
     price = db.Column(db.Float(precision=2), nullable=False)
     quantity = db.Column(db.Integer)
     height = db.Column(db.Float(precision=2))
-
-    def __init__(self, id, name, shell_life, price, quantity, height):
-        self.id = id
-        self.name = name
-        self.shell_life = shell_life
-        self.price = price
-        self.quantity = quantity
-        self.height = height
 
     def json(self):
         return {"Crop Id": self.id, "Crop Name": self.name, "Shell Life": self.shell_life, "Price": self.price, "Quantity": self.quantity, "Height": self.height}
@@ -59,13 +51,45 @@ def get_all_crops():
 
         # This will allow the farmer to create a crop in the database
         data = request.get_json()
-        data = json.loads(json)
         crop_name = data['name']
         # Check if there is a crop with a similar name in the database
-        if (inventory.query.filter_by(name=crop_name).first()):
-            # Now we will create a crop object
+        if not (Inventory.query.filter_by(name=crop_name).first()):
+            # Create a new object based on the input
+            crop = Inventory(**data)
+            print(crop)
+            try:
+                db.session.add(crop)
+                db.session.commit()
+            except:
+                return jsonify(
+                    {
+                        "code": 500,
+                        "data": {
+                            "Crop Name": crop_name
+                        },
+                        "message": "An error occurred creating the book."
+                    }
+                ), 500
+
+            return jsonify(
+                {
+                    "code": 201,
+                    "data": crop.json()
+                }
+            )
+        else:
+            return jsonify(
+                {
+                    "code": 400,
+                    "data": {
+                        "Crop Name": crop_name
+                    },
+                    "message": "Crop Batch already exists."
+                }
+            ), 400
 
 
+        # Now we will create a crop object
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
     print("Hello World")

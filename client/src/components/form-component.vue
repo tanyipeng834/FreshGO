@@ -80,11 +80,10 @@ export default {
       axios
         .post("http://127.0.0.1:5000/inventory", {
           name: `${this.cropName}`,
-          shelf_life: `${this.shell_life}`,
+          shell_life: `${this.shelfLife}`,
           price: `${this.price}`,
-          quantity:`${this.quantity}`,
-          height : `${this.height}`
-          
+          quantity: `${this.quantity}`,
+          height: `${this.height}`,
         })
         .then((response) => {
           console.log(response.data);
