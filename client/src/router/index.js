@@ -1,11 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router'
 // import every page you have here & add the routes
-import HomeView from '../views/HomeView.vue'
+//Customer UI
 import CartPage from '../views/CustomerUI/CartPage.vue'
 import ProductDetailsPage from '../views/CustomerUI/ProductDetailsPage.vue'
 import ProductsPage from '../views/CustomerUI/ProductsPage.vue'
-import NotFoundPage from '../views/NotFoundPage.vue'
 import PaymentPage from '../views/CustomerUI/PaymentPage.vue'
+//Unrelated to any UIs
+import HomeView from '../views/HomeView.vue'
+import NotFoundPage from '../views/NotFoundPage.vue'
+
 
 const routes = [
   {
@@ -87,14 +90,6 @@ const routes = [
       title: 'Payment'
     }
   },
-  //{
-  //  path: '/about',
-  //  name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-  
-  //}, 
   {
     //keep it last, if there is no link found
     path: '/:pathMatch(.*)*',
