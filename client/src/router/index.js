@@ -22,22 +22,34 @@ const routes = [
     path: '/products',
     name: 'Products',
     component: ProductsPage,
+    meta: {
+      title: 'Products'
+    }
   },
   {
     path: '/products/:id',
     // :id is a URL parameter, use it to choose the data that you want to display
     name: 'ProductDetails',
     component: ProductDetailsPage,
+    meta: {
+      title: 'Product Details'
+    }
   },
   {
     path: '/cart',
     name: 'Cart',
     component: CartPage,
+    meta: {
+      title: 'Shopping Cart'
+    }
   },
   {
     path: '/cart/payment',
     name: 'Payment',
     component: PaymentPage,
+    meta: {
+      title: 'Payment'
+    }
   },
   //{
   //  path: '/about',
@@ -51,6 +63,9 @@ const routes = [
     //keep it last, if there is no link found
     path: '/:pathMatch(.*)*',
     component: NotFoundPage,
+    meta: {
+      title: '404 Page Not Found'
+    }
   }
 ]
 
@@ -59,4 +74,10 @@ const router = createRouter({
   routes
 })
 
+//for dynamically changing page title
+router.beforeEach((to, from) => {
+  document.title = to.meta?.title ?? 'Default Title'
+})
+
 export default router
+
