@@ -3,6 +3,7 @@ import caixinhua from './assets/caixinhua.jpg';
 import thaibasil from './assets/thaibasil.jpg';
 import kangkong from './assets/kangkong.jpg';
 
+// fake data
 export const products = [{
     id: '1',
     name: 'Cai Xin Hua',
@@ -26,7 +27,7 @@ export const products = [{
     imageURL: kangkong,
 }];
 
-// referencing the above products array
+// referencing the above products array, fake data for cart
 export const cartItems = [
     products[0],
     products[1]
