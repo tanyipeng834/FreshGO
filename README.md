@@ -15,3 +15,4 @@ Crop Management and Machine Learning
 Front end
 
 ## Other things to work on:
+Inventory Microservice - port 5000
