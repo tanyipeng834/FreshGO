@@ -6,6 +6,7 @@ import ProductDetailsPage from '../views/CustomerUI/ProductDetailsPage.vue'
 import ProductsPage from '../views/CustomerUI/ProductsPage.vue'
 import PaymentPage from '../views/CustomerUI/PaymentPage.vue'
 //Unrelated to any UIs
+import Home from '../views/Home.vue'
 import HomeView from '../views/HomeView.vue'
 import NotFoundPage from '../views/NotFoundPage.vue'
 
