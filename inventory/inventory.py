@@ -52,13 +52,12 @@ class CropMeasurements(db.Model):
     batch = batch = db.Column(db.Integer, db.ForeignKey(
         'inventory.batch'), nullable=False, primary_key=True)
     date_measured = db.Column(db.Date, primary_key=True)
-    height = db.Column(db.Float(precision=2), nullable=False)
+    current_height = db.Column(db.Float(precision=2), nullable=False)
     crop_name = db.relationship("Inventory", foreign_keys=[name])
     crop_batch = db.relationship("Inventory", foreign_keys=[batch])
-    
-    def json(self):
-        return {"Crop Name": self.name, "Crop Batch": self.batch, "Date Measured": self.date_measured,"Crop Height":}
 
+    def json(self):
+        return {"Crop Name": self.name, "Crop Batch": self.batch, "Date Measured": self.date_measured, "Crop Height": self.current_height}
 
 
 @app.route("/inventory", methods=["GET", "POST"])
@@ -121,6 +120,31 @@ def get_all_crops():
                     "message": "Crop Batch already exists."
                 }
             ), 400
+
+
+@app.route("/inventory/measurements/<string:crop_name>", methods=["GET"])
+def get_crop_measurements(crop_name):
+    # Get all the measurements for the crop with crop_name
+    crops_data = CropMeasurements.query.filter_by(name=crop_name).all()
+    print(crops_data)
+    if len(crops_data):
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "Crop Data": [crop_data.json() for crop_data in crops_data]
+                }
+            }
+        )
+    else:
+        return jsonify(
+            {
+                "code": 404,
+                "message": "There is not mesurements for this crop"
+
+            }
+
+        )
 
 
 @app.route("/inventory/<string:crop_name>/<string:batch>", methods=["GET", "POST"])
