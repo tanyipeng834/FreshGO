@@ -125,14 +125,17 @@ def get_all_crops():
 @app.route("/inventory/measurements/<string:crop_name>", methods=["GET"])
 def get_crop_measurements(crop_name):
     # Get all the measurements for the crop with crop_name
-    crops_data = CropMeasurements.query.filter_by(name=crop_name).all()
-    print(crops_data)
+
+    # Use an inner join to connect both the measurements and the input
+    query = db.session.query(CropMeasurements, CropData).join(CropData, db.and_(
+        CropMeasurements.name == CropData.name, CropMeasurements.batch == CropData.batch))
+    crops_data = query.filter(CropData.name==crop_name).all()
     if len(crops_data):
         return jsonify(
             {
                 "code": 200,
                 "data": {
-                    "Crop Data": [crop_data.json() for crop_data in crops_data]
+                    "Crop Data": [{"Crop Name": crop_measurements.name, "Crop Batch": crop_measurements.batch, "Date Measured": crop_measurements.date_measured, "Crop Height": crop_measurements.current_height, "Crop Humidity": crop_data.humidity, "Crop Water Level": crop_data.water, "Crop Fertiliser": crop_data.fertiliser} for crop_measurements,crop_data in crops_data]
                 }
             }
         )
@@ -208,7 +211,6 @@ def crop_data_controller(crop_name, batch):
                     "message": "Crop Batch already exists."
                 }
             ), 400
-
 
         # Now we will create a crop object
 if __name__ == '__main__':

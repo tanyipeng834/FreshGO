@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `inventory` (
   `date` DATE NOT NULL,
   `batch` int(5) NOT NULL,
   `type` varchar(5) NOT NULL,
-  PRIMARY KEY (`name`,`batch`)
+  PRIMARY KEY (`name`,`batch`) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `CropData`;
@@ -63,7 +63,17 @@ CREATE TABLE IF NOT EXISTS `CropMeasurements` (
     FOREIGN KEY (`name`,`batch`) REFERENCES `inventory`(`name`,`batch`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+INSERT INTO `inventory` (`name`, `shell_life`, `price`,`quantity`,`date`,`batch`,`type`) VALUES
+('Xin Hua', '2 Years', 2.0, 3,'2020-03-02',1,'vegetable');
+COMMIT;
 
+INSERT INTO `CropData` (`name`, `batch`, `humidity`, `water`, `fertiliser`) VALUES
+('Xin Hua', 1, 2.0, 3.0, 3.0);
+COMMIT;
+
+INSERT INTO `CropMeasurements` (`name`, `batch`, `date_measured`, `current_height`) VALUES
+('Xin Hua', 1, '2021-02-02', 3.0);
+COMMIT;
 
 
 
