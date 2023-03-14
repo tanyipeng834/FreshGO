@@ -23,11 +23,7 @@ class Profile(db.Model):
     __tablename__ = 'profile'
     id = db.Column(db.Integer, primary_key=True)
     
-    def __init__(self, id):
-        self.id = id
-    
-    def json(self):
-        return {"ID": self.id}
+
 
 class Customer(Profile):
     __tablename__ = 'customer'
