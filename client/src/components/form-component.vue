@@ -18,7 +18,7 @@
         class="form-control"
         id="shelfLife"
         placeholder="Shelf Life in Days"
-        v-model="shelfLife"
+        v-model="shell_life"
       />
     </div>
     <div class="form-group">
@@ -64,7 +64,7 @@ export default {
   data() {
     return {
       cropName: "",
-      shelfLife: "",
+      shell_life: "",
       price: "",
       quantity: "",
       height: "",
@@ -77,10 +77,11 @@ export default {
   methods: {
     submitForm() {
       console.log(this.cropName);
+      
       axios
         .post("http://127.0.0.1:5000/inventory", {
           name: `${this.cropName}`,
-          shelf_life: `${this.shelf_life}`,
+          shell_life: `${this.shelf_life}`,
           price: `${this.price}`,
           quantity: `${this.quantity}`,
           height: `${this.height}`,

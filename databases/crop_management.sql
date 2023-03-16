@@ -14,3 +14,5 @@ CREATE TABLE CropData (
     height INTEGER NOT NULL,
     date DATE NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+

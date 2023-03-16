@@ -27,25 +27,33 @@ USE `PURCHASE_ACTIVITY`;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `order`
+-- Table structure for table 
 --
-
 DROP TABLE IF EXISTS `purchase_activity`;
 CREATE TABLE IF NOT EXISTS `purchase_activity`(
-  `purchase_id`int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  `customer_id`varchar(32) NOT NULL,
-  `crop_purchase`varchar(32) NOT NULL,
-  `delivery_staff_id`int(11) NOT NULL,
-  `customer_location`varchar(50) NOT NULL,
-  `transaction_amount`float(10) NOT NULL,
+  `id`int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `customer_id`int NOT NULL,
+  `customer_location`int NOT NULL,
   `status`varchar(32) NOT NULL DEFAULT 'Ongoing/New',
-  `created`timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `created`timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP  
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;;
+
+DROP TABLE IF EXISTS `crop_purchased`;
+CREATE TABLE IF NOT EXISTS `crop_purchased`(
+  `id` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `purchase_id`int NOT NULL,
+  `crop_id`int NOT NULL,
+  `quantity` int not null,
+  constraint FOREIGN KEY(`purchase_id`) REFERENCES `purchase_activity`(`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;;
+
 
 --
 
-/*INSERT INTO `purchase`(`purchase_id`, `customer_id`, `status`, `created`, `modified`) VALUES
-(1, `Apple TAN`, `NEW`, `2020-06-12 02:14:55`, `2020-06-12 02:14:55`); */
+INSERT INTO `purchase_activity`(`id`, `customer_id`, `customer_location`) VALUES
+(1, 1, 100000);
+INSERT INTO `crop_purchased`(`id`, `purchase_id`, `crop_id`, `quantity`) VALUES
+(1, 1, 1, 1);
 
 -- --------------------------------------------------------
 --
@@ -54,4 +62,3 @@ CREATE TABLE IF NOT EXISTS `purchase_activity`(
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
