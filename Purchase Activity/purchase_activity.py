@@ -17,7 +17,7 @@ from invokes import invoke_http
 
 app = Flask(__name__)
 CORS(app)
-app.config['SQLALCHEMY_DATABASE_URI'] ='mysql+mysqlconnector://root@localhost:3306/purchase_request'
+app.config['SQLALCHEMY_DATABASE_URI'] ='mysql+mysqlconnector://root@localhost:3306/purchase_activity'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -27,7 +27,7 @@ class Purchase_Activity(db.Model):
     customer_id = db.Column(db.Integer, nullable=False)    
     customer_location = db.Column(db.Integer)
     status = db.Column(db.String, default='New/Ongoing', nullable = False)
-    created = db.Column(db.DateTime, default=datetime.now, nullable=False)
+    created = db.Column(db.DateTime, default=datetime.now, nullable=False, onupdate=datetime.now)
 
     def json(self):
         dto={"Purchase ID": self.id, "Customer ID": self.customer_id,
@@ -48,7 +48,7 @@ class Crop_Purchased(db.Model):
                                       primaryjoin= "Crop_Purchased.purchase_id==Purchase_Activity.id", backref='crop_purchased')
 
     def __init__(self, crop_id, quantity):
-        self.crop_id= crop_id,
+        self.crop_id=crop_id,
         self.quantity=quantity
 
     def json(self):
@@ -58,24 +58,27 @@ class Crop_Purchased(db.Model):
 @app.route("/purchase_request", methods=['POST'])
 def create_request():
     cart_item=request.json.get('cart_item')
-    customer_id = request.json.get('customer_id', None)
-    customer_location = request.json.get('customer_location', None)
+    customer_id = request.json.get('customer_id')
+    customer_location = request.json.get('customer_location')
     create_request = Purchase_Activity(customer_id=customer_id, customer_location=customer_location)
     for item in cart_item:
-        create_request.crop_purchased.append(Crop_Purchased(crop_id=item['crop_id'],
-                                                            quantity=item['quantity']))
+        create_request.crop_purchased.append(Crop_Purchased(crop_id=item['crop_id'], quantity=item['quantity']))
+        
     try:
         db.session.add(create_request)
+        print(create_request.json())
         db.session.commit()
+        
 
-    except:
+
+    except Exception as e:
         return jsonify(
                     {
                     "code": 500,
-                    "data": {
+                    "data": 
                     create_request.json()
-                    },
-                    "message": "An error occurred creating the purchase request."
+                    ,
+                    "message": "An error occurred creating the purchase request." + str(e)
                     }
                 ), 500 
     print("Order Confirmed, Looking for Driver")

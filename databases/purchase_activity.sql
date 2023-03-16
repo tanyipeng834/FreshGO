@@ -50,8 +50,10 @@ CREATE TABLE IF NOT EXISTS `crop_purchased`(
 
 --
 
-/*INSERT INTO `purchase`(`purchase_id`, `customer_id`, `status`, `created`, `modified`) VALUES
-(1, `Apple TAN`, `NEW`, `2020-06-12 02:14:55`, `2020-06-12 02:14:55`); */
+INSERT INTO `purchase_activity`(`id`, `customer_id`, `customer_location`) VALUES
+(1, 1, 100000);
+INSERT INTO `crop_purchased`(`id`, `purchase_id`, `crop_id`, `quantity`) VALUES
+(1, 1, 1, 1);
 
 -- --------------------------------------------------------
 --
