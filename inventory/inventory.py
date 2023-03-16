@@ -2,7 +2,6 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from os import environ
-import json
 
 
 app = Flask(__name__)
@@ -19,7 +18,7 @@ class Inventory(db.Model):
     name = db.Column(db.String(15), nullable=False, primary_key=True)
     shell_life = db.Column(db.String(15), nullable=False)
     price = db.Column(db.Float(precision=2), nullable=False)
-    quantity = db.Column(db.Integer)
+    quantity = db.Column(db.Integer,nullable=False)
     height = db.Column(db.Float(precision=2))
     date = db.Column(db.Date)
     batch = db.Column(db.Integer, primary_key=True)
@@ -129,13 +128,13 @@ def get_crop_measurements(crop_name):
     # Use an inner join to connect both the measurements and the input
     query = db.session.query(CropMeasurements, CropData).join(CropData, db.and_(
         CropMeasurements.name == CropData.name, CropMeasurements.batch == CropData.batch))
-    crops_data = query.filter(CropData.name==crop_name).all()
+    crops_data = query.filter(CropData.name == crop_name).all()
     if len(crops_data):
         return jsonify(
             {
                 "code": 200,
                 "data": {
-                    "Crop Data": [{"Crop Name": crop_measurements.name, "Crop Batch": crop_measurements.batch, "Date Measured": crop_measurements.date_measured, "Crop Height": crop_measurements.current_height, "Crop Humidity": crop_data.humidity, "Crop Water Level": crop_data.water, "Crop Fertiliser": crop_data.fertiliser} for crop_measurements,crop_data in crops_data]
+                    "Crop Data": [{"Crop Name": crop_measurements.name, "Crop Batch": crop_measurements.batch, "Date Measured": crop_measurements.date_measured, "Crop Height": crop_measurements.current_height, "Crop Humidity": crop_data.humidity, "Crop Water Level": crop_data.water, "Crop Fertiliser": crop_data.fertiliser} for crop_measurements, crop_data in crops_data]
                 }
             }
         )
@@ -212,7 +211,17 @@ def crop_data_controller(crop_name, batch):
                 }
             ), 400
 
+
+@app.route("/inventory/check-inventory", methods=["GET"])
+def check_crop_quantity():
+    # Get all the measurements for the crop with quantity less than 5
+    Inventory.query()
+
+
+
+
+    # Use an inner join to connect both the measurements and the input
+    
         # Now we will create a crop object
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
-    print("Hello World")

@@ -10,6 +10,8 @@ import mysql.connector as sql
 app = Flask(__name__)
 CORS(app)
 
+
+
 @app.route("/purchase_request", methods=['POST'])
 def receiveLog():
     # Check if the request contains valid JSON
