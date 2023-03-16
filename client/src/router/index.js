@@ -49,6 +49,13 @@ const routes = [
     }
   },
   {
+    path: '/MoreInfo',
+    name: 'MoreInfo',
+    component: function () {
+      return import(/* webpackChunkName: "about" */ '../views/MoreInfo.vue')
+    }
+  },
+  {
     path: '/home',
     name: 'HomeView',
     component: HomeView,
