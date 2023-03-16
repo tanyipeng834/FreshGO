@@ -17,7 +17,7 @@
             <label for="password">Confirm Password</label>
             <input type="password" id="cpassword" name="cpassword" v-model="input.cpassword" placeholder="Confirm Password" />
         </div>
-        <button type="button" v-on:click="signup()">Sign Up</button>
+        <button type="button" v-on:click="">Sign Up</button>
         <br>
         Already have an account? Log in <router-link to="/Login">Here</router-link>
     </div>
