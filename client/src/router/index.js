@@ -13,7 +13,7 @@ import NotFoundPage from '../views/NotFoundPage.vue'
 
 const routes = [
   {
-    path: '/',
+    path: '/home',
     name: 'Home',
     component: Home
   },
