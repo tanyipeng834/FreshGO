@@ -26,15 +26,15 @@ class Purchase_Activity(db.Model):
     id = db.Column(db.Integer, nullable=False, primary_key=True)
     customer_id = db.Column(db.Integer, nullable=False)    
     customer_location = db.Column(db.Integer)
-    status = db.Column(db.String, nullable = False)
-    created = db.Column(db.DateTime, nullable=False)
+    status = db.Column(db.String, default='New/Ongoing', nullable = False)
+    created = db.Column(db.DateTime, default=datetime.now, nullable=False)
 
     def json(self):
         dto={"Purchase ID": self.id, "Customer ID": self.customer_id,
                 "Customer Location": self.customer_location, 
                 "Status": self.status, "Created": self.created}
         dto['crop_purchased']=[]
-        for item in self.abc:
+        for item in self.crop_purchased:
             dto['crop_purchased'].append(item.json())
         return dto
     
@@ -43,8 +43,9 @@ class Crop_Purchased(db.Model):
     id = db.Column(db.Integer, nullable = False, primary_key=True)
     crop_id = db.Column(db.Integer, nullable = False)
     quantity=db.Column(db.Integer, nullable=False)
-    purchase_id = db.column(db.ForeignKey('purchase_activity.id',ondelete='cascade',onupdate='cascade'))
-    #purchase_id=db.relationship('Purchase_Activity', foreign_keys=[id])
+    purchase_id = db.Column(db.ForeignKey('purchase_activity.id',ondelete='cascade',onupdate='cascade'), nullable = False, index=True)
+    purchase_activity=db.relationship('Purchase_Activity', 
+                                      primaryjoin= "Crop_Purchased.purchase_id==Purchase_Activity.id", backref='crop_purchased')
 
     def __init__(self, crop_id, quantity):
         self.crop_id= crop_id,
@@ -61,7 +62,7 @@ def create_request():
     customer_location = request.json.get('customer_location', None)
     create_request = Purchase_Activity(customer_id=customer_id, customer_location=customer_location)
     for item in cart_item:
-        create_request.abc.append(Crop_Purchased(crop_id=item['crop_id'],
+        create_request.crop_purchased.append(Crop_Purchased(crop_id=item['crop_id'],
                                                             quantity=item['quantity']))
     try:
         db.session.add(create_request)
