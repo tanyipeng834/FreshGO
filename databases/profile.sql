@@ -12,14 +12,13 @@ SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
-
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `book`
+-- Database: `profile`
 --
 CREATE DATABASE IF NOT EXISTS `profile` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `profile`;
@@ -32,55 +31,55 @@ USE `profile`;
 
 DROP TABLE IF EXISTS `profile`;
 CREATE TABLE IF NOT EXISTS `profile` (
-  `id` int(10) NOT NULL,
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `email` varchar(30) NOT NULL,
+  `password` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+ALTER TABLE profile AUTO_INCREMENT=10000;
 
 DROP TABLE IF EXISTS `customer`;
 CREATE TABLE IF NOT EXISTS `customer` (
-  `name` varchar(30) NOT NULL,
-  `email` varchar(30) NOT NULL,
-  `phone` int(8) NOT NULL,
-  `address` varchar(30) NOT NULL,
   `id` int(10) NOT NULL,
+  `name` varchar(30),
+  `phone` int(8),
+  `address` varchar(30),
   FOREIGN KEY (`id`) REFERENCES profile(`id`),
-  PRIMARY KEY (`phone`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `staff`;
 CREATE TABLE IF NOT EXISTS `staff` (
-  `name` varchar(30) NOT NULL,
-  `email` varchar(30) NOT NULL,
-  `phone` int(8) NOT NULL,
   `id` int(10) NOT NULL,
+  `name` varchar(30) NOT NULL,
+  `phone` int(8) NOT NULL,
   FOREIGN KEY (`id`) REFERENCES profile(`id`),
-  PRIMARY KEY (`phone`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `farmer`;
 CREATE TABLE IF NOT EXISTS `farmer` (
+  `id` int(10) NOT NULL,
   `name` varchar(30) NOT NULL,
-  `email` varchar(30) NOT NULL,
   `phone` int(8) NOT NULL,
   `address` varchar(30) NOT NULL,
-  `id` int(10) NOT NULL,
   FOREIGN KEY (`id`) REFERENCES profile(`id`),
-  PRIMARY KEY (`phone`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 --
 -- Dumping data for table `customer`
 --
-INSERT INTO `profile` (`id`) VALUES
-(1111111111),(2222222222);
-COMMIT;
+-- INSERT INTO `profile` (`id`) VALUES
+-- (1111111111),(2222222222);
+-- COMMIT;
 
-INSERT INTO `customer` (`id`, `name`, `email`, `phone`, `address`) VALUES
-(1111111111, 'Please', 'Work@gmail.com', '12345678', 'Earth');
-COMMIT;
+-- INSERT INTO `customer` (`id`, `name`, `email`, `phone`, `address`) VALUES
+-- (1111111111, 'Please', 'Work@gmail.com', '12345678', 'Earth');
+-- COMMIT;
 
-INSERT INTO `staff` (`id`, `name`, `email`, `phone`) VALUES
-(2222222222, 'Please', 'Work@gmail.com', '13213315');
-COMMIT;
+-- INSERT INTO `staff` (`id`, `name`, `email`, `phone`) VALUES
+-- (2222222222, 'Please', 'Work@gmail.com', '13213315');
+-- COMMIT;
 
 
 
