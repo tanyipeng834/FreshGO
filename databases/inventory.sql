@@ -64,15 +64,27 @@ CREATE TABLE IF NOT EXISTS `CropMeasurements` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `inventory` (`name`, `shell_life`, `price`,`quantity`,`date`,`batch`,`type`) VALUES
-('Xin Hua', '2 Years', 2.0, 3,'2020-03-02',1,'vegetable');
+('Xin Hua', '2 Years', 2.0, 3,'2020-03-02',1,'vegetable'), 
+('Xin Hua', '2 Years', 2.0, 3,'2020-03-03',2,'vegetable'), 
+('Xin Hua', '2 Years', 2.0, 3,'2020-03-04',3,'vegetable'),
+('Xin Hua', '2 Years', 2.0, 3,'2020-03-05',4,'vegetable'),
+('Xin Hua', '2 Years', 2.0, 3,'2020-03-06',5,'vegetable');
 COMMIT;
 
 INSERT INTO `CropData` (`name`, `batch`, `humidity`, `water`, `fertiliser`) VALUES
-('Xin Hua', 1, 2.0, 3.0, 3.0);
+('Xin Hua', 1, 2.0, 3.0, 3.0),
+('Xin Hua', 2, 2.0, 2.0, 2.0),
+('Xin Hua', 3, 2.0, 3.0, 2.0),
+('Xin Hua', 4, 2.0, 5.0, 3.0),
+('Xin Hua', 5, 2.0, 1.0, 4.0);
 COMMIT;
 
 INSERT INTO `CropMeasurements` (`name`, `batch`, `date_measured`, `current_height`) VALUES
-('Xin Hua', 1, '2021-02-02', 3.0);
+('Xin Hua', 1, '2021-02-02', 3.0),
+('Xin Hua', 2, '2021-02-03', 3.0),
+('Xin Hua', 3, '2021-02-04', 4.0),
+('Xin Hua', 4, '2021-02-05', 3.0),
+('Xin Hua', 5, '2021-02-06', 2.0);
 COMMIT;
 
 
