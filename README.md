@@ -16,4 +16,6 @@ Front end
 
 ## Other things to work on:
 Inventory Microservice - port 5000
+Crop Management - port 5001
+Machine Learning - port 5002
 
