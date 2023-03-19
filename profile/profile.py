@@ -9,6 +9,7 @@ import bcrypt
 #Create staff account /create/staff/<string:email> POST
 #Create farmer account /create/farmer/<string:email> POST
 #Get every ID in date  base /profile
+
 #Updating customer account details /update/customer/<string:id> PUT
 #Updating staff account details /update/staff/<string:id> PUT
 #Updating farmer account details /update/farmer/<string:id> PUT
