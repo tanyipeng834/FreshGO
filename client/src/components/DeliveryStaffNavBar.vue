@@ -1,5 +1,5 @@
 <template>
-    <div class="header" id="navbar">
+    <div class="header sticky-sm-top" id="navbar">
         <router-link to="/delivery">
             <img src="../assets/logo/FreshGoWhite.png" style="width:100px">
         </router-link>

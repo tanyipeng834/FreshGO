@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 // import every page you have here & add the routes
+//Before Login UI
 //Customer UI
 import CartPage from '../views/CustomerUI/CartPage.vue'
 import ProductDetailsPage from '../views/CustomerUI/ProductDetailsPage.vue'
