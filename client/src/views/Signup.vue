@@ -27,7 +27,7 @@
         @click="navigate"
         role="link"
       >
-        Posts
+        Signup
       </button>
     </router-link>
   </div>
