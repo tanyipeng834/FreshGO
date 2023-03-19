@@ -164,8 +164,50 @@ def update_order(id):
             }
         ), 500
 
+@app.route("/purchase_request/delete/<int:id>", methods=['DELETE'])
+def delete_order(id):
+    try:
+        order1=Crop_Purchased.query.filter_by(purchase_id=id).all()
+        order = Purchase_Activity.query.filter_by(id=id).first()
+        if not order:
+            return jsonify(
+                {
+                    "code": 404,
+                    "data": {
+                        "order_id": id
+                    },
+                    "message": "Order not found."
+                }
+            ), 404
+        for o in order1:
+            db.session.delete(o)
+        db.session.delete(order)
+        db.session.commit()
 
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "order_id": id
+                },
+                "message": "Order successfully deleted."
+            }
+        ), 200
 
+    except Exception as e:
+        
+        order1=Crop_Purchased.query.filter_by(purchase_id=id).all()
+        print(order1)
+        return jsonify(
+            {
+                "code": 500,
+                "data": {
+                    "order_id": id
+                },
+                "message": "An error occurred while deleting the order. " + str(e)
+            }
+        ), 500
+    
 if __name__ == "__main__":  # execute this program only if it is run as a script (not by 'import')
     print("This is flask for " + os.path.basename(__file__) + ": recording logs ...")
     app.run(host='0.0.0.0', port=5000, debug=True)
