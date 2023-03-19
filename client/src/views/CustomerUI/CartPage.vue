@@ -6,11 +6,12 @@
         <div class="details-wrap">
           <h3>{{ product.name }}</h3>
           <p>${{ product.price }}</p>
+          <p>Quantity: </p>
         </div>
-        <button class="remove-button">Remove From Cart</button>
+        <button class="btn btn-outline-danger" id="remove-button">Remove</button>
       </div>
       <h3 id="total-price">Total: ${{ totalPrice }}</h3>
-      <button id="checkout-button">Proceed to Checkout</button>
+      <button class="btn btn-outline-success" id="checkout-button">Proceed to Checkout</button>
     </div>
 </template>
 
@@ -72,7 +73,7 @@ export default {
     flex: 3;
   }
 
-  .remove-button {
+  #remove-button {
     flex: 1;
     margin: auto;
   }

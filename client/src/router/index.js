@@ -63,7 +63,6 @@ const routes = [
     name: 'HomeView',
     component: HomeView,
   },
-  // Customer UI
   {
     path: '/Entry',
     name: 'Entry',
@@ -71,6 +70,7 @@ const routes = [
       return import(/* webpackChunkName: "about" */ '../views/Entry.vue')
     }
   },
+  // Customer UI
   {
     // home page
     path: '/',
