@@ -42,6 +42,9 @@ const routes = [
     name: 'Login',
     component: function () {
       return import(/* webpackChunkName: "about" */ '../views/Login.vue')
+    },
+    meta: {
+      title: 'Login'
     }
   },
   {
@@ -49,6 +52,9 @@ const routes = [
     name: 'Signup',
     component: function () {
       return import(/* webpackChunkName: "about" */ '../views/Signup.vue')
+    },
+    meta: {
+      title: 'Sign Up'
     }
   },
   {
@@ -123,7 +129,7 @@ const routes = [
     name: 'DeliveryRequestDetails',
     component: DeliveryRequestDetails,
     meta: {
-      title: 'Delivery Requests'
+      title: 'Delivery Request Details'
     }
   },
   {
