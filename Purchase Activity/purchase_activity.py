@@ -24,7 +24,7 @@ db = SQLAlchemy(app)
 class Purchase_Activity(db.Model):
     __tablename__ = 'purchase_activity'
     id = db.Column(db.Integer, nullable=False, primary_key=True)
-    customer_id = db.Column(db.Integer, nullable=False)    
+    customer_id = db.Column(db.Integer, nullable=False)
     customer_location = db.Column(db.Integer)
     status = db.Column(db.String, default='New/Ongoing', nullable = False)
     created = db.Column(db.DateTime, default=datetime.now, nullable=False, onupdate=datetime.now)
@@ -47,13 +47,12 @@ class Crop_Purchased(db.Model):
     purchase_activity=db.relationship('Purchase_Activity', 
                                       primaryjoin= "Crop_Purchased.purchase_id==Purchase_Activity.id", backref='crop_purchased')
 
-    def __init__(self, crop_id, quantity):
-        self.crop_id=crop_id,
-        self.quantity=quantity
+    # def __init__(self, crop_id, quantity):
+    #     self.crop_id=crop_id
+    #     self.quantity=quantity
 
     def json(self):
-        return {"ID": self.id, "Crop ID": self.crop_id, 
-                "Quantity":self.quantity, "Purchase ID": self.purchase_id}
+        return {"ID": self.id, "Crop ID": self.crop_id, "Quantity":self.quantity, "Purchase ID": self.purchase_id}
 
 @app.route("/purchase_request", methods=['POST'])
 def create_request():
@@ -86,7 +85,7 @@ def create_request():
         {  "code": 201,
         "data": create_request.json()
         }
-        ),
+        )
    
 
 # @app.route("/purchase_request/order", methods=['GET','POST'])
