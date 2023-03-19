@@ -9,7 +9,7 @@
         </div>
         <div class="form-inputs">
             <label for="email">Email</label>
-            <input type="text" id="email" name="email" v-model="input.email" placeholder="email" />
+            <input type="text" id="email" name="email" v-model="input.email" placeholder="email@example.com" />
         </div>
         <div class="form-inputs">
             <label for="password">Password</label>
@@ -19,6 +19,24 @@
         <br>
         Don't have an account? Sign up <router-link to="/Signup">Here</router-link>
     </div>
+
+    <!--<div class="dropdown-menu">
+    <form class="px-4 py-3">
+        <div class="mb-3">
+        <label for="email" class="form-label">Email address</label>
+        <input type="email" class="form-control" id="email" name="email" v-model="input.email" placeholder="email@example.com">
+        </div>
+        <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" class="form-control" id="password" name="Password" v-model="input.password" placeholder="Password">
+        </div>
+
+        <button type="button" v-on:click="login()" class="btn btn-success">Sign in</button>
+    </form>
+    <div class="dropdown-divider"></div>
+    Don't have an account? Sign up <router-link to="/Signup">Here</router-link>
+    <a class="dropdown-item" href="#">Forgot password?</a>
+</div>-->
 </template>
 
 <script>
