@@ -1,6 +1,6 @@
 <template>
   <!---<nav></nav>--->
-  <!--Option 2: compute the route<div>
+  <!--Option 1: compute the route<div>
         <div v-if="firstNavbar">
             <FirstNav />
         <div>
