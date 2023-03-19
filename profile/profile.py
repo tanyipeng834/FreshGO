@@ -5,16 +5,24 @@ from os import environ
 import json
 import bcrypt
 
-#Work done so far:
-#Enable user to search for information about user
-#Enable creation of user profiles
-#Enable deletion of user profiles
+#Create customer account /create/customer/<string:email> POST
+#Create staff account /create/staff/<string:email> POST
+#Create farmer account /create/farmer/<string:email> POST
+#Get every ID in date  base /profile
+#Updating customer account details /update/customer/<string:id> PUT
+#Updating staff account details /update/staff/<string:id> PUT
+#Updating farmer account details /update/farmer/<string:id> PUT
+#Find customer details /profile/customer/<string:id> GET
+#Find staff details /profile/staff/<string:id> GET
+#Find farmer details /profile/farmer/<string:id> GET
+#Password validation /profile/<string:email> GET
 
 app = Flask(__name__)
 CORS(app)
-# app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/profile'
-# dbURL = 'mysql+mysqlconnector://root@localhost:3306/profile'
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL')
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/profile'
+# set dbURL=mysql+mysqlconnector://root@localhost:3306/profile
+# docker run -p 5000:5003 -e dbURL=mysql+mysqlconnector://is213@host.docker.internal:3306/profile mosengtim2021/profile:1.0
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
@@ -31,6 +39,12 @@ class Profile(db.Model):
         self.email = email
         self.password = bcrypt.hashpw(password.encode('utf-8'),salty)
 
+    def json(self):
+        return {"id": self.id, "email": self.email }
+    
+    def verify_password(self, passw):
+        return (bcrypt.checkpw(passw.encode('utf-8'), self.password.encode('utf-8')))
+
 
 class Customer(Profile):
     __tablename__ = 'customer'
@@ -43,7 +57,7 @@ class Customer(Profile):
         super(Customer, self).__init__(email, password)
 
     def json(self):
-        return {"ID": self.id}
+        return {"ID": self.id, "Name": self.name, "Phone": self.phone, "Address": self.address}
     
 class Staff(Profile):
     __tablename__ = 'staff'
@@ -52,10 +66,10 @@ class Staff(Profile):
     phone = db.Column(db.Integer)
     
     def __init__(self, email, password):
-        super(Customer, self).__init__(email, password)
+        super(Staff, self).__init__(email, password)
 
     def json(self):
-        return {"ID": self.id}
+        return {"ID": self.id, "Name": self.name, "Phone": self.phone}
 
 class Farmer(Profile):
     __tablename__ = 'farmer'
@@ -68,12 +82,21 @@ class Farmer(Profile):
         super(Farmer, self).__init__(email, password)
 
     def json(self):
-        return {"ID": self.id}
+        return {"ID": self.id, "Name": self.name, "Phone": self.phone, "Address": self.address}
+
+
+
+
+
+
+
+
+
 
 #Creating customer account
 @app.route("/create/customer/<string:email>", methods=['POST'])
 def create_customer(email):
-    if(Customer.query.filter_by(email=email).first()):
+    if(Profile.query.filter_by(email=email).first()):
         return jsonify(
             {
                 "code": 400,
@@ -105,41 +128,21 @@ def create_customer(email):
         }
     ), 201
 
-#For getting the ID of every account
-@app.route("/profile")
-def get_all_id():
-    id_list = Profile.query.all()
-    if(len(id_list)):
-        return jsonify(
-            {
-                "code": 200,
-                "data": {
-                    "id": [id.json() for id in id_list]
-                }
-            }
-        )
-    return jsonify(
-        {
-            "code": 404,
-            "message": "There are no ids."
-        }
-    ), 404
-
-#For creating email, password
-@app.route("/profile/create/<string:email>")
-def create_profile(email):
+#Creating staff account
+@app.route("/create/staff/<string:email>", methods=['POST'])
+def create_staff(email):
     if(Profile.query.filter_by(email=email).first()):
         return jsonify(
             {
                 "code": 400,
                 "data": {
-                    "id": id
+                    "email": email
                 },
                 "message": "Email already taken."
             }
         ), 400
     data = request.get_json()
-    profile = Customer(id, **data)
+    profile = Staff(email, **data)
     try:
         db.session.add(profile)
         db.session.commit()
@@ -148,7 +151,42 @@ def create_profile(email):
             {
                 "code": 500,
                 "data": {
-                    "id": id
+                    "id": email
+                },
+                "message": "An error occurred creating the profile."
+            }
+        ), 500
+    return jsonify(
+        {
+            "code": 201,
+            "data": profile.json()
+        }
+    ), 201
+
+#Creating farmer account
+@app.route("/create/farmer/<string:email>", methods=['POST'])
+def create_farmer(email):
+    if(Profile.query.filter_by(email=email).first()):
+        return jsonify(
+            {
+                "code": 400,
+                "data": {
+                    "email": email
+                },
+                "message": "Email already taken."
+            }
+        ), 400
+    data = request.get_json()
+    profile = Farmer(email, **data)
+    try:
+        db.session.add(profile)
+        db.session.commit()
+    except:
+        return jsonify(
+            {
+                "code": 500,
+                "data": {
+                    "id": email
                 },
                 "message": "An error occurred creating the profile."
             }
@@ -168,14 +206,167 @@ def create_profile(email):
 
 
 
-#Find customer profile
-#Why can't this work 
-# @app.route("/profile/<string:type>/<string:id>")
-# def find_customer_profile(type, id):
-#     type = type.capitalize()
-#     print(type)
-#     profile = type.query.filter_by(id=id).first()
 
+
+#For getting the ID of every account
+@app.route("/profile")
+def get_all_id():
+    id_list = Profile.query.with_entities(Profile.id).all()
+    if(len(id_list)):
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "id": [id[0] for id in id_list]
+                }
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "There are no ids."
+        }
+    ), 404
+
+
+
+
+
+
+
+
+
+
+#For adding customer details
+@app.route("/update/customer/<string:id>", methods=['PUT'])
+def update_customer_profile(id):
+    if(Customer.query.filter_by(id=id).first()):
+        customer_details = Customer.query.filter_by(id=id).first()
+        data = request.get_json()
+        if(data['name']!=''):
+            customer_details.name = data['name']
+        if (data['phone']!=''):
+            customer_details.phone = data['phone']
+        if(data['address']!=''):
+            customer_details.address = data['address']
+        try:
+            db.session.commit()
+        except:
+            return jsonify(
+                {
+                    "code": 500,
+                    "data": {
+                        "id": id
+                    },
+                    "message": "An error occurred creating the profile."
+                }
+            ), 500
+        return jsonify(
+            {
+                "code": 201,
+                "data": Customer.query.filter_by(id=id).first().json()
+            }
+        ), 201
+    return jsonify(
+            {
+                "code": 400,
+                "data": {
+                    "id": id
+                },
+                "message": "No such ID is used."
+            }
+        ), 400
+
+#For adding staff details
+@app.route("/update/staff/<string:id>", methods=['PUT'])
+def update_staff_profile(id):
+    if(Staff.query.filter_by(id=id).first()):
+        customer_details = Staff.query.filter_by(id=id).first()
+        data = request.get_json()
+        if(data['name']!=''):
+            customer_details.name = data['name']
+        if (data['phone']!=''):
+            customer_details.phone = data['phone']
+        if(data['address']!=''):
+            customer_details.address = data['address']
+        try:
+            db.session.commit()
+        except:
+            return jsonify(
+                {
+                    "code": 500,
+                    "data": {
+                        "id": id
+                    },
+                    "message": "An error occurred creating the profile."
+                }
+            ), 500
+        return jsonify(
+            {
+                "code": 201,
+                "data": Staff.query.filter_by(id=id).first().json()
+            }
+        ), 201
+    return jsonify(
+            {
+                "code": 400,
+                "data": {
+                    "id": id
+                },
+                "message": "No such ID is used."
+            }
+        ), 400
+
+#For adding farmer details
+@app.route("/update/farmer/<string:id>", methods=['PUT'])
+def update_farmer_profile(id):
+    if(Farmer.query.filter_by(id=id).first()):
+        customer_details = Farmer.query.filter_by(id=id).first()
+        data = request.get_json()
+        if(data['name']!=''):
+            customer_details.name = data['name']
+        if (data['phone']!=''):
+            customer_details.phone = data['phone']
+        if(data['address']!=''):
+            customer_details.address = data['address']
+        try:
+            db.session.commit()
+        except:
+            return jsonify(
+                {
+                    "code": 500,
+                    "data": {
+                        "id": id
+                    },
+                    "message": "An error occurred creating the profile."
+                }
+            ), 500
+        return jsonify(
+            {
+                "code": 201,
+                "data": Farmer.query.filter_by(id=id).first().json()
+            }
+        ), 201
+    return jsonify(
+            {
+                "code": 400,
+                "data": {
+                    "id": id
+                },
+                "message": "No such ID is used."
+            }
+        ), 400
+
+
+
+
+
+
+
+
+
+
+#Find customer profile
 @app.route("/profile/customer/<string:id>")
 def find_customer_profile(id):
     profile = Customer.query.filter_by(id=id).first()
@@ -207,7 +398,7 @@ def find_farmer_profile(id):
     return jsonify(
         {
             "code": 404,
-            "message": "Customer not found."
+            "message": "Farmer not found."
         }
     ), 404
 
@@ -225,7 +416,7 @@ def find__profile(id):
     return jsonify(
         {
             "code": 404,
-            "message": "Customer not found."
+            "message": "Staff not found."
         }
     ), 404
 
@@ -238,122 +429,17 @@ def find__profile(id):
 
 
 
-#Input customer details
-@app.route("/profile/customer/<string:id>", methods=['POST'])
-def create_customer_profile(id):
-    if(Customer.query.filter_by(id=id).first()):
-        return jsonify(
-            {
-                "code": 400,
-                "data": {
-                    "id": id
-                },
-                "message": "Customer already exists."
-            }
-        ), 400
-    data = request.get_json()
-    profile = Customer(id, **data)
-    try:
-        db.session.add(profile)
-        db.session.commit()
-    except:
-        return jsonify(
-            {
-                "code": 500,
-                "data": {
-                    "id": id
-                },
-                "message": "An error occurred creating the profile."
-            }
-        ), 500
-    return jsonify(
-        {
-            "code": 201,
-            "data": profile.json()
-        }
-    ), 201
-
-#Create staff user profile 
-@app.route("/profile/staff/<string:id>", methods=['POST'])
-def create_staff_profile(id):
-    if(Staff.query.filter_by(id=id).first()):
-        return jsonify(
-            {
-                "code": 400,
-                "data": {
-                    "id": id
-                },
-                "message": "Staff already exists."
-            }
-        ), 400
-    data = request.get_json()
-    profile = Staff(id, **data)
-    try:
-        db.session.add(profile)
-        db.session.commit()
-    except:
-        return jsonify(
-            {
-                "code": 500,
-                "data": {
-                    "id": id
-                },
-                "message": "An error occurred creating the profile."
-            }
-        ), 500
-    return jsonify(
-        {
-            "code": 201,
-            "data": profile.json()
-        }
-    ), 201
-
-#Create farmer user profile 
-@app.route("/profile/farmer/<string:id>", methods=['POST'])
-def create_farmer_profile(id):
-    if(Farmer.query.filter_by(id=id).first()):
-        return jsonify(
-            {
-                "code": 400,
-                "data": {
-                    "id": id
-                },
-                "message": "Farmer already exists."
-            }
-        ), 400
-    data = request.get_json()
-    profile = Farmer(id, **data)
-    try:
-        db.session.add(profile)
-        db.session.commit()
-    except:
-        return jsonify(
-            {
-                "code": 500,
-                "data": {
-                    "id": id
-                },
-                "message": "An error occurred creating the profile."
-            }
-        ), 500
-    return jsonify(
-        {
-            "code": 201,
-            "data": profile.json()
-        }
-    ), 201
 
 #Check for password
 @app.route("/profile/<string:email>", methods=['GET'])
 def check_password(email):
     profile = Profile.query.filter_by(email=email).first()
-    if profile:
-        data = request.get_json()
-        profile = Profile(id, **data)
+    data = request.get_json()
+    if(profile.verify_password(data['password'])):
         return jsonify(
             {
             "code": 200,
-            "data": profile.json()
+            "message": "Access granted"
             }
         )
     return jsonify(
@@ -363,6 +449,16 @@ def check_password(email):
         }
     ), 404
 
+
+
+
+
+
+
+
+
+
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0',port=5000, debug=True)
+    app.run(host='0.0.0.0',port=5003, debug=True)
     print("Hello World")
