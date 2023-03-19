@@ -2,7 +2,7 @@
     <div id="signup">
         <h1>Sign Up</h1>
         <div class="form-inputs">
-            User Type:<input type="radio" id="Farmer" name="usertype" v-model="input.usertype" value="Farmer">
+            User Type: <input type="radio" id="Farmer" name="usertype" v-model="input.usertype" value="Farmer">
             <label for='Farmer'>Farmer</label>
             <input type="radio" id="Customer" name="usertype" v-model="input.usertype" value="Customer">
             <label for='Customer'>Customer</label>

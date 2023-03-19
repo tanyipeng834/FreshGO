@@ -18,4 +18,5 @@ Front end
 Inventory Microservice - port 5000
 Crop Management - port 5001
 Machine Learning - port 5002
+Profile - port 5003
 

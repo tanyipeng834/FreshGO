@@ -65,6 +65,13 @@ const routes = [
   },
   // Customer UI
   {
+    path: '/Entry',
+    name: 'Entry',
+    component: function () {
+      return import(/* webpackChunkName: "about" */ '../views/Entry.vue')
+    }
+  },
+  {
     // home page
     path: '/',
     redirect: '/products',

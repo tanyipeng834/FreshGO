@@ -10,7 +10,7 @@
             <input type="password" id="password" name="password" v-model="input.password" placeholder="Password" />
         </div>
         <div class="form-inputs">
-            <label for="password">Confirm Password</label>
+            <label for="cpassword">Confirm Password</label>
             <input type="password" id="cpassword" name="cpassword" v-model="input.cpassword" placeholder="Confirm Password" />
         </div>
         <div class="form-inputs">
@@ -27,7 +27,7 @@
         @click="navigate"
         role="link"
       >
-        Posts
+        Signup
       </button>
     </router-link>
   </div>

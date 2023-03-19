@@ -33,7 +33,7 @@ DROP TABLE IF EXISTS `profile`;
 CREATE TABLE IF NOT EXISTS `profile` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `email` varchar(30) NOT NULL,
-  `password` varchar(255) NOT NULL,
+  `password` char(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ALTER TABLE profile AUTO_INCREMENT=10000;
@@ -51,8 +51,8 @@ CREATE TABLE IF NOT EXISTS `customer` (
 DROP TABLE IF EXISTS `staff`;
 CREATE TABLE IF NOT EXISTS `staff` (
   `id` int(10) NOT NULL,
-  `name` varchar(30) NOT NULL,
-  `phone` int(8) NOT NULL,
+  `name` varchar(30),
+  `phone` int(8),
   FOREIGN KEY (`id`) REFERENCES profile(`id`),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -60,9 +60,9 @@ CREATE TABLE IF NOT EXISTS `staff` (
 DROP TABLE IF EXISTS `farmer`;
 CREATE TABLE IF NOT EXISTS `farmer` (
   `id` int(10) NOT NULL,
-  `name` varchar(30) NOT NULL,
-  `phone` int(8) NOT NULL,
-  `address` varchar(30) NOT NULL,
+  `name` varchar(30),
+  `phone` int(8),
+  `address` varchar(30),
   FOREIGN KEY (`id`) REFERENCES profile(`id`),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
