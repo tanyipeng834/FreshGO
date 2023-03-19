@@ -10,14 +10,27 @@
             <input type="password" id="password" name="password" v-model="input.password" placeholder="Password" />
         </div>
         <div class="form-inputs">
-            <label for="password">Confirm Password</label>
+            <label for="cpassword">Confirm Password</label>
             <input type="password" id="cpassword" name="cpassword" v-model="input.cpassword" placeholder="Confirm Password" />
         </div>
         <div class="form-inputs">
             <label for="password">Confirm Password</label>
             <input type="password" id="cpassword" name="cpassword" v-model="input.cpassword" placeholder="Confirm Password" />
         </div>
-        <button type="button" v-on:click="signup()">Sign Up</button>
+        <div>
+    <router-link
+      to="/MoreInfo"
+      custom
+      v-slot="{ navigate }"
+    >
+      <button
+        @click="navigate"
+        role="link"
+      >
+        Signup
+      </button>
+    </router-link>
+  </div>
         <br>
         Already have an account? Log in <router-link to="/Login">Here</router-link>
     </div>

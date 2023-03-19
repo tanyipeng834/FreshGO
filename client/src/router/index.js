@@ -5,6 +5,9 @@ import CartPage from '../views/CustomerUI/CartPage.vue'
 import ProductDetailsPage from '../views/CustomerUI/ProductDetailsPage.vue'
 import ProductsPage from '../views/CustomerUI/ProductsPage.vue'
 import PaymentPage from '../views/CustomerUI/PaymentPage.vue'
+//Delivery Staff UI
+import DeliveryRequests from '../views/DeliveryStaffUI/DeliveryRequests'
+import DeliveryRequestDetails from '../views/DeliveryStaffUI/DeliveryRequestDetails'
 //Unrelated to any UIs
 import Home from '../views/Home.vue'
 import HomeView from '../views/HomeView.vue'
@@ -13,7 +16,7 @@ import NotFoundPage from '../views/NotFoundPage.vue'
 
 const routes = [
   {
-    path: '/',
+    path: '/home',
     name: 'Home',
     component: Home
   },
@@ -39,6 +42,9 @@ const routes = [
     name: 'Login',
     component: function () {
       return import(/* webpackChunkName: "about" */ '../views/Login.vue')
+    },
+    meta: {
+      title: 'Login'
     }
   },
   {
@@ -46,6 +52,16 @@ const routes = [
     name: 'Signup',
     component: function () {
       return import(/* webpackChunkName: "about" */ '../views/Signup.vue')
+    },
+    meta: {
+      title: 'Sign Up'
+    }
+  },
+  {
+    path: '/MoreInfo',
+    name: 'MoreInfo',
+    component: function () {
+      return import(/* webpackChunkName: "about" */ '../views/MoreInfo.vue')
     }
   },
   {
@@ -53,6 +69,14 @@ const routes = [
     name: 'HomeView',
     component: HomeView,
   },
+  {
+    path: '/Entry',
+    name: 'Entry',
+    component: function () {
+      return import(/* webpackChunkName: "about" */ '../views/Entry.vue')
+    }
+  },
+  // Customer UI
   {
     // home page
     path: '/',
@@ -89,6 +113,23 @@ const routes = [
     component: PaymentPage,
     meta: {
       title: 'Payment'
+    }
+  },
+  // Delivery Staff UI
+  {
+    path: '/delivery',
+    name: 'DeliveryRequests',
+    component: DeliveryRequests,
+    meta: {
+      title: 'Delivery Requests'
+    }
+  },
+  {
+    path: '/delivery/:id',
+    name: 'DeliveryRequestDetails',
+    component: DeliveryRequestDetails,
+    meta: {
+      title: 'Delivery Request Details'
     }
   },
   {

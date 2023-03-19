@@ -16,7 +16,7 @@
           </select>
         </div>
         <br>
-        <button id="add-to-cart">Add to Cart</button>
+        <button class="btn btn-outline-success" id="add-to-cart">Add to Cart</button>
       </div>
     </div>
 </template>

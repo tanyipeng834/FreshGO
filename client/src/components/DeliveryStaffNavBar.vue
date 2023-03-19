@@ -1,37 +1,23 @@
 <template>
     <div class="header" id="navbar">
-        <router-link to="/products"><h1>AppName</h1>
+        <router-link to="/delivery">
+            <img src="../assets/logo/FreshGoWhite.png" style="width:100px">
         </router-link>
-        <div class="header-right">
-            <router-link to="/cart" >
-                <button id="shoppingCartButton">Shopping Cart</button>
-            </router-link>
-        </div>
     </div>
 </template>
 
 <script>
 export default {
-    name:'NavBar',
+    name:'DeliveryStaffNavBar',
 }
 </script>
 
 <style scoped>
-    #shoppingCartButton {
-        background-color: #ffffff00; 
-        border: none;
-        color: black;
-        padding: 15px 32px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-    }
-
     #navbar{
         overflow: hidden;
-        background-color: #77DD77;
+        background-color: #729343;
         padding: 20px 10px;
+        border-bottom: 3px solid #096A2E;
     }
 
     .header a {
@@ -51,12 +37,12 @@ export default {
     }
 
     .header a:hover {
-        background-color: #bbffbb;
+        background-color: #096A2E;
         color: black;
     }
 
     .header a.active {
-        background-color: #539f53;
+        background-color: #096A2E;
         color: white;
     }
 

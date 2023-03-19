@@ -25,6 +25,13 @@ export const products = [{
     price: '1.50',
     quantityInStock: '20',
     imageURL: kangkong,
+}, {
+    id: '4',
+    name: 'Old Kang Kong',
+    shelfLife: '2023-12-31',
+    price: '1.00',
+    quantityInStock: '25',
+    imageURL: kangkong,
 }];
 
 // referencing the above products array, fake data for cart

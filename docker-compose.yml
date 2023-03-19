@@ -1,0 +1,54 @@
+version: "3.8"
+
+
+services:
+
+  #################################
+  # Profile microservice
+  #################################
+  profile:
+    image: mosengtim2021/profile:1.0
+    restart: always
+    environment:
+      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/profile
+
+
+  #################################
+  # Crop Management
+  #################################
+  crop_management:
+    image: mosengtim2021/crop_management:1.0
+    restart: always
+    environment:
+      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/cropmanagement
+
+
+  ###############################################
+  # Inventory
+  ###############################################
+  inventory:
+    image: mosengtim2021/inventory:1.0
+    depends_on:
+      - profile
+    environment:
+      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/inventory
+
+  ###############################################
+  # Machine learning
+  ###############################################
+  machine_learning:
+    image: mosengtim2021/machine_learning:1.0
+    depends_on:
+      - profile
+    environment:
+      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/machine_learning
+
+  ###############################################
+  # Purchase Activity
+  ###############################################
+  purchase_activity:
+    image: mosengtim2021/purchase_activity:1.0
+    depends_on:
+      - profile
+    environment:
+      purchase_request_URL: mysql+mysqlconnector://is213@host.docker.internal:3306/purchase_activity
