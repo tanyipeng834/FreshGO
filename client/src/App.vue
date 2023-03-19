@@ -1,17 +1,26 @@
 <template>
-  <nav></nav>
-  <NavBar />
+  <!---<nav></nav>--->
+  <!--<div>
+        <div v-if="firstNavbar">
+            <FirstNav />
+        <div>
+        <div v-if="secondNavbar">
+            <SecondNav />
+        </div>
+       <router-view />
+  </div>-->
+  <CustomerNavBar />
   <router-view />
 
 </template>
 
 <script>
-  import NavBar from "./components/NavBar.vue"
+  import CustomerNavBar from "./components/CustomerNavBar.vue"
   
   export default {
     name: "App",
     components: {
-      NavBar,
+      CustomerNavBar,
     }
   };
 
