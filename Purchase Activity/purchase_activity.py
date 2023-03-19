@@ -87,6 +87,24 @@ def create_request():
         }
         )
    
+@app.route("/purchase_request")
+def get_all():
+    requestlist = Purchase_Activity.query.all()
+    if len(requestlist):
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "orders": [order.json() for order in requestlist]
+                }
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "There are no orders."
+        }
+    ), 404
 
 # @app.route("/purchase_request/order", methods=['GET','POST'])
 # def purchase_request(customer_id, delivery_staff_id, customer_location,transaction_amount, status, created):
