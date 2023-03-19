@@ -24,17 +24,5 @@
         </div>  
         <button type="button">Sign Up</button>
         <br>
-    <router-link
-      to="/MoreInfo"
-      custom
-      v-slot="{ navigate }"
-    >
-      <button
-        @click="navigate"
-        role="link"
-      >
-        Add new entry
-      </button>
-    </router-link>
   </div>
 </template>
