@@ -1,6 +1,6 @@
 <template>
     <div class="header" id="navbar">
-        <router-link to="/products">
+        <router-link to="/delivery">
             <img src="../assets/logo/FreshGoWhite.png" style="width:100px">
         </router-link>
     </div>
