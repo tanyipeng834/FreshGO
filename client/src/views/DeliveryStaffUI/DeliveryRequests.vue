@@ -1,5 +1,5 @@
 <template>
-    <table class="table">
+    <table class="table table-hover">
         <thead>
             <tr>
             <th scope="col">#</th>
@@ -10,7 +10,7 @@
             <th scope="col">Status</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="table-group-divider">
             <tr v-for="deliveryRequest in deliveryRequests" class="delivery-item" v-bind:key="deliveryRequest.orderId">
                 <th scope="row">count</th>
                 <td>{{ deliveryRequest.orderId }}</td>
@@ -18,11 +18,11 @@
                 <td>{{ deliveryRequest.deliveryLocation }}</td>
                 <td> 
                     <router-link v-bind:to="'/delivery/' + deliveryRequest.orderId">
-                        <button>View Details</button>
+                        <button class="btn btn-success">View Details</button>
                     </router-link>
                 </td>
                 <td>
-                    <button>Accept</button>
+                    <button class="btn btn-outline-success">Accept</button>
                 </td>
             </tr>
         </tbody>
