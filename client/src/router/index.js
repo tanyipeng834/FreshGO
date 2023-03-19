@@ -31,13 +31,6 @@ const routes = [
     }
   },
   {
-    path: '/secure',
-    name: 'Secure',
-    component: function () {
-      return import(/* webpackChunkName: "about" */ '../views/Secure.vue')
-    }
-  },
-  {
     path: '/login',
     name: 'Login',
     component: function () {
