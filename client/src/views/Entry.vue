@@ -1,5 +1,5 @@
 <template>
-    <div id="signup">
+    <div id="entry">
         <h1>New entry</h1>
         <div class="form-inputs">
             <label for="height">Height</label>

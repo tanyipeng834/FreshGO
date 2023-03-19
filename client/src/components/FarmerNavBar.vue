@@ -1,8 +1,13 @@
 <template>
-    <div class="header" id="navbar">
+    <div class="header sticky-sm-top" id="navbar">
         <router-link to="/products">
             <img src="../assets/logo/FreshGoWhite.png" style="width:100px">
         </router-link>
+        <div class="header-right">
+            <router-link to="/login" >
+                <button id="shoppingCartButton">Log Out</button>
+            </router-link>
+        </div>
     </div>
 </template>
 
@@ -13,6 +18,17 @@ export default {
 </script>
 
 <style scoped>
+    #shoppingCartButton {
+        background-color: #ffffff00; 
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+    }
+    
     #navbar{
         overflow: hidden;
         background-color: #729343;

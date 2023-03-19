@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 // import every page you have here & add the routes
+//Before Login UI
 //Customer UI
 import CartPage from '../views/CustomerUI/CartPage.vue'
 import ProductDetailsPage from '../views/CustomerUI/ProductDetailsPage.vue'
@@ -28,13 +29,6 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: function () {
       return import(/* webpackChunkName: "about" */ '../views/About.vue')
-    }
-  },
-  {
-    path: '/secure',
-    name: 'Secure',
-    component: function () {
-      return import(/* webpackChunkName: "about" */ '../views/Secure.vue')
     }
   },
   {
@@ -68,6 +62,16 @@ const routes = [
     path: '/home',
     name: 'HomeView',
     component: HomeView,
+  },
+  {
+    path: '/dashboard',
+    name: 'dashboard',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: function () {
+      return import(/* webpackChunkName: "about" */ '../views/Dashboard.vue')
+    }
   },
   {
     path: '/Entry',
