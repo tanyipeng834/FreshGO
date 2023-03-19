@@ -28,9 +28,8 @@
         </div>
         <div class="mb-3">
         <label for="password" class="form-label">Password</label>
-        <input type="password" class="form-control" id="password" name="Password" v-model="input.password" placeholder="Password">
+        <input type="password" class="form-control" id="password" name="password" v-model="input.password" placeholder="Password">
         </div>
-
         <button type="button" v-on:click="login()" class="btn btn-success">Sign in</button>
     </form>
     <div class="dropdown-divider"></div>
@@ -77,5 +76,4 @@
 #login .form-inputs label {
     padding-right: 10px;
 }
-
 </style>

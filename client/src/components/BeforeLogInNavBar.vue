@@ -1,10 +1,10 @@
 <template>
     <div class="header" id="navbar">
-        <router-link to="/products">
+        <router-link to="/login">
             <img src="../assets/logo/FreshGoWhite.png" style="width:100px">
         </router-link>
         <div class="header-right">
-            <router-link to="/cart" >
+            <router-link to="/login" >
                 <button id="shoppingCartButton">Log In</button>
             </router-link>
         </div>
