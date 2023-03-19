@@ -1,6 +1,6 @@
 <template>
     <div id="signup">
-        <h1>Sign Up</h1>
+        <h1>New entry</h1>
         <div class="form-inputs">
             <label for="height">Height</label>
             <input type="text" id="height" name="height" placeholder="in cm" />

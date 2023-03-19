@@ -41,7 +41,7 @@ services:
     depends_on:
       - profile
     environment:
-      bookURL: mysql+mysqlconnector://is213@host.docker.internal:3306/machine_learning
+      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/machine_learning
 
   ###############################################
   # Purchase Activity
@@ -51,4 +51,4 @@ services:
     depends_on:
       - profile
     environment:
-      purchase_request_URL: http://book:5000/book
+      purchase_request_URL: mysql+mysqlconnector://is213@host.docker.internal:3306/purchase_activity

@@ -95,7 +95,7 @@ def get_all():
             {
                 "code": 200,
                 "data": {
-                    "orders": [order.json() for order in requestlist]
+                    "Purchase Requests": [order.json() for order in requestlist]
                 }
             }
         )
@@ -106,39 +106,108 @@ def get_all():
         }
     ), 404
 
-# @app.route("/purchase_request/order", methods=['GET','POST'])
-# def purchase_request(customer_id, delivery_staff_id, customer_location,transaction_amount, status, created):
-#     data = request.get_json()
-#     #create request for customer's purchase
-#     purchase_request = Purchase_Activity(customer_id, delivery_staff_id, customer_location,transaction_amount, status, created,**data)
-#     try:
-#         db.session.add(purchase_request)
-#         db.session.commit()
-#     except:
-#         return jsonify(
-#             {
-#                 "code": 500,
-#                 "data": {
-#                     "Customer_ID": customer_id,
-#                     "Delivery Staff":delivery_staff_id,
-#                     "Delivery Location":customer_location,
-#                     "Transaction Amt":transaction_amount,
-#                     "Purchase Request ID": id,
-#                     "Customer ID": customer_id,
-#                     "Status":status
-#                     },
-#                 "message": "An error occurred creating the purchase request."
-#             }
-#         ), 500
-#     return jsonify(
-#         {  "code": 201,
-#             "data": Purchase_Activity.json()
-#         }
-#     ), 201
+@app.route("/purchase_request/<int:id>")
+def find_by_order_id(id):
+    order = Purchase_Activity.query.filter_by(id=id).first()
+    if order:
+        return jsonify(
+            {
+                "code": 200,
+                "data": order.json()
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "data": {
+                "id": id
+            },
+            "message": "Order not found."
+        }
+    ), 404
 
+@app.route("/purchase_request/update/<int:id>", methods=['PUT'])
+def update_order(id):
+    try:
+        order = Purchase_Activity.query.filter_by(id=id).first()
+        if not order:
+            return jsonify(
+                {
+                    "code": 404,
+                    "data": {
+                        "order_id": id
+                    },
+                    "message": "Order not found."
+                }
+            ), 404
 
+        # update status
+        data = request.get_json()
+        if 'status' in data:
+            order.status = data['status']
+            db.session.commit()
+            return jsonify(
+                {
+                    "code": 200,
+                    "data": order.json()
+                }
+            ), 200
+    except Exception as e:
+        print(type(data['status']))
+        return jsonify(
+            {
+                "code": 500,
+                "data": {
+                    "order_id": id
+                },
+                "message": "An error occurred while updating the order. " + str(e)
+            }
+        ), 500
 
+@app.route("/purchase_request/delete/<int:id>", methods=['DELETE'])
+def delete_order(id):
+    try:
+        order1=Crop_Purchased.query.filter_by(purchase_id=id).all()
+        order = Purchase_Activity.query.filter_by(id=id).first()
+        if not order:
+            return jsonify(
+                {
+                    "code": 404,
+                    "data": {
+                        "order_id": id
+                    },
+                    "message": "Order not found."
+                }
+            ), 404
+        for o in order1:
+            db.session.delete(o)
+        db.session.delete(order)
+        db.session.commit()
 
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "order_id": id
+                },
+                "message": "Order successfully deleted."
+            }
+        ), 200
+
+    except Exception as e:
+        
+        order1=Crop_Purchased.query.filter_by(purchase_id=id).all()
+        print(order1)
+        return jsonify(
+            {
+                "code": 500,
+                "data": {
+                    "order_id": id
+                },
+                "message": "An error occurred while deleting the order. " + str(e)
+            }
+        ), 500
+    
 if __name__ == "__main__":  # execute this program only if it is run as a script (not by 'import')
     print("This is flask for " + os.path.basename(__file__) + ": recording logs ...")
     app.run(host='0.0.0.0', port=5000, debug=True)
