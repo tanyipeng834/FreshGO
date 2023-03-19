@@ -6,7 +6,7 @@
             <label for='Farmer'>Farmer</label>
             <input type="radio" id="Customer" name="usertype" v-model="input.usertype" value="Customer">
             <label for='staff'>Customer</label>
-            <input type="radio" id="staff" name="usertype" v-model="input.usertype" value="Customer">
+            <input type="radio" id="staff" name="usertype" v-model="input.usertype" value="staff">
             <label for='staff'>Staff</label>
         </div>
         <div class="form-inputs">
