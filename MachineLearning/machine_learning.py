@@ -12,8 +12,8 @@ def recommend():
     crop_data = request.json
     
     # Query weather API for humidity data
-    weather_data = requests.get('http://weather-api.com/humidity').json()
-    humidity = weather_data['humidity']
+    weather_data = requests.get('http://api.data.gov.sg/v1/environment/24-hour-weather-forecast').json()
+    humidity = weather_data['items']
     
     # Calculate recommended water level
     recommended_water_level = calculate_water_level(crop_data, humidity)

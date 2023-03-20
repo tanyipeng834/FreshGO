@@ -450,6 +450,33 @@ def find__profile(id):
 
 
 
+#Give profile information
+@app.route("/profile/staff/<string:id>")
+def find__profile(id):
+    profile = Staff.query.filter_by(id=id).first()
+    if profile:
+        return jsonify(
+            {
+            "code": 200,
+            "data": profile.json()
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Staff not found."
+        }
+    ), 404
+
+
+
+
+
+
+
+
+
+
 
 #Check for password
 @app.route("/profile/<string:email>", methods=['GET'])
