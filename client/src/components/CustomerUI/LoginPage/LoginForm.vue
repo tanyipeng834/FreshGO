@@ -172,7 +172,18 @@ export default {
       console.log(this.signUp);
     },
     // This is the code for users to sign in to the
-    signIn() {},
+    signIn() {
+      axios
+        .post(`http://127.0.0.1:5003/create/${this.userType}/${this.email}`, {
+          key: value,
+        })
+        .then((response) => {
+          // console.log(response.data);
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
+    },
     createNewAccount() {
       axios
         .post(`http://127.0.0.1:5003/create/${this.userType}/${this.email}`, {

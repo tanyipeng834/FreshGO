@@ -35,7 +35,6 @@ class Profile(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(30), nullable=False)
     password = db.Column(db.String(255), nullable=False)
-    profile_type =db.Column(db.String(255,nullable=False))
 
     def __init__(self, email, password):
         self.email = email
@@ -95,7 +94,7 @@ class Farmer(Profile):
 
 
 
-#Creating customer account and also for logging in
+#Creating customer account
 @app.route("/create/customer/<string:email>", methods=['POST'])
 def create_customer(email):
     if(Profile.query.filter_by(email=email).first()):
@@ -135,7 +134,24 @@ def create_customer(email):
 def signIn(user_type):
     data = request.get_json()
 
-    if(Profile.query.filter_by(email=data['email']).first()):
+    # If there is such an user with such then we will go and check the password
+    user_profile = Profile.query.filter_by(db.and_(
+        Profile.email == data['email'], Profile.profile_type == user_type).first())
+    if user_profile:
+        if (user_profile.verify_password(data['password'])):
+            return jsonify(
+
+                {
+                    "code": "200",
+                    "message": "User provided Valid Login details"
+                }
+            )
+        else:
+            return jsonify(
+                {
+                    "code": "401",
+                    "message": "User provided Invalid Login Details"
+                }
 
 
 
@@ -510,3 +526,47 @@ def check_password(email):
 if __name__ == '__main__':
     app.run(host='0.0.0.0',port=5003, debug=True)
     print("Hello World")
+
+
+
+
+
+
+
+# class Customer(Profile):
+# __tablename__ = 'customer'
+# id = db.Column(db.Integer, db.ForeignKey('profile.id'), primary_key=True)
+# name = db.Column(db.String(30))
+# phone = db.Column(db.Integer)
+# address = db.Column(db.String(30))
+
+# def __init__(self, email, password):
+#     super(Customer, self).__init__(email, password)
+
+# def json(self):
+#     return {"ID": self.id, "Name": self.name, "Phone": self.phone, "Address": self.address}
+    
+# class Staff(Profile):
+#     __tablename__ = 'staff'
+#     id = db.Column(db.Integer, db.ForeignKey('profile.id'), primary_key=True)
+#     name = db.Column(db.String(30))
+#     phone = db.Column(db.Integer)
+    
+#     def __init__(self, email, password):
+#         super(Staff, self).__init__(email, password)
+
+#     def json(self):
+#         return {"ID": self.id, "Name": self.name, "Phone": self.phone}
+
+# class Farmer(Profile):
+#     __tablename__ = 'farmer'
+#     id = db.Column(db.Integer, db.ForeignKey('profile.id'), primary_key=True)
+#     name = db.Column(db.String(30))
+#     phone = db.Column(db.Integer)
+#     address = db.Column(db.String(30))
+    
+#     def __init__(self, email, password):
+#         super(Farmer, self).__init__(email, password)
+
+#     def json(self):
+#         return {"ID": self.id, "Name": self.name, "Phone": self.phone, "Address": self.address}
