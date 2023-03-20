@@ -152,19 +152,15 @@ def signIn(user_type):
                     "code": "401",
                     "message": "User provided Invalid Login Details"
                 }
-
-
-
-    else:
-
-        
-  
+            )
     return jsonify(
         {
             "code": 201,
-            "data": profile.json()
+            "data": user_profile.json()
         }
     ), 201
+
+
 #Creating staff account
 @app.route("/create/staff/<string:email>", methods=['POST'])
 def create_staff(email):
