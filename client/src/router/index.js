@@ -24,9 +24,6 @@ const routes = [
   {
     path: '/about',
     name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: function () {
       return import(/* webpackChunkName: "about" */ '../views/About.vue')
     }
@@ -56,6 +53,9 @@ const routes = [
     name: 'MoreInfo',
     component: function () {
       return import(/* webpackChunkName: "about" */ '../views/MoreInfo.vue')
+    },
+    meta: {
+      title: 'MoreInfo'
     }
   },
   {
@@ -66,11 +66,11 @@ const routes = [
   {
     path: '/dashboard',
     name: 'dashboard',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: function () {
       return import(/* webpackChunkName: "about" */ '../views/Dashboard.vue')
+    },
+    meta: {
+      title: 'Dashboard'
     }
   },
   {
@@ -78,6 +78,9 @@ const routes = [
     name: 'Entry',
     component: function () {
       return import(/* webpackChunkName: "about" */ '../views/Entry.vue')
+    },
+    meta: {
+      title: 'Entry'
     }
   },
   // Customer UI
