@@ -6,7 +6,7 @@
   </div>
   <div class="form-group">
     <label for="height">Height</label>
-    <input type="text" class="form-control" id="height" aria-describedby="emailHelp" placeholder="Height in Metres">
+    <input type="number" class="form-control" id="height" aria-describedby="emailHelp" placeholder="Height in Metres">
   </div>
   
   <div class="form-group">
