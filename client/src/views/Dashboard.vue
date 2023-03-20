@@ -97,7 +97,7 @@
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ID</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Harvest Type</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Weight</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Height</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Expiry</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -119,7 +119,7 @@
                         <div class="progress-wrapper w-75 mx-auto">
                           <div class="progress-info">
                             <div class="progress-percentage text-center">
-                              <span class="text-xs font-weight-bold">10%</span>
+                              <span class="text-xs font-weight-bold">11-11-2023</span>
                             </div>
                           </div>
                         </div>
@@ -143,7 +143,7 @@
                         <div class="progress-wrapper w-75 mx-auto">
                           <div class="progress-info">
                             <div class="progress-percentage text-center">
-                              <span class="text-xs font-weight-bold">10%</span>
+                              <span class="text-xs font-weight-bold">11-11-2023</span>
                             </div>
                           </div>
                         </div>
@@ -167,7 +167,7 @@
                         <div class="progress-wrapper w-75 mx-auto">
                           <div class="progress-info">
                             <div class="progress-percentage text-center">
-                              <span class="text-xs font-weight-bold">10%</span>
+                              <span class="text-xs font-weight-bold">11-11-2023</span>
                             </div>
                           </div>
                         </div>
@@ -191,7 +191,7 @@
                         <div class="progress-wrapper w-75 mx-auto">
                           <div class="progress-info">
                             <div class="progress-percentage text-center">
-                              <span class="text-xs font-weight-bold">10%</span>
+                              <span class="text-xs font-weight-bold">11-11-2023</span>
                             </div>
                           </div>
                         </div>
@@ -215,7 +215,7 @@
                         <div class="progress-wrapper w-75 mx-auto">
                           <div class="progress-info">
                             <div class="progress-percentage text-center">
-                              <span class="text-xs font-weight-bold text-left">10%</span>
+                              <span class="text-xs font-weight-bold text-left">11-11-2023</span>
                             </div>
                           </div>
                         </div>
