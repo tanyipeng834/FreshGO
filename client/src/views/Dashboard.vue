@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid py-4">
-      <div class="row">
+      <div class="row" style="margin-bottom: 10px;">
         <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
           <div class="card">
             <div class="card-header p-3 pt-2">
@@ -82,9 +82,6 @@
                 <div class="col-lg-6 col-5 my-auto text-end">
                   <div class="dropdown float-lg-end pe-4">
                     <router-link to="/Entry">New Entry</router-link>
-                    <a class="cursor-pointer" id="dropdownTable" data-bs-toggle="dropdown" aria-expanded="false">
-                      <i class="fa fa-ellipsis-v text-secondary"></i>
-                    </a>
                   </div>
                 </div>
               </div>
@@ -98,6 +95,8 @@
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Harvest Type</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Weight</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Expiry</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">options</th>
+
                     </tr>
                   </thead>
                   <tbody>
@@ -124,6 +123,7 @@
                           </div>
                         </div>
                       </td>
+                      <td class="align-middle text-center"><router-link to="/Entry">Edit Entry</router-link></td>
                     </tr>
                     <tr>
                       <td>
@@ -148,6 +148,7 @@
                           </div>
                         </div>
                       </td>
+                      <td class="align-middle text-center"><router-link to="/Entry">Edit Entry</router-link></td>
                     </tr>
                     <tr>
                       <td>
@@ -172,6 +173,7 @@
                           </div>
                         </div>
                       </td>
+                      <td class="align-middle text-center"><router-link to="/Entry">Edit Entry</router-link></td>
                     </tr>
                     <tr>
                       <td>
@@ -196,7 +198,9 @@
                           </div>
                         </div>
                       </td>
+                      <td class="align-middle text-center"><router-link to="/Entry">Edit Entry</router-link></td>
                     </tr>
+                    
                     <tr>
                       <td>
                         <div class="d-flex px-2 py-1">
@@ -213,14 +217,13 @@
                       </td>
                       <td class="align-middle">
                         <div class="progress-wrapper w-75 mx-auto">
-                          <div class="progress-info">
-                            <div class="progress-percentage text-center">
+                          <div class="progress-info text-center">
                               <span class="text-xs font-weight-bold text-left">11-11-2023</span>
-                            </div>
                           </div>
                         </div>
                       </td>
-                    </tr>
+                      <td class="align-middle text-center"><router-link to="/Entry">Edit Entry</router-link></td>
+                    </tr> 
                   </tbody>
                 </table>
               </div>
