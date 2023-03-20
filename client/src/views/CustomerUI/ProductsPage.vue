@@ -7,6 +7,7 @@
         v-bind:key="product.CropName"
       >
         <img v-bind:src="product.imageURL" />
+        <!--<img v-if="product.type == vegetable" alt="Vegetables" src="../../assets/caixinhua.jpg">-->
         <h3 class="product-name">{{ product.CropName }}</h3>
         <p class="product-price">${{ product.Price }}</p>
         <router-link v-bind:to="'/products/' + product.CropName">
