@@ -3,11 +3,11 @@
         <h1>Sign Up</h1>
         <div class="form-inputs">
             <label for="email">Email</label>
-            <input type="text" id="email" name="email" placeholder="Email" />
+            <p><input type="text" id="email" v-model="email" placeholder="Email" /></p>
         </div>
         <div class="form-inputs">
             <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="Password" />
+            <input type="password" id="password" v-model="password" placeholder="Password" />
         </div>
         <div class="form-inputs">
             <label for="cpassword">Confirm Password</label>
@@ -24,7 +24,7 @@
       v-slot="{ navigate }"
     >
       <button
-        @click="navigate"
+        @click="register"
         role="link"
       >
         Signup
@@ -45,3 +45,24 @@
   padding-right: 10px;
 }
 </style>
+
+<script setup>
+import { ref } from "vue";
+import { getAuth, createUserWithEmailAndPassword } from "@firebase/auth";
+import { useRouter } from "vue-router"
+const email = ref("");
+const password = ref("");
+const router = useRouter()
+
+const register = () =>{
+  createUserWithEmailAndPassword(getAuth(), email.value, password.value)
+    .then((data)=>{
+      console.log("Successfully registered")
+      router.push('/MoreInfo')
+    })
+    .catch((error)=>{
+      console.log(error.code);
+      alert(error.message);
+    })
+};
+</script>

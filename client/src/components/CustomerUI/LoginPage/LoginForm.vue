@@ -126,6 +126,7 @@
         <button
           type="button"
           class="login-button"
+          id = "btnlogin"
           @click="login()"
           v-if="this.signUp == false"
         >
