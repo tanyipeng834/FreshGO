@@ -29,7 +29,7 @@ def manage_crop():
     current_water_used = request.json.get('current_water_used')
     
     # Query inventory microservice for crop data
-    inventory_data = request.get('http://127.0.0.1:5000/inventory/crop/' + crop_name + '/' + batch).json()
+    inventory_data = request.get('http://127.0.0.1:5000/inventory/measurements/' + crop_name + '/' + batch).json()
     # Call machine learning microservice to get recommended water level and fertilizer amount
     recommended_data = request.post('http://127.0.0.1:5002/machine_learning/recommend', json=inventory_data).json()
     
