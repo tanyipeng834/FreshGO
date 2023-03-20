@@ -1,14 +1,14 @@
-import os
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from os import environ
 
 # Initialize Flask app
 app = Flask(__name__)
 CORS(app)
 
 # Set up database
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -21,17 +21,17 @@ class Crop(db.Model):
     recommended_fertilizer_amount = db.Column(db.Float, nullable=False)
 
 # Define the route for receiving input from the farmer UI
-@app.route('/crop-management', methods=['POST'])
+@app.route('/crop_management', methods=['POST'])
 def manage_crop():
     # Extract input data from POST request
-    crop_name = request.json.get('crop_name')
+    crop_name = request.json.get('name')
     batch = request.json.get('batch')
     current_water_used = request.json.get('current_water_used')
     
     # Query inventory microservice for crop data
-    inventory_data = request.get('http://inventory/crop/' + crop_name + '/' + batch).json()
+    inventory_data = request.get('http://127.0.0.1:5000/inventory/crop/' + crop_name + '/' + batch).json()
     # Call machine learning microservice to get recommended water level and fertilizer amount
-    recommended_data = request.post('http://machine_learning/recommend', json=inventory_data).json()
+    recommended_data = request.post('http://127.0.0.1:5002/machine_learning/recommend', json=inventory_data).json()
     
     # Update Crop object in database
     crop = Crop.query.filter_by(name=crop_name, batch=batch).first()
