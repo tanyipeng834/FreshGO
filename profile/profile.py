@@ -35,6 +35,7 @@ class Profile(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(30), nullable=False)
     password = db.Column(db.String(255), nullable=False)
+    profile_type =db.Column(db.String(255,nullable=False))
 
     def __init__(self, email, password):
         self.email = email
@@ -94,7 +95,7 @@ class Farmer(Profile):
 
 
 
-#Creating customer account
+#Creating customer account and also for logging in
 @app.route("/create/customer/<string:email>", methods=['POST'])
 def create_customer(email):
     if(Profile.query.filter_by(email=email).first()):
@@ -129,6 +130,25 @@ def create_customer(email):
         }
     ), 201
 
+
+@app.route("/signIn/<string:user-type>", methods=['POST'])
+def signIn(user_type):
+    data = request.get_json()
+
+    if(Profile.query.filter_by(email=data['email']).first()):
+
+
+
+    else:
+
+        
+  
+    return jsonify(
+        {
+            "code": 201,
+            "data": profile.json()
+        }
+    ), 201
 #Creating staff account
 @app.route("/create/staff/<string:email>", methods=['POST'])
 def create_staff(email):

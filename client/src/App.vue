@@ -10,7 +10,7 @@
        <router-view />
   </div>-->
   <!--Option 2: add nav bar compnonet in index.js<router-view name="navbar"></router-view>-->
-  <CustomerNavBar />
+  <!-- <CustomerNavBar /> -->
   <router-view />
 
 </template>
