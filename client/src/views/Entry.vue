@@ -1,35 +1,25 @@
 <template>
-    <div id="entry">
-        <h1>New entry</h1>
-        <div class="form-inputs">
-            <label for="height">Height</label>
-            <input type="text" id="height" name="height" placeholder="in cm" />
-        </div>
-        <div class="form-inputs">
-            <label for="water">Water Usage</label>
-            <input type="text" id="water" name="water" placeholder="in litres" />
-        </div>
-        <div class="form-inputs">
-            <label for="fert">Fetilizer Usage</label>
-            <input type="text" id="fert" name="fert"  placeholder="in kg" />
-        </div>
-        <div class="form-inputs">
-            <label for="date"></label>
-            <input type="date" id="date" name="date"  placeholder="dd/mm/yy" />
-        </div>
-        <div>
-    <router-link
-      to="/MoreInfo"
-      custom
-      v-slot="{ navigate }"
-    >
-      <button
-        @click="navigate"
-        role="link"
-      >
-        Add new entry
-      </button>
-    </router-link>
+  <form>
+    <div class="form-group">
+      <label for="date">Input harvest date: </label>
+      <input type="date" id="date" name="date"  placeholder="dd/mm/yy" />
   </div>
-    </div>
+  <div class="form-group">
+    <label for="height">Height</label>
+    <input type="number" class="form-control" id="height" aria-describedby="emailHelp" placeholder="Height in Metres">
+  </div>
+  
+  <div class="form-group">
+    <label for="water">Water Usage</label>
+    <input type="number" class="form-control" id="water" placeholder="Amount in Litres">
+  </div>
+  <div class="form-group">
+    <label for="fertilizer">Fertilizer Usage</label>
+    <input type="number" class="form-control" id="fertilizer" placeholder="fertilizer in KG">
+  </div>
+    <button type="submit" class="btn btn-secondary" style="float:right">Cancel</button>
+    <button type="submit" class="btn btn-primary" style="float:right">Add Entry</button>
+    
+  </form>
 </template>
+
