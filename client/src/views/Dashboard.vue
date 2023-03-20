@@ -81,6 +81,7 @@
                 </div>
                 <div class="col-lg-6 col-5 my-auto text-end">
                   <div class="dropdown float-lg-end pe-4">
+                    <router-link to="/Entry">New Entry</router-link>
                     <a class="cursor-pointer" id="dropdownTable" data-bs-toggle="dropdown" aria-expanded="false">
                       <i class="fa fa-ellipsis-v text-secondary"></i>
                     </a>
