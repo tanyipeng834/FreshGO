@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `profile` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `email` varchar(30) NOT NULL,
   `password` char(255) NOT NULL,
-  `profile_type` char(255) NOT NULL
+  `profile_type` char(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ALTER TABLE profile AUTO_INCREMENT=10000;

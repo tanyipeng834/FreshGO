@@ -9,6 +9,8 @@ CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+# set dbURL=mysql+mysqlconnector://root@localhost:3306/inventory
+
 
 db = SQLAlchemy(app)
 
@@ -18,14 +20,14 @@ class Inventory(db.Model):
     name = db.Column(db.String(15), nullable=False, primary_key=True)
     shell_life = db.Column(db.String(15), nullable=False)
     price = db.Column(db.Float(precision=2), nullable=False)
-    quantity = db.Column(db.Integer,nullable=False)
+    quantity = db.Column(db.Integer, nullable=False)
     height = db.Column(db.Float(precision=2))
     date = db.Column(db.Date)
     batch = db.Column(db.Integer, primary_key=True)
     type = db.Column(db.String(15), nullable=False)
 
-
     # Add the init method into the class
+
     def json(self):
         return {"Crop Name": self.name, "Shell Life": self.shell_life, "Price": self.price, "Quantity": self.quantity, "Height": self.height}
 
@@ -219,15 +221,7 @@ def check_crop_quantity():
     # Get all the measurements for the crop with quantity less than 5
     Inventory.query()
 
-
-
-
     # Use an inner join to connect both the measurements and the input
-    
-        # Now we will create a crop object
+    # Now we will create a crop object
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
-<<<<<<< HEAD
-=======
-    print("GoodBye!")
->>>>>>> cc8d7a751a52f549652b9e770b276e8b49838172
