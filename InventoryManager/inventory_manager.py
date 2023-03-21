@@ -12,19 +12,24 @@ CORS(app)
 
 
 # This will be the code for the farmer
-inventory_URL = environ.get('order_URL') or "http://localhost:5000/inventory"
+inventory_URL = environ.get('inventory_URL') or "http://localhost:5000/inventory/" 
 
-@app.route("/harvested/crops/<string:name>")
-def place_order(name):
+@app.route("/test")
+def print():
+    print("Working")
+
+
+@app.route("/manager", methods=["POST"])
+def place_order():
     # Simple check of input format and data of the request are JSON
     if request.is_json:
         try:
-            batch = request.get_json()
-            print("\nReceived an batch order in JSON:", batch)
+            data = request.get_json()
+            print("\nReceived an batch order in JSON:", data)
 
             # do the actual work
             # 1. Send harvested batch
-            result = processBatch(batch)
+            result = processBatch(data)
             print('\n------------------------')
             print('\nresult: ', result)
             return jsonify(result), result["code"]
@@ -41,11 +46,13 @@ def place_order(name):
                 "message": "inventory.py internal error: " + ex_str
             }), 500
 
-def processBatch(batch):
+def processBatch(data):
     # Send the batch info to inventory
     # Invoke the inventory MS
     print('\n-----Invoking inventory microservice-----')
-    order_result = invoke_http(inventory_URL, method='POST', json=batch)
+    URL = inventory_URL
+    print(URL)
+    order_result = invoke_http(URL, method='POST', json=data)
     print('order_result:', order_result)
   
     # Check the order result;
@@ -69,3 +76,4 @@ def processBatch(batch):
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
+
