@@ -21,13 +21,6 @@ const routes = [
     component: Home,
   },
   {
-    path: "/about",
-    name: "About",
-    component: function () {
-      return import(/* webpackChunkName: "about" */ "../views/About.vue");
-    },
-  },
-  {
     path: "/login",
     name: "Login",
     component: function () {
@@ -35,16 +28,6 @@ const routes = [
     },
     meta: {
       title: "Login",
-    },
-  },
-  {
-    path: "/Signup",
-    name: "Signup",
-    component: function () {
-      return import(/* webpackChunkName: "about" */ "../views/Signup.vue");
-    },
-    meta: {
-      title: "Sign Up",
     },
   },
   {
