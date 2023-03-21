@@ -20,7 +20,7 @@ import bcrypt
 
 app = Flask(__name__)
 CORS(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/profile'
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/profile'
 # set dbURL=mysql+mysqlconnector://root@localhost:3306/profile
 # docker run -p 5000:5003 -e dbURL=mysql+mysqlconnector://is213@host.docker.internal:3306/profile mosengtim2021/profile:1.0
@@ -54,8 +54,8 @@ class Customer(Profile):
     phone = db.Column(db.Integer)
     address = db.Column(db.String(30))
 
-    def __init__(self, email, password):
-        super(Customer, self).__init__(email, password)
+    # def __init__(self, email, password):
+    #     super(Customer, self).__init__(email, password)
 
     def json(self):
         return {"ID": self.id, "Name": self.name, "Phone": self.phone, "Address": self.address}
@@ -89,14 +89,10 @@ class Farmer(Profile):
 
 
 
-
-
-
-
-
 #Creating customer account
-@app.route("/create/customer/<string:email>", methods=['POST'])
-def create_customer(email):
+@app.route("/create/customer/", methods=['POST'])
+def create_customer():
+    email=request.json.get('email')
     if(Profile.query.filter_by(email=email).first()):
         return jsonify(
             {
@@ -130,7 +126,7 @@ def create_customer(email):
     ), 201
 
 
-@app.route("/signIn/<string:user-type>", methods=['POST'])
+@app.route("/signIn/<string:user_type>", methods=['POST'])
 def signIn(user_type):
     data = request.get_json()
 
@@ -437,7 +433,7 @@ def find_farmer_profile(id):
 
 #Find staff profile
 @app.route("/profile/staff/<string:id>")
-def find__profile(id):
+def find_profile(id):
     profile = Staff.query.filter_by(id=id).first()
     if profile:
         return jsonify(
