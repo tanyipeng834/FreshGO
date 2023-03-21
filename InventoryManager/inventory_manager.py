@@ -12,12 +12,7 @@ CORS(app)
 
 
 # This will be the code for the farmer
-inventory_URL = environ.get('inventory_URL') or "http://localhost:5000/inventory/" 
-
-@app.route("/test")
-def print():
-    print("Working")
-
+inventory_URL = environ.get('inventory_URL') or "http://localhost:5000/inventory" 
 
 @app.route("/manager", methods=["POST"])
 def place_order():
@@ -45,6 +40,12 @@ def place_order():
                 "code": 500,
                 "message": "inventory.py internal error: " + ex_str
             }), 500
+        
+    # if reached here, not a JSON request.
+    return jsonify({
+        "code": 400,
+        "message": "Invalid JSON input: " + str(request.get_data())
+    }), 400
 
 def processBatch(data):
     # Send the batch info to inventory

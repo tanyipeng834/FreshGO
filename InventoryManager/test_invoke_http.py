@@ -7,13 +7,16 @@ print( type(results) )
 print()
 print( results )
 
-# # invoke book microservice to create a book
-# isbn = '9213213213213'
-# book_details = { "availability": 5, "price": 213.00, "title": "ESD" }
-# create_results = invoke_http(
-#         "http://localhost:5000/book/" + isbn, method='POST', 
-#         json=book_details
-#     )
-
-# print()
-# print( create_results )
+crop_details = {
+    "name": "XinGaga",
+    "batch": 11,
+    "shell_life": "2 Years",
+    "price": 2.00 ,
+    "height": 5.00,
+    "quantity": 3,
+    "date": "2020-03-02",
+    "type": "veget"
+}
+results = invoke_http("http://localhost:5000/inventory", method='POST', json=crop_details )
+print()
+print(results)
