@@ -7,6 +7,7 @@ from os import environ
 app = Flask(__name__)
 CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL')
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/inventory'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # set dbURL=mysql+mysqlconnector://root@localhost:3306/inventory
@@ -28,6 +29,13 @@ class Inventory(db.Model):
     type = db.Column(db.String(15), nullable=False)
 
     # Add the init method into the class
+    # def __init__(self, name, shell_life, price, quantity, height, type):
+    #     self.name = name
+    #     self.shell_life =shell_life
+    #     self.price = price
+    #     self.quantity = quantity
+    #     self.height = height
+    #     self.type = type
 
     def json(self):
         return {"CropName": self.name, "Shell Life": self.shell_life, "Price": self.price, "Quantity": self.quantity, "Height": self.height, "Type": self.type}
