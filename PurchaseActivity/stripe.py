@@ -1,71 +1,40 @@
-
-# This is a thorough example using Stripe's Checkout Session API for customers paying with a credit card.
-#     Using checkouts, Stripe handles the collection and processing of sensitive customer data,
-#     meaning that you don't have to worry about PCI compliance, and customers don't have to trust you to secure their data.
-# Relevant docs: https://stripe.com/docs/api/checkout/sessions
-# Video tutorial: https://www.youtube.com/watch?v=8y9RNFc71DA
-
-# Get API keys: https://dashboard.stripe.com/apikeys
-# Credit card acceptance/blocking rules: https://dashboard.stripe.com/settings/radar/rules
-
-import time
-# 3rd party
 import stripe
-# not required in server code
-import webbrowser
-import os
-from contextlib import suppress
+from flask import Flask, jsonify, request
 
+app = Flask(__name__)
 
-def load_dot_env():
-    # Helper funtion that parses and loads local .env file.
-    # STRIPE_SECRET_KEY=sk_...
-    
-    with suppress(FileNotFoundError):
-        with open('.env', encoding='utf-8') as dot_env_file:
-            for line in iter(lambda: dot_env_file.readline().strip(), ''):
-                if not line.startswith('#'):
-                    key, value = line.split('=', 1)
-                    os.environ[key] = value
+# Set the Stripe API key
+stripe.api_key = "sk_test_51MnzlnGVhDS4CcvmqQjbpgUhbOM5qlpbPAsw4onEl4fAhLWJlRsKlAhupYgvkAYgT1w8rYz0aApjZfkrxaClGS4H00wN4Oj5hW"
 
+@app.route('/process_payment', methods=['POST'])
+def process_payment():
+    # Get the total price from the request body
+    total_price = request.json['total_price']
 
-load_dot_env()
-stripe.api_key = os.environ['sk_test_51MnzlnGVhDS4CcvmqQjbpgUhbOM5qlpbPAsw4onEl4fAhLWJlRsKlAhupYgvkAYgT1w8rYz0aApjZfkrxaClGS4H00wN4Oj5hW']
+    # Create a Stripe payment intent
+    intent = stripe.PaymentIntent.create(
+        amount=total_price,
+        currency='SGD'
+    )
 
-base_url = 'http://[::1]:5000' if os.getenv('FLASK_ENV', 'development') == 'development' else 'website_url' # use localhost (ipv4 is http://127.0.0.1) in development
-# base_url = 'https://lenerva.com'  # use domain in production
+    return jsonify({"client_secret": intent.client_secret})
 
-# in the backend,
-#  handle success and cancel redirects
-#  ensure that the payment_status == 'paid' before processing the order
-s = stripe.checkout.Session.create(
-    success_url=f'{base_url}/order/order-id?good',  # success redirect does not imply paid!
-    cancel_url=f'{base_url}/order/order-id?cancel',
-    line_items=[
-        {
-            'price_data': {
-                'currency': 'SGD',  # can be any currency Stripe supports
-                'product_data': {
-                    'name': "Xin Hua",
-                },
-                # Lowest denomination is cents for SGD
-                #  If the currency was JPY, 2000 would be 2000 YEN not 20000 YEN
-                'unit_amount': 2000  # $20.00
-            },
-            "quantity": 1,
-        },
-    ],
-    mode='payment',
-    customer_email= None,    # default is None
-    expires_at=int(time.time()) + 3600  # 1 hour expiry
-)
-print(s)
-# use these cards to test if the checkout session is working according to your expectations
-# Get more cards from https://stripe.com/docs/testing#cards
-# print(4000000000000077 12/24 111 SUCCESS
-# 4000000000000036 12/24 111 ZIP FAIL         [related rule: block on postal fail]
-# 4000000000000101 12/24 111 CVC FAIL         [related rule: block on CVC fail]
-# 4000000000000002 12/24 111 CARD DECLINED
-# 4000000000000069 12/21 111 CARD EXPIRED
-# 4000000000000119 12/24 111 PROCESSING ERROR
-# )
+@app.route('/payment_complete', methods=['POST'])
+def payment_complete():
+    # Get the payment intent ID from the request body
+    intent_id = request.json['intent_id']
+
+    # Retrieve the payment intent from Stripe
+    intent = stripe.PaymentIntent.retrieve(intent_id)
+
+    # Check if the payment was successful
+    if intent.status == 'succeeded':
+        # Create a request in the Purchase Activity microservice with the product list and the total price
+        request.post('http://purchase_activity/create_request', json={
+            "total_price": intent.amount
+        })
+
+    return jsonify({"message": "Payment complete!"})
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000, debug=True)
