@@ -10,6 +10,10 @@
         </div>
         <button class="btn btn-outline-danger" id="remove-button">Remove</button>
       </div>
+      <!--Add delivery Fee based on distance-->
+      <div>
+        <p>Delivery Fee: $</p>
+      </div>
       <h3 id="total-price">Total: ${{ totalPrice }}</h3>
       <button class="btn btn-outline-success" id="checkout-button">Proceed to Checkout</button>
     </div>
