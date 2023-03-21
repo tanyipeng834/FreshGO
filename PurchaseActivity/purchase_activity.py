@@ -8,9 +8,10 @@ import os
 from datetime import datetime
 import json 
 from invokes import invoke_http
+import amqp_setup
+import pika
 
 # book_URL = "http://localhost:5000/book"
-# order_URL = "http://localhost:5001/order"
 # shipping_record_URL = "http://localhost:5002/shipping_record"
 # activity_log_URL = "http://localhost:5003/activity_log"
 # error_URL = "http://localhost:5004/error"
@@ -70,8 +71,6 @@ def create_request():
         print(create_request.json())
         db.session.commit()
         
-
-
     except Exception as e:
         return jsonify(
                     {
@@ -83,11 +82,16 @@ def create_request():
                     }
                 ), 500 
     print("Order Confirmed, Looking for Driver")
-    return jsonify(
+    print (jsonify(
         {  "code": 201,
         "data": create_request.json()
         }
-        )
+        ))
+    
+    message=[cart_item,customer_location]
+    amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="delivery.request", 
+            body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
+    print("\nDelivery Request published to RabbitMQ Exchange.\n")
    
 @app.route("/purchase_request")
 def get_all():
@@ -210,6 +214,11 @@ def delete_order(id):
             }
         ), 500
     
+
+
+
+
+
 if __name__ == "__main__":  # execute this program only if it is run as a script (not by 'import')
     print("This is flask for " + os.path.basename(__file__) + ": recording logs ...")
     app.run(host='0.0.0.0', port=5000, debug=True)
