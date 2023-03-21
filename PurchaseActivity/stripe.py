@@ -69,13 +69,3 @@ print(s)
 # 4000000000000069 12/21 111 CARD EXPIRED
 # 4000000000000119 12/24 111 PROCESSING ERROR
 # )
-
-input('Press Enter to go to checkout site...')
-session_id = s['id']        # use Session['id'] to retrieve session later
-webbrowser.open(s['url'])   # use Session['url'] to redirect customers
-input('Press Enter to see status and payment status of checkout session...')
-
-# Retrieve the session
-checkout_sess = stripe.checkout.Session.retrieve(session_id)
-print('status        :', checkout_sess['status'])           # open, complete, expired
-print('payment_status:', checkout_sess['payment_status'])   # paid, unpaid, no_payment_required
