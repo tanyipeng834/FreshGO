@@ -209,7 +209,7 @@
           type="button"
           class="login-button"
           id="btnlogin"
-          @click="signIn()"
+          @click="login"
           v-if="this.signUp == false"
         >
           LOGIN
@@ -217,7 +217,7 @@
         <button
           type="button"
           class="login-button"
-          @click="createNewAccount()"
+          @click="register"
           v-else
         >
           Signup
@@ -300,6 +300,43 @@ export default {
     },
   },
 };
+</script>
+
+<script setup>
+import { ref } from "vue";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "@firebase/auth";
+import { useRouter } from "vue-router"
+const email = ref("");
+const password = ref("");
+const router = useRouter()
+
+const register = () =>{
+  createUserWithEmailAndPassword(getAuth(), email.value, password.value)
+    .then((data)=>{
+      console.log("Successfully registered")
+      router.push('/MoreInfo')
+    })
+    .catch((error)=>{
+      console.log(error.code);
+      alert(error.message);
+    })
+};
+
+const login = () =>{
+  signInWithEmailAndPassword(getAuth(), email.value, password.value)
+    .then((data)=>{
+      console.log("Successfully Signed in")
+      alert("Successfully logged in")
+      router.push("/Dashboard")
+    })
+    .catch((error)=>{
+      console.log(error.code);
+      alert(error.message);
+    })
+};
+
+
+
 </script>
 
 <style scoped>
