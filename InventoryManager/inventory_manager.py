@@ -12,9 +12,9 @@ CORS(app)
 
 
 # This will be the code for the farmer
-inventory_URL = environ.get('inventory_URL') or "http://localhost:5000/inventory" 
+inventory_URL = "http://localhost:5000/inventory" 
 
-@app.route("/manager", methods=["POST"])
+@app.route("/manager", methods=['POST'])
 def place_order():
     # Simple check of input format and data of the request are JSON
     if request.is_json:
@@ -76,5 +76,5 @@ def processBatch(data):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5010, debug=True)
 
