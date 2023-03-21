@@ -1,3 +1,4 @@
+import os
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
@@ -6,8 +7,7 @@ from os import environ
 
 app = Flask(__name__)
 CORS(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL')
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/inventory'
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('inventory_URL') or "mysql+mysqlconnector://root@localhost:3306/inventory"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # set dbURL=mysql+mysqlconnector://root@localhost:3306/inventory
@@ -96,9 +96,10 @@ def get_all_crops():
 
         # This will allow the farmer to create a crop in the database
         data = request.get_json()
-        crop_name = data['name']
+        # crop_name = data['name']
+        batch_no = data['batch']
         # Check if there is a crop with a similar name in the database
-        if not (Inventory.query.filter_by(name=crop_name).first()):
+        if not (Inventory.query.filter_by(batch=batch_no).first()):
             # Create a new object based on the input
             crop = Inventory(**data)
             print(crop)
@@ -110,7 +111,7 @@ def get_all_crops():
                     {
                         "code": 500,
                         "data": {
-                            "Crop Name": crop_name
+                            "Crop Name": data['name']
                         },
                         "message": "An error occurred creating the Inventory."
                     }
@@ -127,7 +128,7 @@ def get_all_crops():
                 {
                     "code": 400,
                     "data": {
-                        "Crop Name": crop_name
+                        "Crop Name": data['name']
                     },
                     "message": "Crop Batch already exists."
                 }

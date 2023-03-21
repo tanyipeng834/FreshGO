@@ -1,9 +1,16 @@
+#from PurchaseActivity import amqp
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from os import environ
+import os
 import json
 import bcrypt
+import sys
+
+# setting path
+# sys.path.append('../PurchaseActivity')
+
 
 # Create customer account /create/customer/<string:email> POST
 # Create staff account /create/staff/<string:email> POST
@@ -20,7 +27,7 @@ import bcrypt
 
 app = Flask(__name__)
 CORS(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/profile'
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('inventory_URL') or "mysql+mysqlconnector://root@localhost:3306/profile"
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/profile'
 # set dbURL=mysql+mysqlconnector://root@localhost:3306/profile
 # docker run -p 5000:5003 -e dbURL=mysql+mysqlconnector://is213@host.docker.internal:3306/profile mosengtim2021/profile:1.0
@@ -29,6 +36,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 salty = bcrypt.gensalt()
+
+monitorBindingKey = '*.delivery'
 
 # Can change a bit
 
@@ -58,58 +67,46 @@ class Profile(db.Model):
         return (bcrypt.checkpw(passw.encode('utf-8'), self.password.encode('utf-8')))
 
 
+
+# def receiveRequest():
+#     amqp.check_setup()
+
+#     queue_name = "Delivery_Staff"
+
+#     # set up a consumer and start to wait for coming messages
+#     amqp.channel.basic_consume(
+#         queue=queue_name, on_message_callback=callback, auto_ack=True)
+#     amqp.channel.start_consuming()  # an implicit loop waiting to receive messages;
+#     # it doesn't exit by default. Use Ctrl+C in the command window to terminate it.
+
+
+# # required signature for the callback; no return
+# def callback(channel, method, properties, body):
+#     print("\nReceived an error by " + __file__)
+#     processError(body)
+#     print()  # print a new line feed
+
+
+# def processError(errorMsg):
+#     print("Printing the error message:")
+#     try:
+#         error = json.loads(errorMsg)
+#         print("--JSON:", error)
+#     except Exception as e:
+#         print("--NOT JSON:", e)
+#         print("--DATA:", errorMsg)
+#     print()
+
+
 # Creating customer account
 @app.route("/create/<string:user_type>/<string:email>", methods=['POST'])
 def create_account(email, user_type):
     # Find the profile with the matching particulars
 
-<<<<<<< HEAD
-    # def __init__(self, email, password):
-    #     super(Customer, self).__init__(email, password)
-
-    def json(self):
-        return {"ID": self.id, "Name": self.name, "Phone": self.phone, "Address": self.address}
-    
-class Staff(Profile):
-    __tablename__ = 'staff'
-    id = db.Column(db.Integer, db.ForeignKey('profile.id'), primary_key=True)
-    name = db.Column(db.String(30))
-    phone = db.Column(db.Integer)
-    
-    def __init__(self, email, password):
-        super(Staff, self).__init__(email, password)
-
-    def json(self):
-        return {"ID": self.id, "Name": self.name, "Phone": self.phone}
-
-class Farmer(Profile):
-    __tablename__ = 'farmer'
-    id = db.Column(db.Integer, db.ForeignKey('profile.id'), primary_key=True)
-    name = db.Column(db.String(30))
-    phone = db.Column(db.Integer)
-    address = db.Column(db.String(30))
-    
-    def __init__(self, email, password):
-        super(Farmer, self).__init__(email, password)
-
-    def json(self):
-        return {"ID": self.id, "Name": self.name, "Phone": self.phone, "Address": self.address}
-
-
-
-
-
-#Creating customer account
-@app.route("/create/customer/", methods=['POST'])
-def create_customer():
-    email=request.json.get('email')
-    if(Profile.query.filter_by(email=email).first()):
-=======
     user_profiles = Profile.query.filter(
         db.and_(Profile.email == email, Profile.profile_type == user_type))
     user_profile = user_profiles.first()
     if (user_profile):
->>>>>>> 911261d50d2a65a16d85d26d89baa503abefbc70
         return jsonify(
             {
                 "code": 400,
@@ -434,15 +431,10 @@ def find_farmer_profile(id):
         }
     ), 404
 
-<<<<<<< HEAD
-#Find staff profile
-@app.route("/profile/staff/<string:id>")
-=======
 # Find staff profile
 
 
 @ app.route("/profile/staff/<string:id>")
->>>>>>> 911261d50d2a65a16d85d26d89baa503abefbc70
 def find_profile(id):
     profile = Staff.query.filter_by(id=id).first()
     if profile:
@@ -501,7 +493,10 @@ def check_password(email):
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5003, debug=True)
-    print("Hello World")
+    print("\nThis is " + os.path.basename(__file__), end='')
+    print(": monitoring routing key '{}' in exchange '{}' ...".format(
+        monitorBindingKey, amqp.exchangename))
+    receiveRequest()
 
 
 # class Customer(Profile):

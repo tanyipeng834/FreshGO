@@ -34,8 +34,8 @@ queue_name = 'Delivery_Staff'
 channel.queue_declare(queue=queue_name, durable=True) 
     # 'durable' makes the queue survive broker restarts
 
-#bind Error queue
-channel.queue_bind(exchange=exchangename, queue=queue_name, routing_key='#') 
+#bind the delivery staff queue
+channel.queue_bind(exchange=exchangename, queue=queue_name, routing_key='*.delivery') 
     # bind the queue to the exchange via the key
     # any routing_key with two words and ending with '.error' will be matched
 
