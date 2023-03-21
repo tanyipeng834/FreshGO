@@ -1,9 +1,17 @@
+#from PurchaseActivity import amqp
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from os import environ
+import os
 import json
 import bcrypt
+
+import sys
+
+# setting path
+# sys.path.append('../PurchaseActivity')
+
 
 # Create customer account /create/customer/<string:email> POST
 # Create staff account /create/staff/<string:email> POST
@@ -29,6 +37,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 salty = bcrypt.gensalt()
+
+monitorBindingKey = '*.delivery'
 
 # Can change a bit
 
@@ -56,6 +66,36 @@ class Profile(db.Model):
 
     def verify_password(self, passw):
         return (bcrypt.checkpw(passw.encode('utf-8'), self.password.encode('utf-8')))
+
+
+# def receiveRequest():
+#     amqp.check_setup()
+
+#     queue_name = "Delivery_Staff"
+
+#     # set up a consumer and start to wait for coming messages
+#     amqp.channel.basic_consume(
+#         queue=queue_name, on_message_callback=callback, auto_ack=True)
+#     amqp.channel.start_consuming()  # an implicit loop waiting to receive messages;
+#     # it doesn't exit by default. Use Ctrl+C in the command window to terminate it.
+
+
+# # required signature for the callback; no return
+# def callback(channel, method, properties, body):
+#     print("\nReceived an error by " + __file__)
+#     processError(body)
+#     print()  # print a new line feed
+
+
+# def processError(errorMsg):
+#     print("Printing the error message:")
+#     try:
+#         error = json.loads(errorMsg)
+#         print("--JSON:", error)
+#     except Exception as e:
+#         print("--NOT JSON:", e)
+#         print("--DATA:", errorMsg)
+#     print()
 
 
 # Creating customer account
@@ -453,7 +493,10 @@ def check_password(email):
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5003, debug=True)
-    print("Hello World")
+    print("\nThis is " + os.path.basename(__file__), end='')
+    print(": monitoring routing key '{}' in exchange '{}' ...".format(
+        monitorBindingKey, amqp.exchangename))
+    receiveRequest()
 
 
 # class Customer(Profile):
