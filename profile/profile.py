@@ -6,7 +6,6 @@ from os import environ
 import os
 import json
 import bcrypt
-
 import sys
 
 # setting path
@@ -66,6 +65,7 @@ class Profile(db.Model):
 
     def verify_password(self, passw):
         return (bcrypt.checkpw(passw.encode('utf-8'), self.password.encode('utf-8')))
+
 
 
 # def receiveRequest():

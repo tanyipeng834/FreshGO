@@ -2,7 +2,8 @@ from invokes import invoke_http
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
-import os, sys
+import os
+import sys
 from os import environ
 import json
 
@@ -14,6 +15,26 @@ CORS(app)
 # This will be the code for the farmer
 inventory_URL = "http://localhost:5000/inventory" 
 
+db = SQLAlchemy(app)
+class Growth(db.Model):
+    __tablename__ = 'Growth'
+    id = db.Column(db.Integer, primary_key=True)
+    farmer = db.Column(db.String(30), nullable=False)
+    crop = db.Column(db.String(30), nullable=False)
+    quantity = db.Column(db.Integer, nullable=False)
+    date_grown = db.Column(db.Date, nullable=False)
+    date_harvested = db.Column(db.Date, nullable=False)
+
+    def __init__(self, farmer, crop, quantity, date_grown, date_harvested):
+        self.farmer = farmer
+        self.crop = crop
+        self.quantity = quantity
+        self.date_grown = date_grown
+        self.date_harvested = date_harvested
+
+    def json(self):
+        return {"id": self.id, "crop": self.crop, "quantity": self.quantity, "date_grown": self.date_grown, "date_harvested": self.date_harvested}
+    
 @app.route("/manager", methods=['POST'])
 def place_order():
     # Simple check of input format and data of the request are JSON
