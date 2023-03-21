@@ -32,7 +32,7 @@ def load_dot_env():
 load_dot_env()
 stripe.api_key = os.environ['sk_test_51MnzlnGVhDS4CcvmqQjbpgUhbOM5qlpbPAsw4onEl4fAhLWJlRsKlAhupYgvkAYgT1w8rYz0aApjZfkrxaClGS4H00wN4Oj5hW']
 
-base_url = 'http://[::1]:5000'      # use localhost (ipv4 is http://127.0.0.1) in development
+base_url = 'http://[::1]:5000' if os.getenv('FLASK_ENV', 'development') == 'development' else 'website_url' # use localhost (ipv4 is http://127.0.0.1) in development
 # base_url = 'https://lenerva.com'  # use domain in production
 
 # in the backend,
