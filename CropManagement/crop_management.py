@@ -15,7 +15,6 @@ db = SQLAlchemy(app)
 # Define Crop class to map to the crops table
 class Crop(db.Model):
     name = db.Column(db.String(50), primary_key=True)
-    batch = db.Column(db.String(50), primary_key=True)
     current_water_used = db.Column(db.Float, nullable=False)
     recommended_water_level = db.Column(db.Float, nullable=False)
     recommended_fertilizer_amount = db.Column(db.Float, nullable=False)
@@ -25,16 +24,15 @@ class Crop(db.Model):
 def manage_crop():
     # Extract input data from POST request
     crop_name = request.json.get('name')
-    batch = request.json.get('batch')
     current_water_used = request.json.get('current_water_used')
     
     # Query inventory microservice for crop data
-    inventory_data = request.get('http://127.0.0.1:5000/inventory/measurements/' + crop_name + '/' + batch).json()
+    inventory_data = request.get('http://127.0.0.1:5000/inventory/measurements/' + crop_name).json()
     # Call machine learning microservice to get recommended water level and fertilizer amount
     recommended_data = request.post('http://127.0.0.1:5002/machine_learning/recommend', json=inventory_data).json()
     
     # Update Crop object in database
-    crop = Crop.query.filter_by(name=crop_name, batch=batch).first()
+    crop = Crop.query.filter_by(name=crop_name).first()
     crop.current_water_used = current_water_used
     crop.recommended_water_level = recommended_data['recommended_water_level']
     crop.recommended_fertilizer_amount = recommended_data['recommended_fertilizer_amount']
