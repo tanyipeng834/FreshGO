@@ -73,6 +73,88 @@
             v-model="email"
           />
         </div>
+        <div class="input-group mb-3" v-if="this.signUp">
+          <div class="input-group-prepend">
+            <span class="input-group-text">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                style="fill: rgba(0, 0, 0, 1); transform: ; msfilter: "
+              >
+                <path
+                  d="M12 2c-4.963 0-9 4.038-9 9v8h.051c.245 1.691 1.69 3 3.449 3 1.174 0 2.074-.417 2.672-1.174a3.99 3.99 0 0 0 5.668-.014c.601.762 1.504 1.188 2.66 1.188 1.93 0 3.5-1.57 3.5-3.5V11c0-4.962-4.037-9-9-9zm7 16.5c0 .827-.673 1.5-1.5 1.5-.449 0-1.5 0-1.5-2v-1h-2v1c0 1.103-.897 2-2 2s-2-.897-2-2v-1H8v1c0 1.845-.774 2-1.5 2-.827 0-1.5-.673-1.5-1.5V11c0-3.86 3.141-7 7-7s7 3.14 7 7v7.5z"
+                ></path>
+                <circle cx="9" cy="10" r="2"></circle>
+                <circle cx="15" cy="10" r="2"></circle>
+              </svg>
+            </span>
+          </div>
+          <!-- Check if the confirm password field is the same as the password field -->
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Name"
+            name="name"
+            v-model="this.name"
+          />
+        </div>
+        <div class="input-group mb-3" v-if="this.signUp">
+          <div class="input-group-prepend">
+            <span class="input-group-text">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                style="fill: rgba(0, 0, 0, 1); transform: ; msfilter: "
+              >
+                <path
+                  d="M20 10.999h2C22 5.869 18.127 2 12.99 2v2C17.052 4 20 6.943 20 10.999z"
+                ></path>
+                <path
+                  d="M13 8c2.103 0 3 .897 3 3h2c0-3.225-1.775-5-5-5v2zm3.422 5.443a1.001 1.001 0 0 0-1.391.043l-2.393 2.461c-.576-.11-1.734-.471-2.926-1.66-1.192-1.193-1.553-2.354-1.66-2.926l2.459-2.394a1 1 0 0 0 .043-1.391L6.859 3.513a1 1 0 0 0-1.391-.087l-2.17 1.861a1 1 0 0 0-.29.649c-.015.25-.301 6.172 4.291 10.766C11.305 20.707 16.323 21 17.705 21c.202 0 .326-.006.359-.008a.992.992 0 0 0 .648-.291l1.86-2.171a1 1 0 0 0-.086-1.391l-4.064-3.696z"
+                ></path>
+              </svg>
+            </span>
+          </div>
+          <!-- Check if the confirm password field is the same as the password field -->
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Phone"
+            name="Phone"
+            v-model="this.phone"
+          />
+        </div>
+        <div class="input-group mb-3" v-if="this.signUp">
+          <div class="input-group-prepend">
+            <span class="input-group-text">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                style="fill: rgba(0, 0, 0, 1); transform: ; msfilter: "
+              >
+                <path
+                  d="m20.772 10.156-1.368-4.105A2.995 2.995 0 0 0 16.559 4H7.441a2.995 2.995 0 0 0-2.845 2.051l-1.368 4.105A2.003 2.003 0 0 0 2 12v5c0 .753.423 1.402 1.039 1.743-.013.066-.039.126-.039.195V21a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2h12v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2.062c0-.069-.026-.13-.039-.195A1.993 1.993 0 0 0 22 17v-5c0-.829-.508-1.541-1.228-1.844zM4 17v-5h16l.002 5H4zM7.441 6h9.117c.431 0 .813.274.949.684L18.613 10H5.387l1.105-3.316A1 1 0 0 1 7.441 6z"
+                ></path>
+                <circle cx="6.5" cy="14.5" r="1.5"></circle>
+                <circle cx="17.5" cy="14.5" r="1.5"></circle>
+              </svg>
+            </span>
+          </div>
+          <!-- Check if the confirm password field is the same as the password field -->
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Address"
+            name="Address"
+            v-model="this.address"
+          />
+        </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text">
@@ -126,8 +208,8 @@
         <button
           type="button"
           class="login-button"
-          id = "btnlogin"
-          @click="login()"
+          id="btnlogin"
+          @click="signIn()"
           v-if="this.signUp == false"
         >
           LOGIN
@@ -157,6 +239,7 @@
 </template>
 <script>
 import axios from "axios";
+import router from "@/router";
 export default {
   name: "LoginForm",
   data() {
@@ -165,6 +248,9 @@ export default {
       password: "",
       signUp: false,
       userType: "customer",
+      name: "",
+      address: "",
+      phone: "",
     };
   },
   methods: {
@@ -175,10 +261,18 @@ export default {
     // This is the code for users to sign in to the
     signIn() {
       axios
-        .post(`http://127.0.0.1:5003/create/${this.userType}/${this.email}`, {
-          key: value,
+        .post(`http://127.0.0.1:5003/signIn/${this.userType}`, {
+          email: this.email,
+          password: this.password,
         })
         .then((response) => {
+          console.log(response);
+          if (response.data.code == 200) {
+            alert("Account Credentials are Correct");
+            // Now we will start going to the correct route
+            router.push("/customer");
+            localStorage.set("userId", response.data.userId);
+          }
           // console.log(response.data);
         })
         .catch((error) => {
@@ -188,8 +282,12 @@ export default {
     createNewAccount() {
       axios
         .post(`http://127.0.0.1:5003/create/${this.userType}/${this.email}`, {
+          email: this.email,
           password: this.password,
           profile_type: this.userType,
+          name: this.name,
+          phone: this.phone,
+          address: this.address,
         })
         .then((response) => {
           console.log(response.data);

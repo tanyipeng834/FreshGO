@@ -8,6 +8,9 @@ app = Flask(__name__)
 CORS(app)
 
 
+# This will be the code for the farmer
+
+
 @app.route()
 
 
