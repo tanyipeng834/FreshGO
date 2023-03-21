@@ -2,26 +2,36 @@
   <div id="page-wrap">
     <div class="grid-wrap">
       <div
-        v-for="product in this.products"
+        v-for="product in products"
         class="product-item"
-        v-bind:key="product.CropName"
+        :key="product.CropName"
       >
-        <img v-bind:src="product.imageURL" />
-        <!--<img v-if="product.type == vegetable" alt="Vegetables" src="../../assets/caixinhua.jpg">-->
+        <img src="../../assets/caixinhua.jpg" />
         <h3 class="product-name">{{ product.CropName }}</h3>
         <p class="product-price">${{ product.Price }}</p>
-        <router-link v-bind:to="'/products/' + product.CropName">
-          <button class="btn btn-outline-success">View Details</button>
-        </router-link>
+        <p class="product-price">{{ product.Type }}</p>
+        <div class="input-group mb-3">
+          <span class="input-group-text">Quantity</span>
+          <input
+            v-model="product.quantity"
+            type="number"
+            class="form-control"
+            aria-label="Quantity"
+          />
+        </div>
       </div>
     </div>
+    <button
+      class="btn btn-outline-success w-25 text-align-right"
+      @click="purchaseProducts"
+    >
+      Purchase
+    </button>
   </div>
 </template>
 
 <script>
-import { createDOMCompilerError } from "@vue/compiler-dom";
 import axios from "axios";
-import { products } from "../../fakeProductsData.js";
 
 export default {
   name: "ProductsPage",
@@ -34,12 +44,27 @@ export default {
     axios
       .get("http://127.0.0.1:5000/inventory")
       .then((response) => {
-        this.products = response.data.data.inventory;
-        console.log(this.products);
+        this.products = response.data.data.inventory.map((product) => ({
+          ...product,
+          quantity: 0,
+        }));
       })
       .catch((error) => {
         console.log(error.message);
       });
+  },
+  methods: {
+    purchaseProducts() {
+      const productsToPurchase = this.products
+        .filter((product) => product.quantity > 0)
+        .map(({ CropName, Price, quantity }) => ({
+          CropName,
+          Price,
+          quantity,
+        }));
+
+      console.log(productsToPurchase);
+    },
   },
 };
 </script>

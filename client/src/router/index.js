@@ -1,163 +1,161 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from "vue-router";
 // import every page you have here & add the routes
 //Before Login UI
 //Customer UI
-import CartPage from '../views/CustomerUI/CartPage.vue'
-import ProductDetailsPage from '../views/CustomerUI/ProductDetailsPage.vue'
-import ProductsPage from '../views/CustomerUI/ProductsPage.vue'
-import PaymentPage from '../views/CustomerUI/PaymentPage.vue'
+import CartPage from "../views/CustomerUI/CartPage.vue";
+import ProductDetailsPage from "../views/CustomerUI/ProductDetailsPage.vue";
+import ProductsPage from "../views/CustomerUI/ProductsPage.vue";
+import PaymentPage from "../views/CustomerUI/PaymentPage.vue";
 //Delivery Staff UI
-import DeliveryRequests from '../views/DeliveryStaffUI/DeliveryRequests'
-import DeliveryRequestDetails from '../views/DeliveryStaffUI/DeliveryRequestDetails'
+import DeliveryRequests from "../views/DeliveryStaffUI/DeliveryRequests";
+import DeliveryRequestDetails from "../views/DeliveryStaffUI/DeliveryRequestDetails";
 //Unrelated to any UIs
-import Home from '../views/Home.vue'
-import HomeView from '../views/HomeView.vue'
-import NotFoundPage from '../views/NotFoundPage.vue'
-
+import Home from "../views/Home.vue";
+import HomeView from "../views/HomeView.vue";
+import NotFoundPage from "../views/NotFoundPage.vue";
 
 const routes = [
   {
-    path: '/home',
-    name: 'Home',
-    component: Home
+    path: "/home",
+    name: "Home",
+    component: Home,
   },
   {
-    path: '/about',
-    name: 'About',
+    path: "/about",
+    name: "About",
     component: function () {
-      return import(/* webpackChunkName: "about" */ '../views/About.vue')
-    }
+      return import(/* webpackChunkName: "about" */ "../views/About.vue");
+    },
   },
   {
-    path: '/login',
-    name: 'Login',
+    path: "/login",
+    name: "Login",
     component: function () {
-      return import(/* webpackChunkName: "about" */ '../views/Login.vue')
+      return import(/* webpackChunkName: "about" */ "../views/Login.vue");
     },
     meta: {
-      title: 'Login'
-    }
+      title: "Login",
+    },
   },
   {
-    path: '/Signup',
-    name: 'Signup',
+    path: "/Signup",
+    name: "Signup",
     component: function () {
-      return import(/* webpackChunkName: "about" */ '../views/Signup.vue')
+      return import(/* webpackChunkName: "about" */ "../views/Signup.vue");
     },
     meta: {
-      title: 'Sign Up'
-    }
+      title: "Sign Up",
+    },
   },
   {
-    path: '/MoreInfo',
-    name: 'MoreInfo',
+    path: "/MoreInfo",
+    name: "MoreInfo",
     component: function () {
-      return import(/* webpackChunkName: "about" */ '../views/MoreInfo.vue')
+      return import(/* webpackChunkName: "about" */ "../views/MoreInfo.vue");
     },
     meta: {
-      title: 'MoreInfo'
-    }
+      title: "MoreInfo",
+    },
   },
   {
-    path: '/home',
-    name: 'HomeView',
+    path: "/home",
+    name: "HomeView",
     component: HomeView,
   },
   {
-    path: '/dashboard',
-    name: 'dashboard',
+    path: "/dashboard",
+    name: "dashboard",
     component: function () {
-      return import(/* webpackChunkName: "about" */ '../views/Dashboard.vue')
+      return import(/* webpackChunkName: "about" */ "../views/Dashboard.vue");
     },
     meta: {
-      title: 'Dashboard'
-    }
+      title: "Dashboard",
+    },
   },
   {
-    path: '/Entry',
-    name: 'Entry',
+    path: "/Entry",
+    name: "Entry",
     component: function () {
-      return import(/* webpackChunkName: "about" */ '../views/Entry.vue')
+      return import(/* webpackChunkName: "about" */ "../views/Entry.vue");
     },
     meta: {
-      title: 'Entry'
-    }
+      title: "Entry",
+    },
   },
   // Customer UI
   {
     // home page
-    path: '/',
-    redirect: '/products',
+    path: "/customer",
+    redirect: "/customer/products",
   },
   {
-    path: '/products',
-    name: 'Products',
+    path: "/customer/products",
+    name: "Products",
     component: ProductsPage,
     meta: {
-      title: 'Products'
-    }
+      title: "Products",
+    },
   },
   {
-    path: '/products/:id',
+    path: "/products/:id",
     // :id is a URL parameter, use it to choose the data that you want to display
-    name: 'ProductDetails',
+    name: "ProductDetails",
     component: ProductDetailsPage,
     meta: {
-      title: 'Product Details'
-    }
+      title: "Product Details",
+    },
   },
   {
-    path: '/cart',
-    name: 'Cart',
+    path: "/cart",
+    name: "Cart",
     component: CartPage,
     meta: {
-      title: 'Shopping Cart'
-    }
+      title: "Shopping Cart",
+    },
   },
   {
-    path: '/cart/payment',
-    name: 'Payment',
+    path: "/cart/payment",
+    name: "Payment",
     component: PaymentPage,
     meta: {
-      title: 'Payment'
-    }
+      title: "Payment",
+    },
   },
   // Delivery Staff UI
   {
-    path: '/delivery',
-    name: 'DeliveryRequests',
+    path: "/delivery",
+    name: "DeliveryRequests",
     component: DeliveryRequests,
     meta: {
-      title: 'Delivery Requests'
-    }
+      title: "Delivery Requests",
+    },
   },
   {
-    path: '/delivery/:id',
-    name: 'DeliveryRequestDetails',
+    path: "/delivery/:id",
+    name: "DeliveryRequestDetails",
     component: DeliveryRequestDetails,
     meta: {
-      title: 'Delivery Request Details'
-    }
+      title: "Delivery Request Details",
+    },
   },
   {
     //keep it last, if there is no link found
-    path: '/:pathMatch(.*)*',
+    path: "/:pathMatch(.*)*",
     component: NotFoundPage,
     meta: {
-      title: '404 Page Not Found'
-    }
-  }
-]
+      title: "404 Page Not Found",
+    },
+  },
+];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
-})
+  routes,
+});
 
 //for dynamically changing page title
 router.beforeEach((to, from) => {
-  document.title = to.meta?.title ?? 'Default Title'
-})
+  document.title = to.meta?.title ?? "Default Title";
+});
 
-export default router
-
+export default router;

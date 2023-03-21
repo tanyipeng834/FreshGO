@@ -97,6 +97,7 @@
             class="form-control"
             placeholder="Name"
             name="name"
+            v-model="this.name"
           />
         </div>
         <div class="input-group mb-3" v-if="this.signUp">
@@ -124,6 +125,7 @@
             class="form-control"
             placeholder="Phone"
             name="Phone"
+            v-model="this.phone"
           />
         </div>
         <div class="input-group mb-3" v-if="this.signUp">
@@ -150,6 +152,7 @@
             class="form-control"
             placeholder="Address"
             name="Address"
+            v-model="this.address"
           />
         </div>
         <div class="input-group mb-3">
@@ -205,8 +208,8 @@
         <button
           type="button"
           class="login-button"
-          id = "btnlogin"
-          @click="login()"
+          id="btnlogin"
+          @click="signIn()"
           v-if="this.signUp == false"
         >
           LOGIN
@@ -236,6 +239,7 @@
 </template>
 <script>
 import axios from "axios";
+import router from "@/router";
 export default {
   name: "LoginForm",
   data() {
@@ -244,6 +248,9 @@ export default {
       password: "",
       signUp: false,
       userType: "customer",
+      name: "",
+      address: "",
+      phone: "",
     };
   },
   methods: {
@@ -259,8 +266,12 @@ export default {
           password: this.password,
         })
         .then((response) => {
+          console.log(response);
           if (response.data.code == 200) {
-            console.log("user log in ");
+            alert("Account Credentials are Correct");
+            // Now we will start going to the correct route
+            router.push("/customer");
+            localStorage.set("userId", response.data.userId);
           }
           // console.log(response.data);
         })
@@ -274,6 +285,9 @@ export default {
           email: this.email,
           password: this.password,
           profile_type: this.userType,
+          name: this.name,
+          phone: this.phone,
+          address: this.address,
         })
         .then((response) => {
           console.log(response.data);

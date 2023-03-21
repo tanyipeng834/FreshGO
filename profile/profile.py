@@ -30,6 +30,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 salty = bcrypt.gensalt()
 
+# Can change a bit
+
 
 class Profile(db.Model):
     __tablename__ = 'profile'
@@ -37,9 +39,15 @@ class Profile(db.Model):
     email = db.Column(db.String(30), nullable=False)
     password = db.Column(db.String(255), nullable=False)
     profile_type = db.Column(db.String(255), nullable=False)
+    name = db.Column(db.String(30))
+    phone = db.Column(db.Integer)
+    address = db.Column(db.String(30))
 
-    def __init__(self, email, password, profile_type):
+    def __init__(self, email, password, profile_type, name, phone, address):
         self.email = email
+        self.name = name
+        self.phone = phone
+        self.address = address
         self.password = bcrypt.hashpw(password.encode('utf-8'), salty)
         self.profile_type = profile_type
 
@@ -50,54 +58,13 @@ class Profile(db.Model):
         return (bcrypt.checkpw(passw.encode('utf-8'), self.password.encode('utf-8')))
 
 
-class Customer(Profile):
-    __tablename__ = 'customer'
-    id = db.Column(db.Integer, db.ForeignKey('profile.id'), primary_key=True)
-    name = db.Column(db.String(30))
-    phone = db.Column(db.Integer)
-    address = db.Column(db.String(30))
-
-    def __init__(self, email, password):
-        super(Customer, self).__init__(email, password)
-
-    def json(self):
-        return {"ID": self.id, "Name": self.name, "Phone": self.phone, "Address": self.address}
-
-
-class Staff(Profile):
-    __tablename__ = 'staff'
-    id = db.Column(db.Integer, db.ForeignKey('profile.id'), primary_key=True)
-    name = db.Column(db.String(30))
-    phone = db.Column(db.Integer)
-
-    def __init__(self, email, password):
-        super(Staff, self).__init__(email, password)
-
-    def json(self):
-        return {"ID": self.id, "Name": self.name, "Phone": self.phone}
-
-
-class Farmer(Profile):
-    __tablename__ = 'farmer'
-    id = db.Column(db.Integer, db.ForeignKey('profile.id'), primary_key=True)
-    name = db.Column(db.String(30))
-    phone = db.Column(db.Integer)
-    address = db.Column(db.String(30))
-
-    def __init__(self, email, password):
-        super(Farmer, self).__init__(email, password)
-
-    def json(self):
-        return {"ID": self.id, "Name": self.name, "Phone": self.phone, "Address": self.address}
-
-
 # Creating customer account
 @app.route("/create/<string:user_type>/<string:email>", methods=['POST'])
 def create_account(email, user_type):
     # Find the profile with the matching particulars
 
     user_profiles = Profile.query.filter(
-        db.and_(Profile.email == email, Profile.profile_type==user_type))
+        db.and_(Profile.email == email, Profile.profile_type == user_type))
     user_profile = user_profiles.first()
     if (user_profile):
         return jsonify(
@@ -112,8 +79,8 @@ def create_account(email, user_type):
     data = request.get_json()
     print(data)
     profile = Profile(**data)
-    # Create another subtype item
-    
+
+    # Create another subtype
     try:
         db.session.add(profile)
         db.session.commit()
@@ -140,14 +107,15 @@ def signIn(user_type):
     data = request.get_json()
 
     # If there is such an user with such then we will go and check the password
-    user_profile = Profile.query.filter_by(db.and_(
-        Profile.email == data['email'], Profile.profile_type == user_type).first())
+    user_profile = Profile.query.filter(db.and_(
+        Profile.email == data['email'], Profile.profile_type == user_type)).first()
     if user_profile:
         if (user_profile.verify_password(data['password'])):
             return jsonify(
 
                 {
                     "code": "200",
+                    "userId": user_profile.id,
                     "message": "User provided Valid Login details"
                 }
             )
@@ -167,7 +135,7 @@ def signIn(user_type):
 
 
 # Creating staff account
-@app.route("/create/staff/<string:email>", methods=['POST'])
+@ app.route("/create/staff/<string:email>", methods=['POST'])
 def create_staff(email):
     if (Profile.query.filter_by(email=email).first()):
         return jsonify(
@@ -204,7 +172,7 @@ def create_staff(email):
 # Creating farmer account
 
 
-@app.route("/create/farmer/<string:email>", methods=['POST'])
+@ app.route("/create/farmer/<string:email>", methods=['POST'])
 def create_farmer(email):
     if (Profile.query.filter_by(email=email).first()):
         return jsonify(
@@ -240,7 +208,7 @@ def create_farmer(email):
 
 
 # For getting the ID of every account
-@app.route("/profile")
+@ app.route("/profile")
 def get_all_id():
     id_list = Profile.query.with_entities(Profile.id).all()
     if (len(id_list)):
@@ -261,7 +229,7 @@ def get_all_id():
 
 
 # For adding customer details
-@app.route("/update/customer/<string:id>", methods=['PUT'])
+@ app.route("/update/customer/<string:id>", methods=['PUT'])
 def update_customer_profile(id):
     if (Customer.query.filter_by(id=id).first()):
         customer_details = Customer.query.filter_by(id=id).first()
@@ -303,7 +271,7 @@ def update_customer_profile(id):
 # For adding staff details
 
 
-@app.route("/update/staff/<string:id>", methods=['PUT'])
+@ app.route("/update/staff/<string:id>", methods=['PUT'])
 def update_staff_profile(id):
     if (Staff.query.filter_by(id=id).first()):
         customer_details = Staff.query.filter_by(id=id).first()
@@ -345,7 +313,7 @@ def update_staff_profile(id):
 # For adding farmer details
 
 
-@app.route("/update/farmer/<string:id>", methods=['PUT'])
+@ app.route("/update/farmer/<string:id>", methods=['PUT'])
 def update_farmer_profile(id):
     if (Farmer.query.filter_by(id=id).first()):
         customer_details = Farmer.query.filter_by(id=id).first()
@@ -386,7 +354,7 @@ def update_farmer_profile(id):
 
 
 # Find customer profile
-@app.route("/profile/customer/<string:id>")
+@ app.route("/profile/customer/<string:id>")
 def find_customer_profile(id):
     profile = Customer.query.filter_by(id=id).first()
     if profile:
@@ -406,7 +374,7 @@ def find_customer_profile(id):
 # Find farmer profile
 
 
-@app.route("/profile/farmer/<string:id>")
+@ app.route("/profile/farmer/<string:id>")
 def find_farmer_profile(id):
     profile = Farmer.query.filter_by(id=id).first()
     if profile:
@@ -426,7 +394,7 @@ def find_farmer_profile(id):
 # Find staff profile
 
 
-@app.route("/profile/staff/<string:id>")
+@ app.route("/profile/staff/<string:id>")
 def find_profile(id):
     profile = Staff.query.filter_by(id=id).first()
     if profile:
@@ -445,7 +413,7 @@ def find_profile(id):
 
 
 # Give profile information
-@app.route("/profile/staff/<string:id>")
+@ app.route("/profile/staff/<string:id>")
 def find__profile(id):
     profile = Staff.query.filter_by(id=id).first()
     if profile:
@@ -464,7 +432,7 @@ def find__profile(id):
 
 
 # Check for password
-@app.route("/profile/<string:email>", methods=['GET'])
+@ app.route("/profile/<string:email>", methods=['GET'])
 def check_password(email):
     profile = Profile.query.filter_by(email=email).first()
     data = request.get_json()
