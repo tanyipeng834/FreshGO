@@ -70,6 +70,7 @@
             class="form-control"
             placeholder="Email"
             name="email"
+            id='email'
             v-model="email"
           />
         </div>
@@ -176,6 +177,7 @@
             class="form-control"
             placeholder="Password"
             name="password"
+            id = 'password'
             v-model="password"
           />
         </div>
@@ -235,6 +237,13 @@
 <script>
 import axios from "axios";
 import router from "@/router";
+import { ref } from "vue";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "@firebase/auth";
+import { useRouter } from "vue-router";
 export default {
   name: "LoginForm",
   data() {
@@ -255,6 +264,16 @@ export default {
     },
     // This is the code for users to sign in to the
     login() {
+      signInWithEmailAndPassword(getAuth(), this.email, this.password)
+    .then((data) => {
+      console.log("Successfully Signed in");
+      alert("Successfully logged in");
+      router.push("/Dashboard");
+    })
+    .catch((error) => {
+      console.log(error.code);
+      alert(error.message);
+    });
       axios
         .post(`http://127.0.0.1:5003/signIn/${this.userType}`, {
           email: this.email,
@@ -276,6 +295,16 @@ export default {
         });
     },
     register() {
+    createUserWithEmailAndPassword(getAuth(), this.email, this.password)
+    .then((data) => {
+      console.log("Successfully registered");
+      this.signUp=!this.signUp;
+      this.password=''
+    })
+    .catch((error) => {
+      console.log(error.code);
+      alert(error.message);
+    });
       axios
         .post(`http://127.0.0.1:5003/create/${this.userType}/${this.email}`, {
           email: this.email,
