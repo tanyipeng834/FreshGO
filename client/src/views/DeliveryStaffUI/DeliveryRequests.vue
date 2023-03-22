@@ -6,7 +6,6 @@
         <th scope="col">Order ID</th>
         <th scope="col">Customer ID</th>
         <th scope="col">Delivery Address</th>
-        <th scope="col">More Details</th>
         <th scope="col">Status</th>
       </tr>
     </thead>
@@ -22,12 +21,10 @@
         <td>{{ deliveryRequest.deliveryLocation }}</td>
         <td>
           <router-link v-bind:to="'/delivery/' + deliveryRequest.orderId">
-            <button class="btn btn-success">View Details</button>
+            <button class="btn btn-success">Accept</button>
           </router-link>
         </td>
-        <td>
-          <button class="btn btn-outline-success">Accept</button>
-        </td>
+       
       </tr>
     </tbody>
   </table>
@@ -41,6 +38,11 @@ export default {
       deliveryRequests,
     };
   },
+  mounted(){
+    
+
+
+  }
 };
 </script>
 
