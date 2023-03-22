@@ -32,7 +32,6 @@
 
 <script>
 import axios from "axios";
-
 export default {
   name: "ProductsPage",
   data() {
@@ -63,7 +62,13 @@ export default {
           quantity,
         }));
 
+      localStorage.setItem(
+        "cropsPurchased",
+        JSON.stringify(productsToPurchase)
+      );
       console.log(productsToPurchase);
+      const userId = this.$route.params.id;
+      this.$router.push(`/customers/${userId}/payment`);
     },
   },
 };
