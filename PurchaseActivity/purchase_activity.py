@@ -8,7 +8,7 @@ import os
 from datetime import datetime
 import json 
 from invokes import invoke_http
-import amqp_setup
+import profile.amqp_setup as amqp_setup
 import pika
 
 # book_URL = "http://localhost:5000/book"
@@ -65,6 +65,7 @@ def create_request():
     create_request = Purchase_Activity(customer_id=customer_id, customer_location=customer_location)
     for item in cart_item:
         create_request.crop_purchased.append(Crop_Purchased(crop_id=item['crop_id'], quantity=item['quantity']))
+    
         
     try:
         db.session.add(create_request)
@@ -81,15 +82,19 @@ def create_request():
                     "message": "An error occurred creating the purchase request." + str(e)
                     }
                 ), 500 
-    print("Order Confirmed, Looking for Driver")
+    #invoke stripe api here
+    # if sucesss  send message to deliveyr api then return code 200
+    
     print (jsonify(
         {  "code": 201,
         "data": create_request.json()
         }
         ))
     
+
+    # Send the message in json
     message=[cart_item,customer_location]
-    amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="delivery.request", 
+    delivery_reply = amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="delivery.request", 
             body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
     print("\nDelivery Request published to RabbitMQ Exchange.\n")
    
