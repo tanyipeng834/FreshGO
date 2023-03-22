@@ -24,7 +24,6 @@ class Inventory(db.Model):
     price = db.Column(db.Float(precision=2), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
     height = db.Column(db.Float(precision=2))
-    date = db.Column(db.Date)
     # May not need batch for customer not important only needed for farmer
     batch = db.Column(db.Integer, primary_key=True)
     type = db.Column(db.String(15), nullable=False)
