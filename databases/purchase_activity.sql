@@ -34,15 +34,16 @@ CREATE TABLE IF NOT EXISTS `purchase_activity`(
   `id`int PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `customer_id`int NOT NULL,
   `customer_location`int NOT NULL,
+  `transaction_amount` float not null,
   `status`varchar(32) NOT NULL DEFAULT 'Ongoing/New',
   `created`timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP  
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;;
 
 DROP TABLE IF EXISTS `crop_purchased`;
 CREATE TABLE IF NOT EXISTS `crop_purchased`(
-  `id` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `order_id` int primary key not null AUTO_INCREMENT ,
   `purchase_id`int NOT NULL,
-  `crop_id`int NOT NULL,
+  `crop_name` varchar(32)  not null,
   `quantity` int not null,
   constraint FOREIGN KEY(`purchase_id`) REFERENCES `purchase_activity`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;;
@@ -50,10 +51,10 @@ CREATE TABLE IF NOT EXISTS `crop_purchased`(
 
 --
 
-INSERT INTO `purchase_activity`(`id`, `customer_id`, `customer_location`) VALUES
-(1, 1, 100000);
-INSERT INTO `crop_purchased`(`id`, `purchase_id`, `crop_id`, `quantity`) VALUES
-(1, 1, 1, 1);
+INSERT INTO `purchase_activity`(`id`, `customer_id`, `customer_location`,`transaction_amount`) VALUES
+(1, 1, 100000,17.50);
+INSERT INTO `crop_purchased`(`order_id`, `purchase_id`, `crop_name`, `quantity`) VALUES
+(1, 1, 'Xin Hua', 1);
 
 -- --------------------------------------------------------
 --
