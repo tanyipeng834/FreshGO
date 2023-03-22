@@ -4,6 +4,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from os import environ
 import amqp_setup
+import pika
+from invokes import invoke_http
 
 
 app = Flask(__name__)
@@ -94,13 +96,19 @@ def get_all_deliveries():
         )
 
 
-@app.route("/delivery/<int:delivery_id>", methods=["DELETE"])
-def delete_delivery(delivery_id):
+@app.route("/delivery/<int:delivery_id>/<int:staff_id>", methods=["DELETE"])
+def delete_delivery(delivery_id,staff_id):
 
     deliveries = Delivery.query.filter_by(id == delivery_id)
     if len(deliveries):
 
         Delivery.query.filter_by(id == delivery_id).delete()
+        #Invoke http
+        # Publish the de
+        staff = invoke_http(f'http://127.0.0.1:5003/{staff_id}','POST')
+        # Publis the message into amqp queue 
+        amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="staff.delivery", 
+            body=staff.json(), properties=pika.BasicProperties(delivery_mode = 2)) 
         return jsonify(
             {
                 "code": 200,
