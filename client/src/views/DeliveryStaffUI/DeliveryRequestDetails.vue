@@ -22,6 +22,7 @@ export default {
     mounted() {
         axios
             .get("https://api.distancematrix.ai/maps/api/distancematrix/json?origins=2 Gambas Cres, Singapore 757044&destinations=9 Bishan Pl, Singapore 579837&key=DnWDU3yyV9JiLvLEEq61ZGWdVUGXD")
+            // format of this api: https://api.distancematrix.ai/maps/api/distancematrix/json?origins={Origin Address}&destinations={Destination Address}&key={API KEY}
             // .then(response => {this.distance = response.data.rows[0].elements[0].distance})
             .then(response => {
                 // console.log(response.data.rows[0].elements[0].distance)
