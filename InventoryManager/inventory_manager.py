@@ -13,6 +13,8 @@ CORS(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('inventory_manager_URL') or "mysql+mysqlconnector://root@localhost:3306/inventory_manager"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+#docker run --name inventory_manager --network my-net -e inventory_manager_URL=mysql+mysqlconnector://is213@host.docker.internal:3306/inventory_manager mosengtim2021/inventory_manager:1.0	
+
 # This will be the code for the farmer
 inventory_URL = "http://localhost:5000/inventory" 
 
