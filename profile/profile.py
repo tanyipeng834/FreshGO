@@ -40,7 +40,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 salty = bcrypt.gensalt()
 
-monitorBindingKey = '*.delivery'
+
 
 # Can change a bit
 
@@ -71,35 +71,6 @@ class Profile(db.Model):
         return (bcrypt.checkpw(passw.encode('utf-8'), self.password.encode('utf-8')))
 
 
-def receiveRequest():
-    amqp_setup.check_setup()
-
-    queue_name = "Delivery_Staff"
-
-    # set up a consumer and start to wait for coming messages
-    amqp_setup.channel.basic_consume(
-        queue=queue_name, on_message_callback=callback, auto_ack=True)
-    # an implicit loop waiting to receive messages;
-    amqp_setup.channel.start_consuming()
-    # it doesn't exit by default. Use Ctrl+C in the command window to terminate it.
-
-
-# required signature for the callback; no return
-def callback(channel, method, properties, body):
-    print("\nReceived an error by " + __file__)
-    processDelivery(body)
-    print()  # print a new line feed
-
-
-def processDelivery(errorMsg):
-    print("Printing the error message:")
-    try:
-        error = json.loads(errorMsg)
-        print("--JSON:", error)
-    except Exception as e:
-        print("--NOT JSON:", e)
-        print("--DATA:", errorMsg)
-    print()
 
 
 # Creating customer account
@@ -443,11 +414,7 @@ def check_password(email):
 if __name__ == '__main__':
     print(__package__)
     app.run(host='0.0.0.0', port=5003, debug=True)
-    print("\nThis is " + os.path.basename(__file__), end='')
-    print(": monitoring routing key '{}' in exchange '{}' ...".format(
-        monitorBindingKey, amqp_setup.exchangename))
-    receiveRequest()
-
+   
 
 # class Customer(Profile):
 # __tablename__ = 'customer'
