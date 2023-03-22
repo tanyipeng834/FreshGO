@@ -1,8 +1,10 @@
 # test_invoke_http.py
 from invokes import invoke_http
+from os import environ
 
 # invoke book microservice to get all books
-results = invoke_http("http://localhost:5000/inventory", method='GET')
+inventory_URL = environ.get('inventory_URL') or "http://localhost:500/inventory"
+results = invoke_http(inventory_URL, method='GET')
 print( type(results) )
 print()
 print( results )

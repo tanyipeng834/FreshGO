@@ -11,6 +11,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('inventory_URL') or "mysql+m
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # set dbURL=mysql+mysqlconnector://root@localhost:3306/inventory
+#docker run --name inventory --network my-net -e inventory_URL=mysql+mysqlconnector://is213@host.docker.internal:3306/inventory mosengtim2021/inventory:1.0	
 
 
 db = SQLAlchemy(app)
