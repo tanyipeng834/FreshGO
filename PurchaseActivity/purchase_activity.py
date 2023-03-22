@@ -72,6 +72,7 @@ def create_request():
         db.session.add(create_request)
         print(create_request.json())
         db.session.commit()
+        payment = stripe(transaction_amt)
         
     except Exception as e:
         return jsonify(
@@ -84,19 +85,20 @@ def create_request():
                     }
                 ), 500 
     print("Order Confirmed, Looking for Driver")
-    return jsonify(
+    print(jsonify(
         {  "code": 201,
         "data": create_request.json()
         }
-        )
+        ))
+    return payment
     
+    # message=[cart_item,customer_location]
+    # amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="delivery.request", 
+    #         body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
+    # print("\nDelivery Request published to RabbitMQ Exchange.\n")
+def stripe(transaction_amount):
+    payment_result=invoke_http("http://localhost:5004/process_payment",method = "POST", )
 
-    # Send the message in json
-    message=[cart_item,customer_location]
-    delivery_reply = amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="delivery.request", 
-            body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
-    print("\nDelivery Request published to RabbitMQ Exchange.\n")
-   
 @app.route("/purchase_request")
 def get_all():
     requestlist = Purchase_Activity.query.all()
