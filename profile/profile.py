@@ -1,15 +1,17 @@
-#from PurchaseActivity import amqp
-from flask import Flask, request, jsonify
-from flask_sqlalchemy import SQLAlchemy
-from flask_cors import CORS
-from os import environ
-import os
-import json
+#from PurchaseActivity import amqp_setup
 import bcrypt
-import sys
+import json
+from os import environ
+from flask_cors import CORS
+from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, request, jsonify
+
+
+
+# Add the parent directory to the system path
+
 
 # setting path
-# sys.path.append('../PurchaseActivity')
 
 
 # Create customer account /create/customer/<string:email> POST
@@ -27,7 +29,8 @@ import sys
 
 app = Flask(__name__)
 CORS(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('inventory_URL') or "mysql+mysqlconnector://root@localhost:3306/profile"
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get(
+    'inventory_URL') or "mysql+mysqlconnector://root@localhost:3306/profile"
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/profile'
 # set dbURL=mysql+mysqlconnector://root@localhost:3306/profile
 # docker run -p 5000:5003 -e dbURL=mysql+mysqlconnector://is213@host.docker.internal:3306/profile mosengtim2021/profile:1.0
@@ -37,7 +40,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 salty = bcrypt.gensalt()
 
-monitorBindingKey = '*.delivery'
+
 
 # Can change a bit
 
@@ -52,7 +55,8 @@ class Profile(db.Model):
     phone = db.Column(db.Integer)
     address = db.Column(db.String(30))
 
-    def __init__(self, email, password, profile_type, name, phone, address):
+    def __init__(id,self, email, password, profile_type, name, phone, address):
+        self.id = id
         self.email = email
         self.name = name
         self.phone = phone
@@ -67,35 +71,6 @@ class Profile(db.Model):
         return (bcrypt.checkpw(passw.encode('utf-8'), self.password.encode('utf-8')))
 
 
-
-# def receiveRequest():
-#     amqp.check_setup()
-
-#     queue_name = "Delivery_Staff"
-
-#     # set up a consumer and start to wait for coming messages
-#     amqp.channel.basic_consume(
-#         queue=queue_name, on_message_callback=callback, auto_ack=True)
-#     amqp.channel.start_consuming()  # an implicit loop waiting to receive messages;
-#     # it doesn't exit by default. Use Ctrl+C in the command window to terminate it.
-
-
-# # required signature for the callback; no return
-# def callback(channel, method, properties, body):
-#     print("\nReceived an error by " + __file__)
-#     processError(body)
-#     print()  # print a new line feed
-
-
-# def processError(errorMsg):
-#     print("Printing the error message:")
-#     try:
-#         error = json.loads(errorMsg)
-#         print("--JSON:", error)
-#     except Exception as e:
-#         print("--NOT JSON:", e)
-#         print("--DATA:", errorMsg)
-#     print()
 
 
 # Creating customer account
@@ -137,7 +112,8 @@ def create_account(email, user_type):
     return jsonify(
         {
             "code": 201,
-            "data": profile.json()
+            "data": profile.json(),
+            "userId": profile.id
         }
     ), 201
 
@@ -394,9 +370,10 @@ def update_farmer_profile(id):
 
 
 # Find customer profile
-@ app.route("/profile/customer/<string:id>")
+@ app.route("/profile/<string:id>")
+# Get the profile corresponding to the profile
 def find_customer_profile(id):
-    profile = Customer.query.filter_by(id=id).first()
+    profile = Profile.query.filter_by(id=id).first()
     if profile:
         return jsonify(
             {
@@ -412,63 +389,6 @@ def find_customer_profile(id):
     ), 404
 
 # Find farmer profile
-
-
-@ app.route("/profile/farmer/<string:id>")
-def find_farmer_profile(id):
-    profile = Farmer.query.filter_by(id=id).first()
-    if profile:
-        return jsonify(
-            {
-                "code": 200,
-                "data": profile.json()
-            }
-        )
-    return jsonify(
-        {
-            "code": 404,
-            "message": "Farmer not found."
-        }
-    ), 404
-
-# Find staff profile
-
-
-@ app.route("/profile/staff/<string:id>")
-def find_profile(id):
-    profile = Staff.query.filter_by(id=id).first()
-    if profile:
-        return jsonify(
-            {
-                "code": 200,
-                "data": profile.json()
-            }
-        )
-    return jsonify(
-        {
-            "code": 404,
-            "message": "Staff not found."
-        }
-    ), 404
-
-
-# Give profile information
-@ app.route("/profile/staff/<string:id>")
-def find__profile(id):
-    profile = Staff.query.filter_by(id=id).first()
-    if profile:
-        return jsonify(
-            {
-                "code": 200,
-                "data": profile.json()
-            }
-        )
-    return jsonify(
-        {
-            "code": 404,
-            "message": "Staff not found."
-        }
-    ), 404
 
 
 # Check for password
@@ -492,12 +412,9 @@ def check_password(email):
 
 
 if __name__ == '__main__':
+    print(__package__)
     app.run(host='0.0.0.0', port=5003, debug=True)
-    print("\nThis is " + os.path.basename(__file__), end='')
-    print(": monitoring routing key '{}' in exchange '{}' ...".format(
-        monitorBindingKey, amqp.exchangename))
-    receiveRequest()
-
+   
 
 # class Customer(Profile):
 # __tablename__ = 'customer'

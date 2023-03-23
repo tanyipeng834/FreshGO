@@ -38,7 +38,7 @@ class Growth(db.Model):
     def json(self):
         return {"id": self.id, "crop": self.crop, "quantity": self.quantity, "date_grown": self.date_grown, "date_harvested": self.date_harvested}
     
-@app.route("/manager", methods=['POST', 'GET'])
+@app.route("/manager", methods=['POST', 'GET', 'PUT'])
 def place_order():
     # Simple check of input format and data of the request are JSON
     if request.method == "POST":
@@ -71,7 +71,7 @@ def place_order():
             "code": 400,
             "message": "Invalid JSON input: " + str(request.get_data())
         }), 400
-    else:
+    if request.method == "GET":
         try:
             # 1. Send request
             data = []
@@ -91,6 +91,27 @@ def place_order():
                 "code": 500,
                 "message": "inventory.py internal error: " + ex_str
             }), 500
+    if request.method == 'PUT':
+        try:
+            # 1. Send request
+            data = []
+            result = processBatch(data, request.method)
+            print('\n------------------------')
+            print('\nresult: ', result)
+            return jsonify(result), result["code"]
+
+        except Exception as e:
+            # Unexpected error in code
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            ex_str = str(e) + " at " + str(exc_type) + ": " + fname + ": line " + str(exc_tb.tb_lineno)
+            print(ex_str)
+
+            return jsonify({
+                "code": 500,
+                "message": "inventory.py internal error: " + ex_str
+            }), 500
+
 
 def processBatch(data, method):
     # Send the batch info to inventory

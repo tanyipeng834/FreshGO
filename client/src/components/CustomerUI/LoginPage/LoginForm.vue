@@ -30,7 +30,7 @@
             name="btnradio"
             id="btnradio2"
             value="farmer"
-            v-mdoel="this.userType"
+            v-model="this.userType"
             autocomplete="off"
           />
           <label class="btn btn-outline-dark" for="btnradio2">Farmer</label>
@@ -70,6 +70,7 @@
             class="form-control"
             placeholder="Email"
             name="email"
+            id='email'
             v-model="email"
           />
         </div>
@@ -176,6 +177,7 @@
             class="form-control"
             placeholder="Password"
             name="password"
+            id = 'password'
             v-model="password"
           />
         </div>
@@ -214,12 +216,7 @@
         >
           LOGIN
         </button>
-        <button
-          type="button"
-          class="login-button"
-          @click="register"
-          v-else
-        >
+        <button type="button" class="login-button" @click="register" v-else>
           Signup
         </button>
 
@@ -240,6 +237,13 @@
 <script>
 import axios from "axios";
 import router from "@/router";
+import { ref } from "vue";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "@firebase/auth";
+import { useRouter } from "vue-router";
 export default {
   name: "LoginForm",
   data() {
@@ -259,7 +263,17 @@ export default {
       console.log(this.signUp);
     },
     // This is the code for users to sign in to the
-    signIn() {
+    login() {
+      signInWithEmailAndPassword(getAuth(), this.email, this.password)
+    .then((data) => {
+      console.log("Successfully Signed in");
+      alert("Successfully logged in");
+      router.push("/Dashboard");
+    })
+    .catch((error) => {
+      console.log(error.code);
+      alert(error.message);
+    });
       axios
         .post(`http://127.0.0.1:5003/signIn/${this.userType}`, {
           email: this.email,
@@ -268,10 +282,11 @@ export default {
         .then((response) => {
           console.log(response);
           if (response.data.code == 200) {
+            var profileId = response.data.userId;
+            console.log(profileId);
             alert("Account Credentials are Correct");
             // Now we will start going to the correct route
-            router.push("/customer");
-            localStorage.set("userId", response.data.userId);
+            router.push(`/customer/${profileId}`);
           }
           // console.log(response.data);
         })
@@ -279,7 +294,18 @@ export default {
           console.log(error.message);
         });
     },
-    createNewAccount() {
+    register() {
+    createUserWithEmailAndPassword(getAuth(), this.email, this.password)
+    .then((data) => {
+      console.log("Successfully registered");
+      alert('Successfully registered')
+      this.signUp=!this.signUp;
+      this.password=''
+    })
+    .catch((error) => {
+      console.log(error.code);
+      alert(error.message);
+    });
       axios
         .post(`http://127.0.0.1:5003/create/${this.userType}/${this.email}`, {
           email: this.email,
@@ -302,42 +328,43 @@ export default {
 };
 </script>
 
-<script setup>
+<!-- <script setup>
 import { ref } from "vue";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "@firebase/auth";
-import { useRouter } from "vue-router"
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "@firebase/auth";
+import { useRouter } from "vue-router";
 const email = ref("");
 const password = ref("");
-const router = useRouter()
+const router = useRouter();
 
-const register = () =>{
+const register = () => {
   createUserWithEmailAndPassword(getAuth(), email.value, password.value)
-    .then((data)=>{
-      console.log("Successfully registered")
-      router.push('/MoreInfo')
+    .then((data) => {
+      console.log("Successfully registered");
+      router.push("/MoreInfo");
     })
-    .catch((error)=>{
+    .catch((error) => {
       console.log(error.code);
       alert(error.message);
-    })
+    });
 };
 
-const login = () =>{
+const login = () => {
   signInWithEmailAndPassword(getAuth(), email.value, password.value)
-    .then((data)=>{
-      console.log("Successfully Signed in")
-      alert("Successfully logged in")
-      router.push("/Dashboard")
+    .then((data) => {
+      console.log("Successfully Signed in");
+      alert("Successfully logged in");
+      router.push("/Dashboard");
     })
-    .catch((error)=>{
+    .catch((error) => {
       console.log(error.code);
       alert(error.message);
-    })
+    });
 };
-
-
-
-</script>
+</script> -->
 
 <style scoped>
 .formBox {

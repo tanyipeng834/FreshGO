@@ -8,8 +8,9 @@ import os
 from datetime import datetime
 import json 
 from invokes import invoke_http
-import amqp_setup
-import pika
+import requests
+# import amqp_setup
+# import pika
 
 # book_URL = "http://localhost:5000/book"
 # shipping_record_URL = "http://localhost:5002/shipping_record"
@@ -26,13 +27,14 @@ class Purchase_Activity(db.Model):
     __tablename__ = 'purchase_activity'
     id = db.Column(db.Integer, nullable=False, primary_key=True)
     customer_id = db.Column(db.Integer, nullable=False)
-    customer_location = db.Column(db.Integer)
+    customer_location = db.Column(db.Integer, nullable = False)
+    transaction_amount = db.Column(db.String, nullable = False)
     status = db.Column(db.String, default='New/Ongoing', nullable = False)
     created = db.Column(db.DateTime, default=datetime.now, nullable=False, onupdate=datetime.now)
 
     def json(self):
         dto={"Purchase ID": self.id, "Customer ID": self.customer_id,
-                "Customer Location": self.customer_location, 
+                "Customer Location": self.customer_location, "Transaction Amount": self.transaction_amount,
                 "Status": self.status, "Created": self.created}
         dto['crop_purchased']=[]
         for item in self.crop_purchased:
@@ -41,8 +43,8 @@ class Purchase_Activity(db.Model):
     
 class Crop_Purchased(db.Model):
     __tablename__ = 'crop_purchased'
-    id = db.Column(db.Integer, nullable = False, primary_key=True)
-    crop_id = db.Column(db.Integer, nullable = False)
+    order_id = db.Column(db.Integer, nullable = False, primary_key=True)
+    crop_name = db.Column(db.String, nullable = False)
     quantity=db.Column(db.Integer, nullable=False)
     purchase_id = db.Column(db.ForeignKey('purchase_activity.id',ondelete='cascade',onupdate='cascade'), nullable = False, index=True)
     purchase_activity=db.relationship('Purchase_Activity', 
@@ -53,7 +55,7 @@ class Crop_Purchased(db.Model):
     #     self.quantity=quantity
 
     def json(self):
-        return {"ID": self.id, "Crop ID": self.crop_id, "Quantity":self.quantity, "Purchase ID": self.purchase_id}
+        return {"Order ID": self.order_id, "Crop ID": self.crop_name, "Quantity":self.quantity, "Purchase ID": self.purchase_id}
 
 
 
@@ -62,15 +64,26 @@ def create_request():
     cart_item=request.json.get('cart_item')
     customer_id = request.json.get('customer_id')
     customer_location = request.json.get('customer_location')
-    create_request = Purchase_Activity(customer_id=customer_id, customer_location=customer_location)
+    transaction_amt=request.json.get('transaction_amt')
+    print(transaction_amt)
+    create_request = Purchase_Activity(customer_id=customer_id, customer_location=customer_location,transaction_amount=transaction_amt)
     for item in cart_item:
-        create_request.crop_purchased.append(Crop_Purchased(crop_id=item['crop_id'], quantity=item['quantity']))
+        create_request.crop_purchased.append(Crop_Purchased(crop_name=item['crop_name'], quantity=item['quantity']))
         
     try:
         db.session.add(create_request)
         print(create_request.json())
         db.session.commit()
-        
+        payment = stripe(json.loads('{"transaction_amt":'+str(transaction_amt)+'}'))
+        if payment['status']!='success':
+            return jsonify(
+                {"code": 500,
+                    "data": 
+                    payment ,
+                    "message": "An error occurred creating the payment."
+                    }
+            )
+    
     except Exception as e:
         return jsonify(
                     {
@@ -82,17 +95,21 @@ def create_request():
                     }
                 ), 500 
     print("Order Confirmed, Looking for Driver")
-    print (jsonify(
+    print(jsonify(
         {  "code": 201,
         "data": create_request.json()
         }
         ))
+    return payment
     
-    message=[cart_item,customer_location]
-    amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="delivery.request", 
-            body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
-    print("\nDelivery Request published to RabbitMQ Exchange.\n")
-   
+    # message=[cart_item,customer_location]
+    # amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="delivery.request", 
+    #         body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
+    # print("\nDelivery Request published to RabbitMQ Exchange.\n")
+def stripe(transaction_amount):
+    payment_result=invoke_http("http://localhost:5004/make_payment",method = "POST",json=transaction_amount)
+    return payment_result
+
 @app.route("/purchase_request")
 def get_all():
     requestlist = Purchase_Activity.query.all()

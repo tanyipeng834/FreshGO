@@ -33,14 +33,9 @@ USE `inventory`;
 DROP TABLE IF EXISTS `inventory`;
 CREATE TABLE IF NOT EXISTS `inventory` (
   `name` varchar(30) NOT NULL,
-  `shell_life` varchar(15) NOT NULL,
   `price` decimal(10,2) NOT NULL,
-  `height` decimal(10,2) NOT NULL,
   `quantity` int(5) NOT NULL,
-  `date` DATE NOT NULL,
-  `batch` int(5) NOT NULL,
-  `type` varchar(5) NOT NULL,
-  PRIMARY KEY (`name`,`batch`) 
+  PRIMARY KEY (`name`) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `CropData`;
@@ -63,12 +58,12 @@ CREATE TABLE IF NOT EXISTS `CropMeasurements` (
     FOREIGN KEY (`name`,`batch`) REFERENCES `inventory`(`name`,`batch`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `inventory` (`name`, `shell_life`, `price`,`quantity`,`date`,`batch`,`type`) VALUES
-('Xin Hua', '2 Years', 2.0, 3,'2020-03-02',1,'vegetable'), 
-('Xin Hua', '2 Years', 2.0, 3,'2020-03-03',2,'vegetable'), 
-('Xin Hua', '2 Years', 2.0, 3,'2020-03-04',3,'vegetable'),
-('Xin Hua', '2 Years', 2.0, 3,'2020-03-05',4,'vegetable'),
-('Xin Hua', '2 Years', 2.0, 3,'2020-03-06',5,'vegetable');
+INSERT INTO `inventory` (`name`, `shell_life`, `price`,`quantity`,`batch`,`type`) VALUES
+('Xin Hua', '2 Years', 2.0, 3, 1,'vegetable'), 
+('Xin Hua', '2 Years', 2.0, 3, 2,'vegetable'), 
+('Xin Hua', '2 Years', 2.0, 3, 3,'vegetable'),
+('Xin Hua', '2 Years', 2.0, 3, 4,'vegetable'),
+('Xin Hua', '2 Years', 2.0, 3,5,'vegetable');
 COMMIT;
 
 INSERT INTO `CropData` (`name`, `batch`, `humidity`, `water`, `fertiliser`) VALUES

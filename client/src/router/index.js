@@ -2,8 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 // import every page you have here & add the routes
 //Before Login UI
 //Customer UI
-import CartPage from "../views/CustomerUI/CartPage.vue";
-import ProductDetailsPage from "../views/CustomerUI/ProductDetailsPage.vue";
+
 import ProductsPage from "../views/CustomerUI/ProductsPage.vue";
 import PaymentPage from "../views/CustomerUI/PaymentPage.vue";
 //Delivery Staff UI
@@ -23,7 +22,7 @@ const routes = [
     component: Home,
   },
   {
-    path: "/login",
+    path: "/",
     name: "Login",
     component: function () {
       return import(/* webpackChunkName: "about" */ "../views/Login.vue");
@@ -68,38 +67,18 @@ const routes = [
     },
   },
   // Customer UI
+
   {
-    // home page
-    path: "/customer",
-    redirect: "/customer/products",
-  },
-  {
-    path: "/customer/products",
+    path: "/customer/:id",
     name: "Products",
     component: ProductsPage,
     meta: {
       title: "Products",
     },
   },
+
   {
-    path: "/products/:id",
-    // :id is a URL parameter, use it to choose the data that you want to display
-    name: "ProductDetails",
-    component: ProductDetailsPage,
-    meta: {
-      title: "Product Details",
-    },
-  },
-  {
-    path: "/cart",
-    name: "Cart",
-    component: CartPage,
-    meta: {
-      title: "Shopping Cart",
-    },
-  },
-  {
-    path: "/cart/payment",
+    path: "/customers/:id/payment",
     name: "Payment",
     component: PaymentPage,
     meta: {
