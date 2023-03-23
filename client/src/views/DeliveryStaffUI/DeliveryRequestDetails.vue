@@ -1,9 +1,11 @@
 <template>
-  
-    <h1>Delivery Distance in m: {{ travel }}m</h1>
-    <h1>Delivery Distance in km: {{ toKm }}km</h1>
-    <h1>Delivery Price: ${{ deliveryPrice }}</h1>
-
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <h1>Delivery Distance in m: {{ travel }}m</h1>
+            <h1>Delivery Distance in km: {{ toKm }}km</h1>
+            <h1>Delivery Price: ${{ deliveryPrice }}</h1>
+        </div>
+    </div>
 </template>
     
 <script>
@@ -15,7 +17,6 @@ export default {
         return {
             //travel: this.travel,
             travel: {},
-            //deliveryPrice: {},
         };
     },
 

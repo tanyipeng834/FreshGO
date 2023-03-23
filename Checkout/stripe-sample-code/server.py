@@ -29,7 +29,7 @@ def create_payment():
                 'enabled': True,
             },
         )
-        return jsonify({"status":'success'}),200
+        return jsonify({"Payment Status":'Success'}),200
         
     except Exception as e:
         return jsonify(error=str(e)), 403

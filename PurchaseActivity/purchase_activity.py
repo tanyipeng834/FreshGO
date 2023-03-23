@@ -83,9 +83,8 @@ def create_request():
         db.session.add(create_request)
         print(create_request.json())
         db.session.commit()
-        payment = stripe(json.loads(
-            '{"transaction_amt":'+str(transaction_amt)+'}'))
-        if payment['status'] != 'success':
+        payment = stripe(json.loads('{"transaction_amt":'+str(transaction_amt)+'}'))
+        if payment['Payment Status']!='Success':
             return jsonify(
                 {"code": 500,
                     "data":
@@ -105,12 +104,22 @@ def create_request():
         ), 500
     print("Order Confirmed, Looking for Driver")
     print(jsonify(
+<<<<<<< HEAD
         {"code": 201,
          "data": create_request.json()
          }
     ))
     return payment
 
+=======
+        {  "code": 201,
+        "data": create_request.json()
+        }
+        ))
+
+    return create_request.json()|payment
+    
+>>>>>>> dd62f2b1c32affc028da4cfd85a8b1a002a8beaa
     # message=[cart_item,customer_location]
     # amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="delivery.request",
     #         body=message, properties=pika.BasicProperties(delivery_mode = 2))
