@@ -104,14 +104,6 @@ def create_request():
         ), 500
     print("Order Confirmed, Looking for Driver")
     print(jsonify(
-<<<<<<< HEAD
-        {"code": 201,
-         "data": create_request.json()
-         }
-    ))
-    return payment
-
-=======
         {  "code": 201,
         "data": create_request.json()
         }
@@ -119,7 +111,6 @@ def create_request():
 
     return create_request.json()|payment
     
->>>>>>> dd62f2b1c32affc028da4cfd85a8b1a002a8beaa
     # message=[cart_item,customer_location]
     # amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="delivery.request",
     #         body=message, properties=pika.BasicProperties(delivery_mode = 2))
