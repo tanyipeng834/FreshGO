@@ -75,7 +75,7 @@ def create_request():
         print(create_request.json())
         db.session.commit()
         payment = stripe(json.loads('{"transaction_amt":'+str(transaction_amt)+'}'))
-        if payment['status']!='success':
+        if payment['Payment Status']!='Success':
             return jsonify(
                 {"code": 500,
                     "data": 
@@ -100,7 +100,8 @@ def create_request():
         "data": create_request.json()
         }
         ))
-    return payment
+
+    return create_request.json()|payment
     
     # message=[cart_item,customer_location]
     # amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="delivery.request", 
