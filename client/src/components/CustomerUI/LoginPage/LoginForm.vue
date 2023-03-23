@@ -266,6 +266,16 @@ export default {
     login() {
       signInWithEmailAndPassword(getAuth(), this.email, this.password)
         .then((data) => {
+          signInWithEmailAndPassword(getAuth(), email.value, password.value)
+    .then((data) => {
+      console.log("Successfully Signed in");
+      alert("Successfully logged in");
+      router.push("/Dashboard");
+    })
+    .catch((error) => {
+      console.log(error.code);
+      alert(error.message);
+    });
           axios
             .post(`http://127.0.0.1:5003/signIn/${this.userType}`, {
               email: this.email,
@@ -294,7 +304,15 @@ export default {
 
     register() {
       createUserWithEmailAndPassword(getAuth(), this.email, this.password)
-        .then((data) => {
+      .then((data) => {
+      console.log("Successfully registered");
+      this.signUp=!thi.signUp;
+
+    })
+    .catch((error) => {
+      console.log(error.code);
+      alert(error.message);
+    });
           axios
             .post(
               `http://127.0.0.1:5003/create/${this.userType}/${this.email}`,
@@ -310,16 +328,12 @@ export default {
             .then((response) => {
               console.log(response.data);
               alert("Account Succesfully Created");
+              this.password= ''
             })
             .catch((error) => {
               console.log(error.message);
               alert("Email already exisits");
             });
-        })
-        .catch((error) => {
-          console.log(error.code);
-          alert(error.message);
-        });
     },
   },
 };
