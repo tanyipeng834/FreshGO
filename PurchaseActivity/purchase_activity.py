@@ -73,7 +73,11 @@ def create_request():
     customer_name = request.json.get('customer_name')
     customer_id = request.json.get('customer_id')
     transaction_amt = request.json.get('transaction_amt')
-    
+    delivery_details = {"customer_name":customer_name,"customer_phone":customer_phone,"customer_location":customer_location}
+    # invoke the delivery microservice
+    delivery_amt =  invoke_http("http://localhost:5005/delivery", method="POST", json=delivery_details)
+    transaction_amt = transaction_amt +delivery_amt
+
     # We will get the
     create_request = Purchase_Activity(
         customer_id=customer_id, customer_location=customer_location, transaction_amount=transaction_amt)
@@ -122,7 +126,7 @@ def create_request():
 
 def stripe(transaction_amount):
     payment_result = invoke_http(
-        "http://localhost:5004/make_payment", method="POST", json=transaction_amount)
+        "http://localhost:4242/make_payment", method="POST", json=transaction_amount)
     return payment_result
 
 
