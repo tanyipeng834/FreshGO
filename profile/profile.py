@@ -53,8 +53,7 @@ class Profile(db.Model):
     phone = db.Column(db.String(30))
     address = db.Column(db.String(30))
 
-    def __init__(id, self, email, password, profile_type, name, phone, address):
-        self.id = id
+    def __init__(self, email, password, profile_type, name, phone, address):
         self.email = email
         self.name = name
         self.phone = phone
