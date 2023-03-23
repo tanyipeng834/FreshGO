@@ -145,12 +145,15 @@ def get_all():
                         if b.crop_name == data["name"]:
                             total += b.quantity
 
+            recommend = total-data['quantity']
+            if recommend < 0:
+                recommend = "You have enough inventory"
             if len(requestlist):
                 return jsonify(
                     {
                         "code": 200,
                         "data": {
-                            "Recommended": total-data["quantity"]
+                            "Recommended": recommend
                         }
                     }
                 )
