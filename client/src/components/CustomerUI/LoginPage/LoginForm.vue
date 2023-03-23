@@ -298,6 +298,7 @@ export default {
     createUserWithEmailAndPassword(getAuth(), this.email, this.password)
     .then((data) => {
       console.log("Successfully registered");
+      alert('Successfully registered')
       this.signUp=!this.signUp;
       this.password=''
     })
