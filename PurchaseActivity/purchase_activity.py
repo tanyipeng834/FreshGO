@@ -8,6 +8,7 @@ import os
 from datetime import datetime
 import json 
 from invokes import invoke_http
+import requests
 # import amqp_setup
 # import pika
 
@@ -64,6 +65,7 @@ def create_request():
     customer_id = request.json.get('customer_id')
     customer_location = request.json.get('customer_location')
     transaction_amt=request.json.get('transaction_amt')
+    print(transaction_amt)
     create_request = Purchase_Activity(customer_id=customer_id, customer_location=customer_location,transaction_amount=transaction_amt)
     for item in cart_item:
         create_request.crop_purchased.append(Crop_Purchased(crop_name=item['crop_name'], quantity=item['quantity']))
@@ -72,8 +74,16 @@ def create_request():
         db.session.add(create_request)
         print(create_request.json())
         db.session.commit()
-        payment = stripe(transaction_amt)
-        
+        payment = stripe(json.loads('{"transaction_amt":'+str(transaction_amt)+'}'))
+        if payment['status']!='success':
+            return jsonify(
+                {"code": 500,
+                    "data": 
+                    payment ,
+                    "message": "An error occurred creating the payment."
+                    }
+            )
+    
     except Exception as e:
         return jsonify(
                     {
@@ -97,7 +107,8 @@ def create_request():
     #         body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
     # print("\nDelivery Request published to RabbitMQ Exchange.\n")
 def stripe(transaction_amount):
-    payment_result=invoke_http("http://localhost:5004/process_payment",method = "POST", )
+    payment_result=invoke_http("http://localhost:5004/make_payment",method = "POST",json=transaction_amount)
+    return payment_result
 
 @app.route("/purchase_request")
 def get_all():

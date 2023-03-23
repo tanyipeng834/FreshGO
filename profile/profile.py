@@ -5,7 +5,7 @@ from os import environ
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, request, jsonify
-import amqp_setup
+
 
 
 # Add the parent directory to the system path

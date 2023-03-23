@@ -4,4 +4,3 @@ COPY requirements.txt ./
 RUN python -m pip install --no-cache-dir -r requirements.txt
 COPY ./profile.py .
 CMD [ "python", "./profile.py" ]
-COPY ./invokes.py ./test_invoke_http.py ./d
