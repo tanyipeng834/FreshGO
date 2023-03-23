@@ -7,7 +7,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, request, jsonify
 
 
-
 # Add the parent directory to the system path
 
 
@@ -41,7 +40,6 @@ db = SQLAlchemy(app)
 salty = bcrypt.gensalt()
 
 
-
 # Can change a bit
 
 
@@ -52,10 +50,10 @@ class Profile(db.Model):
     password = db.Column(db.String(255), nullable=False)
     profile_type = db.Column(db.String(255), nullable=False)
     name = db.Column(db.String(30))
-    phone = db.Column(db.Integer)
+    phone = db.Column(db.String(30))
     address = db.Column(db.String(30))
 
-    def __init__(id,self, email, password, profile_type, name, phone, address):
+    def __init__(id, self, email, password, profile_type, name, phone, address):
         self.id = id
         self.email = email
         self.name = name
@@ -65,12 +63,10 @@ class Profile(db.Model):
         self.profile_type = profile_type
 
     def json(self):
-        return {"id": self.id, "email": self.email}
+        return {"id": self.id, "email": self.email,"phone":self.phone,"name":self.name,"address":self.address}
 
     def verify_password(self, passw):
         return (bcrypt.checkpw(passw.encode('utf-8'), self.password.encode('utf-8')))
-
-
 
 
 # Creating customer account
@@ -94,6 +90,7 @@ def create_account(email, user_type):
     data = request.get_json()
     print(data)
     profile = Profile(**data)
+    print(profile.json())
 
     # Create another subtype
     try:
@@ -142,50 +139,16 @@ def signIn(user_type):
                     "message": "User provided Invalid Login Details"
                 }
             )
-    return jsonify(
-        {
-            "code": 201,
-            "data": user_profile.json()
-        }
-    ), 201
+    else:
+        return jsonify(
+            {
+                "code": 404,
+                "message": "User Provided Invalid Username"
+            }
+        ), 201
 
 
 # Creating staff account
-@ app.route("/create/staff/<string:email>", methods=['POST'])
-def create_staff(email):
-    if (Profile.query.filter_by(email=email).first()):
-        return jsonify(
-            {
-                "code": 400,
-                "data": {
-                    "email": email
-                },
-                "message": "Email already taken."
-            }
-        ), 400
-    data = request.get_json()
-    profile = Staff(email, **data)
-    try:
-        db.session.add(profile)
-        db.session.commit()
-    except:
-        return jsonify(
-            {
-                "code": 500,
-                "data": {
-                    "id": email
-                },
-                "message": "An error occurred creating the profile."
-            }
-        ), 500
-    return jsonify(
-        {
-            "code": 201,
-            "data": profile.json()
-        }
-    ), 201
-
-# Creating farmer account
 
 
 @ app.route("/create/farmer/<string:email>", methods=['POST'])
@@ -369,10 +332,10 @@ def update_farmer_profile(id):
     ), 400
 
 
-# Find customer profile
+# Find  profile
 @ app.route("/profile/<string:id>")
 # Get the profile corresponding to the profile
-def find_customer_profile(id):
+def find_profile(id):
     profile = Profile.query.filter_by(id=id).first()
     if profile:
         return jsonify(
@@ -414,7 +377,7 @@ def check_password(email):
 if __name__ == '__main__':
     print(__package__)
     app.run(host='0.0.0.0', port=5003, debug=True)
-   
+
 
 # class Customer(Profile):
 # __tablename__ = 'customer'

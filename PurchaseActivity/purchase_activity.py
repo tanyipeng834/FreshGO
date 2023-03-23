@@ -6,7 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import os
 from datetime import datetime
-import json 
+import json
 from invokes import invoke_http
 import requests
 # import amqp_setup
@@ -19,57 +19,66 @@ import requests
 
 app = Flask(__name__)
 CORS(app)
-app.config['SQLALCHEMY_DATABASE_URI'] ='mysql+mysqlconnector://root@localhost:3306/purchase_activity'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/purchase_activity'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
+
+
 class Purchase_Activity(db.Model):
     __tablename__ = 'purchase_activity'
     id = db.Column(db.Integer, nullable=False, primary_key=True)
     customer_id = db.Column(db.Integer, nullable=False)
-    customer_location = db.Column(db.Integer, nullable = False)
-    transaction_amount = db.Column(db.String, nullable = False)
-    status = db.Column(db.String, default='New/Ongoing', nullable = False)
-    created = db.Column(db.DateTime, default=datetime.now, nullable=False, onupdate=datetime.now)
+    customer_location = db.Column(db.Integer, nullable=False)
+    transaction_amount = db.Column(db.String, nullable=False)
+    status = db.Column(db.String, default='New/Ongoing', nullable=False)
+    created = db.Column(db.DateTime, default=datetime.now,
+                        nullable=False, onupdate=datetime.now)
 
     def json(self):
-        dto={"Purchase ID": self.id, "Customer ID": self.customer_id,
-                "Customer Location": self.customer_location, "Transaction Amount": self.transaction_amount,
-                "Status": self.status, "Created": self.created}
-        dto['crop_purchased']=[]
+        dto = {"Purchase ID": self.id, "Customer ID": self.customer_id,
+               "Customer Location": self.customer_location, "Transaction Amount": self.transaction_amount,
+               "Status": self.status, "Created": self.created}
+        dto['crop_purchased'] = []
         for item in self.crop_purchased:
             dto['crop_purchased'].append(item.json())
         return dto
-    
+
+
 class Crop_Purchased(db.Model):
     __tablename__ = 'crop_purchased'
-    order_id = db.Column(db.Integer, nullable = False, primary_key=True)
-    crop_name = db.Column(db.String, nullable = False)
-    quantity=db.Column(db.Integer, nullable=False)
-    purchase_id = db.Column(db.ForeignKey('purchase_activity.id',ondelete='cascade',onupdate='cascade'), nullable = False, index=True)
-    purchase_activity=db.relationship('Purchase_Activity', 
-                                      primaryjoin= "Crop_Purchased.purchase_id==Purchase_Activity.id", backref='crop_purchased')
+    order_id = db.Column(db.Integer, nullable=False, primary_key=True)
+    crop_name = db.Column(db.String, nullable=False)
+    quantity = db.Column(db.Integer, nullable=False)
+    purchase_id = db.Column(db.ForeignKey(
+        'purchase_activity.id', ondelete='cascade', onupdate='cascade'), nullable=False, index=True)
+    purchase_activity = db.relationship('Purchase_Activity',
+                                        primaryjoin="Crop_Purchased.purchase_id==Purchase_Activity.id", backref='crop_purchased')
 
     # def __init__(self, crop_id, quantity):
     #     self.crop_id=crop_id
     #     self.quantity=quantity
 
     def json(self):
-        return {"Order ID": self.order_id, "Crop ID": self.crop_name, "Quantity":self.quantity, "Purchase ID": self.purchase_id}
-
+        return {"Order ID": self.order_id, "Crop ID": self.crop_name, "Quantity": self.quantity, "Purchase ID": self.purchase_id}
 
 
 @app.route("/purchase_request", methods=['POST'])
 def create_request():
-    cart_item=request.json.get('cart_item')
-    customer_id = request.json.get('customer_id')
+    print(request.get_json())
+    cart_item = request.json.get('cart_item')
     customer_location = request.json.get('customer_location')
-    transaction_amt=request.json.get('transaction_amt')
-    print(transaction_amt)
-    create_request = Purchase_Activity(customer_id=customer_id, customer_location=customer_location,transaction_amount=transaction_amt)
+    customer_phone = request.json.get('customer_phone')
+    customer_name = request.json.get('customer_name')
+    customer_id = request.json.get('customer_id')
+    transaction_amt = request.json.get('transaction_amt')
+    # We will get the
+    create_request = Purchase_Activity(
+        customer_id=customer_id, customer_location=customer_location, transaction_amount=transaction_amt)
     for item in cart_item:
-        create_request.crop_purchased.append(Crop_Purchased(crop_name=item['crop_name'], quantity=item['quantity']))
-        
+        create_request.crop_purchased.append(Crop_Purchased(
+            crop_name=item['CropName'], quantity=item['quantity']))
+
     try:
         db.session.add(create_request)
         print(create_request.json())
@@ -78,24 +87,31 @@ def create_request():
         if payment['Payment Status']!='Success':
             return jsonify(
                 {"code": 500,
-                    "data": 
-                    payment ,
+                    "data":
+                    payment,
                     "message": "An error occurred creating the payment."
-                    }
+                 }
             )
-    
+
     except Exception as e:
         return jsonify(
-                    {
-                    "code": 500,
-                    "data": 
-                    create_request.json()
-                    ,
-                    "message": "An error occurred creating the purchase request." + str(e)
-                    }
-                ), 500 
+            {
+                "code": 500,
+                "data":
+                create_request.json(),
+                "message": "An error occurred creating the purchase request." + str(e)
+            }
+        ), 500
     print("Order Confirmed, Looking for Driver")
     print(jsonify(
+<<<<<<< HEAD
+        {"code": 201,
+         "data": create_request.json()
+         }
+    ))
+    return payment
+
+=======
         {  "code": 201,
         "data": create_request.json()
         }
@@ -103,13 +119,18 @@ def create_request():
 
     return create_request.json()|payment
     
+>>>>>>> dd62f2b1c32affc028da4cfd85a8b1a002a8beaa
     # message=[cart_item,customer_location]
-    # amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="delivery.request", 
-    #         body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
+    # amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="delivery.request",
+    #         body=message, properties=pika.BasicProperties(delivery_mode = 2))
     # print("\nDelivery Request published to RabbitMQ Exchange.\n")
+
+
 def stripe(transaction_amount):
-    payment_result=invoke_http("http://localhost:5004/make_payment",method = "POST",json=transaction_amount)
+    payment_result = invoke_http(
+        "http://localhost:5004/make_payment", method="POST", json=transaction_amount)
     return payment_result
+
 
 @app.route("/purchase_request")
 def get_all():
@@ -130,6 +151,7 @@ def get_all():
         }
     ), 404
 
+
 @app.route("/purchase_request/<int:id>")
 def find_by_order_id(id):
     order = Purchase_Activity.query.filter_by(id=id).first()
@@ -149,6 +171,7 @@ def find_by_order_id(id):
             "message": "Order not found."
         }
     ), 404
+
 
 @app.route("/purchase_request/update/<int:id>", methods=['PUT'])
 def update_order(id):
@@ -188,10 +211,11 @@ def update_order(id):
             }
         ), 500
 
+
 @app.route("/purchase_request/delete/<int:id>", methods=['DELETE'])
 def delete_order(id):
     try:
-        order1=Crop_Purchased.query.filter_by(purchase_id=id).all()
+        order1 = Crop_Purchased.query.filter_by(purchase_id=id).all()
         order = Purchase_Activity.query.filter_by(id=id).first()
         if not order:
             return jsonify(
@@ -219,8 +243,8 @@ def delete_order(id):
         ), 200
 
     except Exception as e:
-        
-        order1=Crop_Purchased.query.filter_by(purchase_id=id).all()
+
+        order1 = Crop_Purchased.query.filter_by(purchase_id=id).all()
         print(order1)
         return jsonify(
             {
@@ -231,19 +255,15 @@ def delete_order(id):
                 "message": "An error occurred while deleting the order. " + str(e)
             }
         ), 500
-    
 
 
-
-
-
-if __name__ == "__main__":  # execute this program only if it is run as a script (not by 'import')
+# execute this program only if it is run as a script (not by 'import')
+if __name__ == "__main__":
     print("This is flask for " + os.path.basename(__file__) + ": recording logs ...")
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5006, debug=True)
     print("Goodbye~")
 
 
 #!/usr/bin/env python3
 # The above shebang (#!) operator tells Unix-like environments
 # to run this file as a python3 script
-

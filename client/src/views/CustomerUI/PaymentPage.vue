@@ -81,7 +81,11 @@
         </form>
 
         <div class="text-center">
-          <button type="button" class="btn btn-primary mt-3">
+          <button
+            type="button"
+            class="btn btn-primary mt-3"
+            @click="submitPurchaseActivity()"
+          >
             Pay With Stripe
           </button>
         </div>
@@ -91,12 +95,37 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
       crops: [],
       price: 0,
     };
+  },
+  methods: {
+    submitPurchaseActivity() {
+      const customerId = this.$route.params.id;
+      axios
+        .get(`http://127.0.0.1:5003/profile/${customerId}`)
+        .then((response) => {
+          return axios.post("http://127.0.0.1:5006/purchase_request", {
+            cart_item: this.crops,
+            customer_location: response.data.data.address,
+            customer_name: response.data.data.name,
+            customer_phone: response.data.data.phone,
+            customer_id: customerId,
+            transaction_amt: this.price,
+          });
+        })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
+    },
   },
 
   mounted() {
@@ -105,7 +134,10 @@ export default {
     for (const crop of this.crops) {
       this.price += crop.Price * crop.quantity;
       console.log(this.price);
+      // Now post the price to delivery ms
     }
+
+    // Get the customer details
   },
 };
 </script>
