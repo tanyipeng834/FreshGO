@@ -106,21 +106,16 @@ def create_request():
         ), 500
     print("Order Confirmed, Looking for Driver")
     print(jsonify(
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
         {  "code": 201,
-        "data": create_request.json()
+            "data": create_request.json()
         }
-        ))
+        
+        )
+    )
 
     return create_request.json()|payment
-<<<<<<< Updated upstream
-    
-=======
 
->>>>>>> Stashed changes
     # message=[cart_item,customer_location]
     # amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="delivery.request",
     #         body=message, properties=pika.BasicProperties(delivery_mode = 2))
