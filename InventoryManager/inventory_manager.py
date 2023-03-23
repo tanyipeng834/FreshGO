@@ -17,27 +17,11 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # This will be the code for the farmer
 inventory_URL = "http://localhost:5000/inventory" 
+purchase_activity_URL = "http://localhost:5005/purchase_request"
 
 db = SQLAlchemy(app)
-class Growth(db.Model):
-    __tablename__ = 'Growth'
-    id = db.Column(db.Integer, primary_key=True)
-    farmer = db.Column(db.String(30), nullable=False)
-    crop = db.Column(db.String(30), nullable=False)
-    quantity = db.Column(db.Integer, nullable=False)
-    date_grown = db.Column(db.Date, nullable=False)
-    date_harvested = db.Column(db.Date, nullable=False)
-
-    def __init__(self, farmer, crop, quantity, date_grown, date_harvested):
-        self.farmer = farmer
-        self.crop = crop
-        self.quantity = quantity
-        self.date_grown = date_grown
-        self.date_harvested = date_harvested
-
-    def json(self):
-        return {"id": self.id, "crop": self.crop, "quantity": self.quantity, "date_grown": self.date_grown, "date_harvested": self.date_harvested}
     
+#CRUD Inventory
 @app.route("/manager", methods=['POST', 'GET', 'PUT'])
 def place_order():
     # Simple check of input format and data of the request are JSON
@@ -49,7 +33,7 @@ def place_order():
 
                 # do the actual work
                 # 1. Send harvested batch
-                result = processBatch(data, request.method)
+                result = processBatch(data, request.method, inventory_URL)
                 print('\n------------------------')
                 print('\nresult: ', result)
                 return jsonify(result), result["code"]
@@ -75,7 +59,7 @@ def place_order():
         try:
             # 1. Send request
             data = []
-            result = processBatch(data, request.method)
+            result = processBatch(data, request.method, inventory_URL)
             print('\n------------------------')
             print('\nresult: ', result)
             return jsonify(result), result["code"]
@@ -92,32 +76,87 @@ def place_order():
                 "message": "inventory.py internal error: " + ex_str
             }), 500
     if request.method == 'PUT':
-        try:
-            # 1. Send request
-            data = []
-            result = processBatch(data, request.method)
-            print('\n------------------------')
-            print('\nresult: ', result)
-            return jsonify(result), result["code"]
+        if request.is_json:
+            try:
+                data = request.get_json()
+                result = processBatch(data, request.method, inventory_URL)
+                print('\n------------------------')
+                print('\nresult: ', result)
+                return jsonify(result), result["code"]
 
-        except Exception as e:
-            # Unexpected error in code
-            exc_type, exc_obj, exc_tb = sys.exc_info()
-            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            ex_str = str(e) + " at " + str(exc_type) + ": " + fname + ": line " + str(exc_tb.tb_lineno)
-            print(ex_str)
+            except Exception as e:
+                # Unexpected error in code
+                exc_type, exc_obj, exc_tb = sys.exc_info()
+                fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+                ex_str = str(e) + " at " + str(exc_type) + ": " + fname + ": line " + str(exc_tb.tb_lineno)
+                print(ex_str)
 
-            return jsonify({
-                "code": 500,
-                "message": "inventory.py internal error: " + ex_str
-            }), 500
+                return jsonify({
+                    "code": 500,
+                    "message": "inventory.py internal error: " + ex_str
+                }), 500
+        return jsonify({
+            "code": 400,
+            "message": "Invalid JSON input: " + str(request.get_data())
+        }), 400
 
 
-def processBatch(data, method):
+#RECOMMEND
+@app.route("/recommend", methods=['GET'])
+def recommend_order():
+    # Simple check of input format and data of the request are JSON
+        if request.is_json:
+            try:
+                data = request.get_json()
+                #D
+                print("\nReceived an batch order in JSON:", data)
+
+                # do the actual work
+                # 1. Send harvested batch
+                result = processBatch(data, request.method, purchase_activity_URL)
+                print('\n------------------------')
+                print('\nresult: ', [order.json() for order in result])
+                return jsonify(result), result["code"]
+
+            except Exception as e:
+                # Unexpected error in code
+                exc_type, exc_obj, exc_tb = sys.exc_info()
+                fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+                ex_str = str(e) + " at " + str(exc_type) + ": " + fname + ": line " + str(exc_tb.tb_lineno)
+                print(ex_str)
+
+                return jsonify({
+                    "code": 500,
+                    "message": "inventory.py internal error: " + ex_str
+                }), 500
+            
+        else:
+            try:
+                data=[]
+                result = processBatch(data, request.method, purchase_activity_URL)
+                print('\n------------------------')
+                print('\nresult: ', result)
+                return jsonify(result), result["code"]
+
+            except Exception as e:
+                # Unexpected error in code
+                exc_type, exc_obj, exc_tb = sys.exc_info()
+                fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+                ex_str = str(e) + " at " + str(exc_type) + ": " + fname + ": line " + str(exc_tb.tb_lineno)
+                print(ex_str)
+
+                return jsonify({
+                    "code": 500,
+                    "message": "inventory.py internal error: " + ex_str
+                }), 500
+
+
+
+def processBatch(data, method, ms):
     # Send the batch info to inventory
     # Invoke the inventory MS
     print('\n-----Invoking inventory microservice-----')
-    URL = inventory_URL
+    URL = ms
     print(URL)
     order_result = invoke_http(URL, method=method, json=data)
     print('order_result:', order_result)

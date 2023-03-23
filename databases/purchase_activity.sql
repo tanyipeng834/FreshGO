@@ -49,12 +49,20 @@ CREATE TABLE IF NOT EXISTS `crop_purchased`(
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;;
 
 
---
 
-INSERT INTO `purchase_activity`(`id`, `customer_id`, `customer_location`,`transaction_amount`) VALUES
-(1, 1, 100000,17.50);
-INSERT INTO `crop_purchased`(`order_id`, `purchase_id`, `crop_name`, `quantity`) VALUES
-(1, 1, 'Xin Hua', 1);
+INSERT INTO `purchase_activity` (`id`, `customer_id`, `customer_location`, `transaction_amount`, `status`, `created`) VALUES 
+(1, 1, 10000, 10, "Ongoing/New", "2023-01-01 00:00:00"),
+(2, 1, 10000, 10, "Ongoing/New", "2023-03-01 00:00:00"),
+(3, 1, 10000, 10, "Ongoing/New", "2023-03-01 00:00:00"),
+(4, 2, 10000, 10, "Ongoing/New", "2023-03-01 00:00:00");
+COMMIT;
+
+INSERT INTO `crop_purchased` (`order_id`, `purchase_id`, `crop_name`, `quantity`) VALUES 
+(1, 1, "Xin Hua", 20),
+(2, 2, "Xin Hua", 20),
+(3, 3, "Xin Hua", 20),
+(4, 4, "Xin Hua", 20);
+COMMIT;
 
 -- --------------------------------------------------------
 --
