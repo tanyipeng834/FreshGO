@@ -70,7 +70,7 @@
             class="form-control"
             placeholder="Email"
             name="email"
-            id='email'
+            id="email"
             v-model="email"
           />
         </div>
@@ -177,7 +177,7 @@
             class="form-control"
             placeholder="Password"
             name="password"
-            id = 'password'
+            id="password"
             v-model="password"
           />
         </div>
@@ -265,62 +265,60 @@ export default {
     // This is the code for users to sign in to the
     login() {
       signInWithEmailAndPassword(getAuth(), this.email, this.password)
-    .then((data) => {
-      console.log("Successfully Signed in");
-      alert("Successfully logged in");
-      router.push("/Dashboard");
-    })
-    .catch((error) => {
-      console.log(error.code);
-      alert(error.message);
-    });
-      axios
-        .post(`http://127.0.0.1:5003/signIn/${this.userType}`, {
-          email: this.email,
-          password: this.password,
-        })
-        .then((response) => {
-          console.log(response);
-          if (response.data.code == 200) {
-            var profileId = response.data.userId;
-            console.log(profileId);
-            alert("Account Credentials are Correct");
-            // Now we will start going to the correct route
-            router.push(`/customer/${profileId}`);
-          }
-          // console.log(response.data);
+        .then((data) => {
+          axios
+            .post(`http://127.0.0.1:5003/signIn/${this.userType}`, {
+              email: this.email,
+              password: this.password,
+            })
+            .then((response) => {
+              console.log(response);
+              if (response.data.code == 200) {
+                var profileId = response.data.userId;
+                console.log(profileId);
+                alert("Account Credentials are Correct");
+                // Now we will start going to the correct route
+                router.push(`/customer/${profileId}`);
+              }
+              // console.log(response.data);
+            })
+            .catch((error) => {
+              console.log(error.message);
+            });
         })
         .catch((error) => {
-          console.log(error.message);
+          console.log(error.code);
+          alert(error.message);
         });
     },
+
     register() {
-    createUserWithEmailAndPassword(getAuth(), this.email, this.password)
-    .then((data) => {
-      console.log("Successfully registered");
-      this.signUp=!this.signUp;
-      this.password=''
-    })
-    .catch((error) => {
-      console.log(error.code);
-      alert(error.message);
-    });
-      axios
-        .post(`http://127.0.0.1:5003/create/${this.userType}/${this.email}`, {
-          email: this.email,
-          password: this.password,
-          profile_type: this.userType,
-          name: this.name,
-          phone: this.phone,
-          address: this.address,
-        })
-        .then((response) => {
-          console.log(response.data);
-          alert("Account Succesfully Created");
+      createUserWithEmailAndPassword(getAuth(), this.email, this.password)
+        .then((data) => {
+          axios
+            .post(
+              `http://127.0.0.1:5003/create/${this.userType}/${this.email}`,
+              {
+                email: this.email,
+                password: this.password,
+                profile_type: this.userType,
+                name: this.name,
+                phone: this.phone,
+                address: this.address,
+              }
+            )
+            .then((response) => {
+              console.log(response.data);
+              alert("Account Succesfully Created");
+            })
+            .catch((error) => {
+              console.log(error.message);
+              alert("Email already exisits");
+            });
         })
         .catch((error) => {
-          console.log(error.message);
-          alert("Email already exisits");
+          console.log(error.code);
+          alert(error.message);
         });
     },
   },
