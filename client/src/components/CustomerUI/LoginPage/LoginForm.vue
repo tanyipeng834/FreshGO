@@ -280,6 +280,10 @@ export default {
             .post(`http://127.0.0.1:5003/signIn/${this.userType}`, {
               email: this.email,
               password: this.password,
+              profile_type: this.userType,
+              phone: this.phone,
+              name: this.name,
+              address: this.address
             })
             .then((response) => {
               console.log(response);
@@ -306,7 +310,7 @@ export default {
       createUserWithEmailAndPassword(getAuth(), this.email, this.password)
       .then((data) => {
       console.log("Successfully registered");
-      this.signUp=!thi.signUp;
+      this.signUp=!this.signUp;
 
     })
     .catch((error) => {
@@ -318,11 +322,11 @@ export default {
               `http://127.0.0.1:5003/create/${this.userType}/${this.email}`,
               {
                 email: this.email,
-                password: this.password,
-                profile_type: this.userType,
-                name: this.name,
-                phone: this.phone,
-                address: this.address,
+              password: this.password,
+              profile_type: this.userType,
+              phone: this.phone,
+              name: this.name,
+              address: this.address
               }
             )
             .then((response) => {
