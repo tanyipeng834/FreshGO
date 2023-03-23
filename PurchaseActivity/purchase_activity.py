@@ -60,7 +60,7 @@ class Crop_Purchased(db.Model):
     #     self.quantity=quantity
 
     def json(self):
-        return {"Order ID": self.order_id, "Crop ID": self.crop_name, "Quantity": self.quantity, "Purchase ID": self.purchase_id}
+        return {"Order ID": self.order_id, "Crop Name": self.crop_name, "Quantity": self.quantity, "Purchase ID": self.purchase_id}
 
 
 @app.route("/purchase_request", methods=['POST'])
@@ -119,7 +119,7 @@ def create_request():
 
 def stripe(transaction_amount):
     payment_result = invoke_http(
-        "http://localhost:5004/make_payment", method="POST", json=transaction_amount)
+        "http://localhost:4242/create-payment-intent", method="POST", json=transaction_amount)
     return payment_result
 
 
