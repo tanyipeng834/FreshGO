@@ -134,49 +134,49 @@ def stripe(transaction_amount):
 
 @app.route("/purchase_request")
 def get_all():
-    if request.is_json:
         data = request.get_json()
-        filter_after = datetime.today()-timedelta(days=30)
-        requestlist = Purchase_Activity.query.filter(Purchase_Activity.created > filter_after).all()
-        total = 0
-        for i in requestlist:
-            if i.status == "Ongoing/New":
-                for b in i.crop_purchased:
-                    if b.crop_name == data["Crop Name"]:
-                        total += b.quantity
+        if data!="":
+            filter_after = datetime.today()-timedelta(days=30)
+            requestlist = Purchase_Activity.query.filter(Purchase_Activity.created > filter_after).all()
+            total = 0
+            for i in requestlist:
+                if i.status == "Ongoing/New":
+                    for b in i.crop_purchased:
+                        if b.crop_name == data["name"]:
+                            total += b.quantity
 
-        if len(requestlist):
+            if len(requestlist):
+                return jsonify(
+                    {
+                        "code": 200,
+                        "data": {
+                            "Recommended": total-data["quantity"]
+                        }
+                    }
+                )
             return jsonify(
                 {
-                    "code": 200,
-                    "data": {
-                        "Recommended": total-data["Quantity"]
-                    }
+                    "code": 404,
+                    "message": "There are no orders."
                 }
-            )
-        return jsonify(
-            {
-                "code": 404,
-                "message": "There are no orders."
-            }
-        ), 404
-    else:
-        requestlist = Purchase_Activity.query.all()
-        if len(requestlist):
+            ), 404
+        else:
+            requestlist = Purchase_Activity.query.all()
+            if len(requestlist):
+                return jsonify(
+                    {
+                        "code": 200,
+                        "data": {
+                            "Purchase Requests": [order.json() for order in requestlist]
+                        }
+                    }
+                )
             return jsonify(
                 {
-                    "code": 200,
-                    "data": {
-                        "Purchase Requests": [order.json() for order in requestlist]
-                    }
+                    "code": 404,
+                    "message": "There are no orders."
                 }
-            )
-        return jsonify(
-            {
-                "code": 404,
-                "message": "There are no orders."
-            }
-        ), 404
+            ), 404
 
 
 @app.route("/purchase_request/<int:id>")
