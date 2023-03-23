@@ -7,6 +7,25 @@ import sys
 from os import environ
 import json
 
+# /manager method=GET retrieves all crops and quantity and their status
+# /manager method=POST inserts crop into table: name must be unique
+        # {
+        # "name": "Xin Gua",
+        # "quantity": 30
+        # }
+# /manager method=PUT updates crop value, farmer puts how many crops they wanna add to inventory
+        # {
+        # "name": "Xin Gua",
+        # "quantity": 30
+        # }
+# /recommend method=GET without json, retreieves all purchase_activity
+# /recommend method=GET with json, retreieves all purchase_activity for past month
+#                                  that is the same crop_name, quantity = current inventory
+        # {
+        # "name": "Xin Gua",
+        # "quantity": 20
+        # }
+        # information will be retrieved from UI from table created with /manager method=GET
 
 app = Flask(__name__)
 CORS(app)
@@ -18,6 +37,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # This will be the code for the farmer
 inventory_URL = "http://localhost:5000/inventory" 
 purchase_activity_URL = "http://localhost:5006/purchase_request"
+
+
 
 db = SQLAlchemy(app)
     
@@ -126,7 +147,7 @@ def recommend_order():
                 }), 500
         else:
             try:
-                data=""
+                data=''
                 result = processBatch(data, request.method, purchase_activity_URL)
                 print('\n------------------------')
                 print('\nresult: ', result)
