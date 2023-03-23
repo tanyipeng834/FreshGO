@@ -20,6 +20,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 monitorBindingKey = '*.delivery'
 db = SQLAlchemy(app)
 
+distance_api_key = 'xUQt1ethyKFcy79NxuHWD7X2qC2qW'
+
 
 class Delivery(db.Model):
     __tablename__ = 'delivery'
@@ -70,6 +72,7 @@ def get_all_deliveries():
 
         # This will allow the farmer to create a crop in the database
         data = request.get_json()
+        print(data)
         # crop_name = data['name']
 
         # Check if there is a crop with a similar name in the database
@@ -97,18 +100,18 @@ def get_all_deliveries():
 
 
 @app.route("/delivery/<int:delivery_id>/<int:staff_id>", methods=["DELETE"])
-def delete_delivery(delivery_id,staff_id):
+def delete_delivery(delivery_id, staff_id):
 
     deliveries = Delivery.query.filter_by(id == delivery_id)
     if len(deliveries):
 
         Delivery.query.filter_by(id == delivery_id).delete()
-        #Invoke http
+        # Invoke http
         # Publish the de
-        staff = invoke_http(f'http://127.0.0.1:5003/{staff_id}','POST')
-        # Publis the message into amqp queue 
-        amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="staff.delivery", 
-            body=staff.json(), properties=pika.BasicProperties(delivery_mode = 2)) 
+        staff = invoke_http(f'http://127.0.0.1:5003/{staff_id}', 'POST')
+        # Publis the message into amqp queue
+        amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="staff.delivery",
+                                         body=staff.json(), properties=pika.BasicProperties(delivery_mode=2))
         return jsonify(
             {
                 "code": 200,
@@ -153,12 +156,12 @@ def processDelivery(errorMsg):
         print("--DATA:", errorMsg)
     print()
 
+
     # Use an inner join to connect both the measurements and the input
     # Now we will create a crop object
 if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5005, debug=True)
     print("\nThis is " + os.path.basename(__file__), end='')
     print(": monitoring routing key '{}' in exchange '{}' ...".format(
         monitorBindingKey, amqp_setup.exchangename))
     receiveRequest()
-
-    app.run(host='0.0.0.0', port=5005, debug=True)

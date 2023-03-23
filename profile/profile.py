@@ -63,7 +63,7 @@ class Profile(db.Model):
         self.profile_type = profile_type
 
     def json(self):
-        return {"id": self.id, "email": self.email}
+        return {"id": self.id, "email": self.email,"phone":self.phone,"name":self.name,"address":self.address}
 
     def verify_password(self, passw):
         return (bcrypt.checkpw(passw.encode('utf-8'), self.password.encode('utf-8')))
@@ -332,10 +332,10 @@ def update_farmer_profile(id):
     ), 400
 
 
-# Find customer profile
+# Find  profile
 @ app.route("/profile/<string:id>")
 # Get the profile corresponding to the profile
-def find_customer_profile(id):
+def find_profile(id):
     profile = Profile.query.filter_by(id=id).first()
     if profile:
         return jsonify(
