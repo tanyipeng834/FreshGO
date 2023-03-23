@@ -13,7 +13,7 @@ import Home from "../views/Home.vue";
 import HomeView from "../views/HomeView.vue";
 import NotFoundPage from "../views/NotFoundPage.vue";
 //Ignore below for testing
-// import Map from "../views/DeliveryStaffUI/Map.vue";
+import Map from "../views/DeliveryStaffUI/Map.vue";
 
 const routes = [
   {
@@ -102,14 +102,15 @@ const routes = [
       title: "Delivery Request Details",
     },
   },
-  // {
-  //   path: "/map",
-  //   name: "Map",
-  //   component: Map,
-  //   meta: {
-  //     title: "Test Map",
-  //   },
-  // },
+  // Below for testing
+  {
+    path: "/map",
+    name: "Map",
+    component: Map,
+    meta: {
+      title: "Test Map",
+    },
+  },
   {
     //keep it last, if there is no link found
     path: "/:pathMatch(.*)*",
