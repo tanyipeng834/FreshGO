@@ -16,7 +16,8 @@ def create_payment():
         data = json.loads(request.data)
         # Create a PaymentIntent with the order amount and currency
         intent = stripe.PaymentIntent.create(
-            amount=calculate_order_amount(data['items']),
+            amount = request.json.get('transaction_amt'),
+            #amount=calculate_order_amount(data['items']),
             currency='sgd',
             automatic_payment_methods={
                 'enabled': True,
@@ -28,7 +29,7 @@ def create_payment():
     except Exception as e:
         return jsonify(error=str(e)), 403
 if __name__ == '__main__':
-    app.run(port=4242)
+    app.run(port=5004)
 
 
 # # Define a route to handle incoming purchase data from the "purchase_activity" microservice
@@ -84,5 +85,5 @@ if __name__ == '__main__':
 
 # # Start the server
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5004, debug=True)
+# if __name__ == '__main__':
+#     app.run(host='0.0.0.0', port=5004, debug=True)
