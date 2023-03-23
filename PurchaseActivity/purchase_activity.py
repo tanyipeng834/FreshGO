@@ -138,18 +138,19 @@ def get_all():
         data = request.get_json()
         filter_after = datetime.today()-timedelta(days=30)
         requestlist = Purchase_Activity.query.filter(Purchase_Activity.created > filter_after).all()
-        id_list = []
+        total = 0
         for i in requestlist:
             if i.status == "Ongoing/New":
-                id_list.append(i.id)  
-
+                for b in i.crop_purchased:
+                    if b.crop_name == data["Crop Name"]:
+                        total += b.quantity
 
         if len(requestlist):
             return jsonify(
                 {
                     "code": 200,
                     "data": {
-                        "Recommended": [order.json() for order in requestlist]
+                        "Recommended": total-data["Quantity"]
                     }
                 }
             )
