@@ -33,6 +33,7 @@ def create_payment():
         # )
         # return jsonify({"status":'success'}),200
         )
+        #return jsonify({"Payment Status":'Success'}),200
         
         # Redirect the user to Stripe's hosted payment page using the url property of the first charge associated with the PaymentIntent.
         return redirect(intent.charges.data[0].payment_method.url)
@@ -43,7 +44,7 @@ def create_payment():
 
 @app.route('/payment_success', methods=['GET'])
 def payment_success():
-    return jsonify({"status":'success'}),200
+    return jsonify({"Payment Status":'Success'}),200
 
 
 if __name__ == '__main__':
