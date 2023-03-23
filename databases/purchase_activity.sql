@@ -60,8 +60,9 @@ COMMIT;
 INSERT INTO `crop_purchased` (`order_id`, `purchase_id`, `crop_name`, `quantity`) VALUES 
 (1, 1, "Xin Hua", 20),
 (2, 2, "Xin Hua", 20),
-(3, 3, "Xin Hua", 20),
-(4, 4, "Xin Hua", 20);
+(3, 2, "Xin Gua", 20),
+(4, 3, "Xin Gua", 20),
+(5, 4, "Xin Hua", 20);
 COMMIT;
 
 -- --------------------------------------------------------
