@@ -3,7 +3,7 @@
     <div class="container justify-content-md-center">
         
         <!-- Ask for API KEY -->
-        <GoogleMap api-key="AIzaSyB7UGpHq2RqlQ5ADC7F1KV4Quo_RAa_iuw" style="width: 100%; height: 500px" :center="farm" :zoom="15">
+        <GoogleMap api-key="APIKEY" style="width: 100%; height: 500px" :center="farm" :zoom="15">
         <!-- Marker -->
         <!-- <Marker :options="markerOptions" /> -->
         <Marker :options="{position: farm}" />
