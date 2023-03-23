@@ -29,7 +29,7 @@ class Purchase_Activity(db.Model):
     __tablename__ = 'purchase_activity'
     id = db.Column(db.Integer, nullable=False, primary_key=True)
     customer_id = db.Column(db.Integer, nullable=False)
-    customer_location = db.Column(db.Integer, nullable=False)
+    customer_location = db.Column(db.String, nullable=False)
     transaction_amount = db.Column(db.String, nullable=False)
     status = db.Column(db.String, default='New/Ongoing', nullable=False)
     created = db.Column(db.DateTime, default=datetime.now,
@@ -68,10 +68,12 @@ def create_request():
     print(request.get_json())
     cart_item = request.json.get('cart_item')
     customer_location = request.json.get('customer_location')
+    print(customer_location)
     customer_phone = request.json.get('customer_phone')
     customer_name = request.json.get('customer_name')
     customer_id = request.json.get('customer_id')
     transaction_amt = request.json.get('transaction_amt')
+    
     # We will get the
     create_request = Purchase_Activity(
         customer_id=customer_id, customer_location=customer_location, transaction_amount=transaction_amt)
@@ -83,8 +85,9 @@ def create_request():
         db.session.add(create_request)
         print(create_request.json())
         db.session.commit()
-        payment = stripe(json.loads('{"transaction_amt":'+str(transaction_amt)+'}'))
-        if payment['Payment Status']!='Success':
+        payment = stripe(json.loads(
+            '{"transaction_amt":'+str(transaction_amt)+'}'))
+        if payment['Payment Status'] != 'Success':
             return jsonify(
                 {"code": 500,
                     "data":
@@ -104,22 +107,13 @@ def create_request():
         ), 500
     print("Order Confirmed, Looking for Driver")
     print(jsonify(
-<<<<<<< HEAD
         {"code": 201,
          "data": create_request.json()
          }
     ))
-    return payment
 
-=======
-        {  "code": 201,
-        "data": create_request.json()
-        }
-        ))
+    return create_request.json() | payment
 
-    return create_request.json()|payment
-    
->>>>>>> dd62f2b1c32affc028da4cfd85a8b1a002a8beaa
     # message=[cart_item,customer_location]
     # amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="delivery.request",
     #         body=message, properties=pika.BasicProperties(delivery_mode = 2))

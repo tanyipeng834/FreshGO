@@ -20,7 +20,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 monitorBindingKey = '*.delivery'
 db = SQLAlchemy(app)
 
-distance_api_key = 'xUQt1ethyKFcy79NxuHWD7X2qC2qW'
+google_map_key = 'AIzaSyC9IHubhNzjWcBNk5Igv2-xn4WcrCPg9Ig'
 
 
 class Delivery(db.Model):
