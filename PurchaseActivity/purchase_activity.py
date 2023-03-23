@@ -128,11 +128,7 @@ def create_request():
 
 def stripe(transaction_amount):
     payment_result = invoke_http(
-<<<<<<< HEAD
-        "http://localhost:4242/create-payment-intent", method="POST", json=transaction_amount)
-=======
         "http://localhost:4242/make_payment", method="POST", json=transaction_amount)
->>>>>>> 8bde95b195e1dfdb48172dfae3759268aaae7517
     return payment_result
 
 
@@ -141,15 +137,19 @@ def get_all():
     if request.is_json:
         data = request.get_json()
         filter_after = datetime.today()-timedelta(days=30)
-        print(filter_after)
-
         requestlist = Purchase_Activity.query.filter(Purchase_Activity.created > filter_after).all()
+        id_list = []
+        for i in requestlist:
+            if i.status == "Ongoing/New":
+                id_list.append(i.id)  
+
+
         if len(requestlist):
             return jsonify(
                 {
                     "code": 200,
                     "data": {
-                        "Purchase Requests": [order.json() for order in requestlist]
+                        "Recommended": [order.json() for order in requestlist]
                     }
                 }
             )
