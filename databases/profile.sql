@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `profile` (
   `password` char(255) NOT NULL,
   `profile_type` char(255) NOT NULL,
    `name` varchar(30) NOT NULL,
-  `phone` int(8) NOT NULL,
+  `phone` varchar(30) NOT NULL,
   `address` varchar(30) NOT NULL,
   PRIMARY KEY (`id`) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

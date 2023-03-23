@@ -50,7 +50,7 @@ class Profile(db.Model):
     password = db.Column(db.String(255), nullable=False)
     profile_type = db.Column(db.String(255), nullable=False)
     name = db.Column(db.String(30))
-    phone = db.Column(db.Integer)
+    phone = db.Column(db.String(30))
     address = db.Column(db.String(30))
 
     def __init__(id, self, email, password, profile_type, name, phone, address):
@@ -90,6 +90,7 @@ def create_account(email, user_type):
     data = request.get_json()
     print(data)
     profile = Profile(**data)
+    print(profile.json())
 
     # Create another subtype
     try:
@@ -142,13 +143,12 @@ def signIn(user_type):
         return jsonify(
             {
                 "code": 404,
-                "message": u"User Provided Invalid Username"
+                "message": "User Provided Invalid Username"
             }
         ), 201
 
 
 # Creating staff account
-
 
 
 @ app.route("/create/farmer/<string:email>", methods=['POST'])
