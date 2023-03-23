@@ -17,7 +17,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # This will be the code for the farmer
 inventory_URL = "http://localhost:5000/inventory" 
-purchase_activity_URL = "http://localhost:5005/purchase_request"
+purchase_activity_URL = "http://localhost:5006/purchase_request"
 
 db = SQLAlchemy(app)
     
@@ -105,32 +105,6 @@ def place_order():
 @app.route("/recommend", methods=['GET'])
 def recommend_order():
     # Simple check of input format and data of the request are JSON
-        if request.is_json:
-            try:
-                data = request.get_json()
-                #D
-                print("\nReceived an batch order in JSON:", data)
-
-                # do the actual work
-                # 1. Send harvested batch
-                result = processBatch(data, request.method, purchase_activity_URL)
-                print('\n------------------------')
-                print('\nresult: ', [order.json() for order in result])
-                return jsonify(result), result["code"]
-
-            except Exception as e:
-                # Unexpected error in code
-                exc_type, exc_obj, exc_tb = sys.exc_info()
-                fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-                ex_str = str(e) + " at " + str(exc_type) + ": " + fname + ": line " + str(exc_tb.tb_lineno)
-                print(ex_str)
-
-                return jsonify({
-                    "code": 500,
-                    "message": "inventory.py internal error: " + ex_str
-                }), 500
-            
-        else:
             try:
                 data=[]
                 result = processBatch(data, request.method, purchase_activity_URL)

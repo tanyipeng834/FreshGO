@@ -4,8 +4,10 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from sqlalchemy import and_, func
 import os
 from datetime import datetime
+from datetime import timedelta
 import json
 from invokes import invoke_http
 import requests
@@ -104,13 +106,21 @@ def create_request():
         ), 500
     print("Order Confirmed, Looking for Driver")
     print(jsonify(
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
         {  "code": 201,
         "data": create_request.json()
         }
         ))
 
     return create_request.json()|payment
+<<<<<<< Updated upstream
     
+=======
+
+>>>>>>> Stashed changes
     # message=[cart_item,customer_location]
     # amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="delivery.request",
     #         body=message, properties=pika.BasicProperties(delivery_mode = 2))
@@ -125,22 +135,44 @@ def stripe(transaction_amount):
 
 @app.route("/purchase_request")
 def get_all():
-    requestlist = Purchase_Activity.query.all()
-    if len(requestlist):
+    if request.is_json:
+        data = request.get_json()
+        filter_after = datetime.today()-timedelta(days=30)
+        print(filter_after)
+
+        requestlist = Purchase_Activity.query.filter(Purchase_Activity.created > filter_after).all()
+        if len(requestlist):
+            return jsonify(
+                {
+                    "code": 200,
+                    "data": {
+                        "Purchase Requests": [order.json() for order in requestlist]
+                    }
+                }
+            )
         return jsonify(
             {
-                "code": 200,
-                "data": {
-                    "Purchase Requests": [order.json() for order in requestlist]
-                }
+                "code": 404,
+                "message": "There are no orders."
             }
-        )
-    return jsonify(
-        {
-            "code": 404,
-            "message": "There are no orders."
-        }
-    ), 404
+        ), 404
+    else:
+        requestlist = Purchase_Activity.query.all()
+        if len(requestlist):
+            return jsonify(
+                {
+                    "code": 200,
+                    "data": {
+                        "Purchase Requests": [order.json() for order in requestlist]
+                    }
+                }
+            )
+        return jsonify(
+            {
+                "code": 404,
+                "message": "There are no orders."
+            }
+        ), 404
 
 
 @app.route("/purchase_request/<int:id>")
