@@ -6,12 +6,12 @@ from os import environ
 import amqp_setup
 import pika
 from invokes import invoke_http
-
+import requests
 
 app = Flask(__name__)
 CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = environ.get(
-    'inventory_URL') or "mysql+mysqlconnector://root@localhost:3306/delivery"
+    'dbURL') or "mysql+mysqlconnector://root@localhost:3306/deliveries"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # set dbURL=mysql+mysqlconnector://root@localhost:3306/inventory
@@ -20,11 +20,12 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 monitorBindingKey = '*.delivery'
 db = SQLAlchemy(app)
 
-distance_api_key = 'xUQt1ethyKFcy79NxuHWD7X2qC2qW'
+google_map_key = 'AIzaSyC9IHubhNzjWcBNk5Igv2-xn4WcrCPg9Ig'
+factory_location = '102 Henderson Rd'
 
 
-class Delivery(db.Model):
-    __tablename__ = 'delivery'
+class Deliveries(db.Model):
+    __tablename__ = 'deliveries'
     id = db.Column(db.Integer, nullable=False, primary_key=True)
     customer_name = db.Column(db.String(15), nullable=False)
     customer_location = db.Column(db.String(15), nullable=False)
@@ -52,7 +53,7 @@ class Delivery(db.Model):
 def get_all_deliveries():
     if request.method == 'GET':
 
-        deliveries = Delivery.query.all()
+        deliveries = Deliveries.query.all()
         if len(deliveries):
             return jsonify(
                 {
@@ -73,11 +74,21 @@ def get_all_deliveries():
         # This will allow the farmer to create a crop in the database
         data = request.get_json()
         print(data)
+        customer_location = data['customer_location']
         # crop_name = data['name']
+        params = {'key': google_map_key, 'origins': factory_location,
+                  'destinations': customer_location}
+        return_json = requests.get(
+            'https://maps.googleapis.com/maps/api/distancematrix/json', params=params)
+        delivery_distance = return_json.json(
+        )['rows'][0]['elements'][0]['distance']['text']
+        delivery_distance= float(delivery_distance.strip('km'))
+        delivery_fee = round(delivery_distance*0.85,2)
+        
 
         # Check if there is a crop with a similar name in the database
         # Create a new object based on the input
-        delivery = Delivery(**data)
+        delivery = Deliveries(**data)
 
         try:
             db.session.add(delivery)
@@ -94,7 +105,8 @@ def get_all_deliveries():
         return jsonify(
             {
                 "code": 201,
-                "data": delivery.json()
+                "data": delivery.json(),
+                "delivery_fee": delivery_fee
             }
         )
 
@@ -102,14 +114,14 @@ def get_all_deliveries():
 @app.route("/delivery/<int:delivery_id>/<int:staff_id>", methods=["DELETE"])
 def delete_delivery(delivery_id, staff_id):
 
-    deliveries = Delivery.query.filter_by(id == delivery_id)
+    deliveries = Deliveries.query.filter_by(id == delivery_id)
     if len(deliveries):
 
-        Delivery.query.filter_by(id == delivery_id).delete()
+        Deliveries.query.filter_by(id == delivery_id).delete()
         # Invoke http
         # Publish the de
-        staff = invoke_http(f'http://127.0.0.1:5003/{staff_id}', 'POST')
-        # Publis the message into amqp queue
+        staff = invoke_http(f'http://127.0.0.1:5003/{staff_id}', 'GET')
+        # Send back the delivery staff that is on the way to collect the delivery
         amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="staff.delivery",
                                          body=staff.json(), properties=pika.BasicProperties(delivery_mode=2))
         return jsonify(
@@ -155,7 +167,6 @@ def processDelivery(errorMsg):
         print("--NOT JSON:", e)
         print("--DATA:", errorMsg)
     print()
-
 
     # Use an inner join to connect both the measurements and the input
     # Now we will create a crop object
