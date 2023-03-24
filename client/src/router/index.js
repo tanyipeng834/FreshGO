@@ -8,6 +8,9 @@ import PaymentPage from "../views/CustomerUI/PaymentPage.vue";
 //Delivery Staff UI
 import DeliveryRequests from "../views/DeliveryStaffUI/DeliveryRequests";
 import DeliveryRequestDetails from "../views/DeliveryStaffUI/DeliveryRequestDetails";
+// Farmer UI
+import DisplayInventory from "../views/FarmerUI/DisplayInventory.vue";
+import OngoingCrops from "../views/FarmerUI/OngoingCrops.vue";
 //Unrelated to any UIs
 import Home from "../views/Home.vue";
 import HomeView from "../views/HomeView.vue";
@@ -109,6 +112,23 @@ const routes = [
     component: Map,
     meta: {
       title: "Test Map",
+    },
+  },
+  //Farmer UI
+  {
+    path: "/inventory",
+    name: "DisplayInventory",
+    component: DisplayInventory,
+    meta: {
+      title: "Inventory",
+    },
+  },
+  {
+    path: "/crops",
+    name: "OngoingCrops",
+    component: OngoingCrops,
+    meta: {
+      title: "Crops",
     },
   },
   {
