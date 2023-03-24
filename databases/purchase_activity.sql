@@ -33,7 +33,7 @@ DROP TABLE IF EXISTS `purchase_activity`;
 CREATE TABLE IF NOT EXISTS `purchase_activity`(
   `id`int PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `customer_id`int NOT NULL,
-  `customer_location`int NOT NULL,
+  `customer_location`varchar(32) NOT NULL,
   `transaction_amount` float not null,
   `status`varchar(32) NOT NULL DEFAULT 'Ongoing/New',
   `created`timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP  
@@ -49,12 +49,21 @@ CREATE TABLE IF NOT EXISTS `crop_purchased`(
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;;
 
 
---
 
-INSERT INTO `purchase_activity`(`id`, `customer_id`, `customer_location`,`transaction_amount`) VALUES
-(1, 1, 100000,17.50);
-INSERT INTO `crop_purchased`(`order_id`, `purchase_id`, `crop_name`, `quantity`) VALUES
-(1, 1, 'Xin Hua', 1);
+INSERT INTO `purchase_activity` (`id`, `customer_id`, `customer_location`, `transaction_amount`, `status`, `created`) VALUES 
+(1, 1, 10000, 10, "Ongoing/New", "2023-01-01 00:00:00"),
+(2, 1, 10000, 10, "Ongoing/New", "2023-03-01 00:00:00"),
+(3, 1, 10000, 10, "Ongoing/New", "2023-03-01 00:00:00"),
+(4, 2, 10000, 10, "Ongoing/New", "2023-03-01 00:00:00");
+COMMIT;
+
+INSERT INTO `crop_purchased` (`order_id`, `purchase_id`, `crop_name`, `quantity`) VALUES 
+(1, 1, "Xin Hua", 20),
+(2, 2, "Xin Hua", 20),
+(3, 2, "Xin Gua", 20),
+(4, 3, "Xin Gua", 20),
+(5, 4, "Xin Hua", 20);
+COMMIT;
 
 -- --------------------------------------------------------
 --

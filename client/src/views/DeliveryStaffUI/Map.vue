@@ -1,4 +1,4 @@
-<!-- Manually set route  -->
+Manually set route 
 <template>
     <div class="container justify-content-md-center">
         
