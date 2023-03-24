@@ -9,6 +9,7 @@ import PaymentPage from "../views/CustomerUI/PaymentPage.vue";
 import DeliveryRequests from "../views/DeliveryStaffUI/DeliveryRequests";
 import DeliveryRequestDetails from "../views/DeliveryStaffUI/DeliveryRequestDetails";
 // Farmer UI
+import FarmerHome from "../views/FarmerUI/FarmerHome.vue";
 import DisplayInventory from "../views/FarmerUI/DisplayInventory.vue";
 import OngoingCrops from "../views/FarmerUI/OngoingCrops.vue";
 //Unrelated to any UIs
@@ -129,6 +130,14 @@ const routes = [
     component: OngoingCrops,
     meta: {
       title: "Crops",
+    },
+  },
+  {
+    path: "/farmerhome",
+    name: "FarmerHome",
+    component: FarmerHome,
+    meta: {
+      title: "Home",
     },
   },
   {
