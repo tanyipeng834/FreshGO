@@ -3,17 +3,25 @@ SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
-CREATE DATABASE IF NOT EXISTS `CropData` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `CropData`;
-
-DROP TABLE IF EXISTS `CropData`;
-CREATE TABLE CropData (
-    id SERIAL PRIMARY KEY,
-    water_level INTEGER NOT NULL,
-    fertiliser INTEGER NOT NULL,
-    height INTEGER NOT NULL,
-    date DATE NOT NULL
+CREATE DATABASE IF NOT EXISTS `crops` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `crops`;
+CREATE TABLE crops (
+    'name' varchar(50) NOT NULL,
+    'current_water_used' decimal(10, 2) NOT NULL,
+    'recommended_water_level' decimal(10, 2) NOT NULL,
+    'recommended_fertiliser' decimal(10, 2) NOT NULL,
+    'max_height' decimal(10, 2) NOT NULL,
+    PRIMARY KEY ('name')
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- DROP TABLE IF EXISTS `crops`;
+-- CREATE TABLE crops (
+--     id SERIAL PRIMARY KEY,
+--     water_level INTEGER NOT NULL,
+--     fertiliser INTEGER NOT NULL,
+--     height INTEGER NOT NULL,
+--     date DATE NOT NULL
+-- ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 -- PREVIOUS TABLE FOR REFERENCE
