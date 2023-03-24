@@ -22,6 +22,7 @@
                     <td>cropName</td>
                     <td>
                         <input
+                        style="width: 50%;"
                         type="number"
                         class="form-control"
                         aria-label="cropHeight"
