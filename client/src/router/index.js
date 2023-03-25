@@ -90,7 +90,7 @@ const routes = [
   },
   // Delivery Staff UI
   {
-    path: "/delivery",
+    path: "/delivery/:staffId",
     name: "DeliveryRequests",
     component: DeliveryRequests,
     meta: {
@@ -98,7 +98,7 @@ const routes = [
     },
   },
   {
-    path: "/delivery/:id",
+    path: "/delivery/:staffId/:deliveryId",
     name: "DeliveryRequestDetails",
     component: DeliveryRequestDetails,
     meta: {

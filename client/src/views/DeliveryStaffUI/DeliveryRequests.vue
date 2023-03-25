@@ -22,9 +22,17 @@
         <td>{{ deliveryRequest.customerLocation }}</td>
         <td>${{ deliveryRequest.deliveryCharge }}</td>
         <td>
-          <router-link v-bind:to="'/delivery/' + deliveryRequest.id">
-            <button class="btn btn-success" @click="setDestination(deliveryRequest.customerLocation)">Accept</button>
-          </router-link>
+          <button
+            class="btn btn-success"
+            @click="
+              setDestination(
+                deliveryRequest.customerLocation,
+                deliveryRequest.id
+              )
+            "
+          >
+            Accept
+          </button>
         </td>
       </tr>
     </tbody>
@@ -40,11 +48,26 @@ export default {
       delivery: [],
     };
   },
-  methods:{
-    setDestination(location){
-      localStorage.setItem("destination",location);
-    }
+  methods: {
+    setDestination(location, id) {
+      localStorage.setItem("destination", location);
 
+      const staff = this.$route.params.staffId;
+      axios
+        .delete("http://127.0.0.1:5005/delivery/delete", {
+          data: {
+            staffId: staff,
+            deliveryId: id,
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
+      this.$router.push(`http://127.0.0.1:5005/delivery/${id}`);
+    },
   },
   mounted() {
     axios

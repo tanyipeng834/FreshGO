@@ -41,7 +41,7 @@ class Deliveries(db.Model):
     #     self.height = height
     #     self.type = type
 
-    def __init__(self,id, customer_name, customer_location, customer_phone, delivery_charge):
+    def __init__(self, id, customer_name, customer_location, customer_phone, delivery_charge):
         self.id = id
         self.customer_name = customer_name
         self.customer_location = customer_location
@@ -49,7 +49,7 @@ class Deliveries(db.Model):
         self.delivery_charge = delivery_charge
 
     def json(self):
-        return {"customerName": self.customer_name, "customerLocation": self.customer_location, "customerPhone": self.customer_phone, "deliveryCharge": self.delivery_charge,"id":self.id}
+        return {"customerName": self.customer_name, "customerLocation": self.customer_location, "customerPhone": self.customer_phone, "deliveryCharge": self.delivery_charge, "id": self.id}
 
 
 @app.route("/delivery", methods=["GET", "POST"])
@@ -113,19 +113,26 @@ def get_all_deliveries():
         )
 
 
-@app.route("/delivery/<int:delivery_id>/<int:staff_id>", methods=["DELETE"])
-def delete_delivery(delivery_id, staff_id):
+@app.route("/delivery/delete", methods=["DELETE"])
+def delete_delivery():
+    data = request.get_json()
+    delivery_id = data["deliveryId"]
+    staff_id = data["staffId"]
+    # Get the first element that match the delivery Id
+    print(delivery_id)
+    deliveries = Deliveries.query.filter_by(id=delivery_id).first()
+    if deliveries:
 
-    deliveries = Deliveries.query.filter_by(id == delivery_id)
-    if len(deliveries):
-
-        Deliveries.query.filter_by(id == delivery_id).delete()
+        Deliveries.query.filter_by(id=delivery_id).delete()
         # Invoke http
         # Publish the delivery microservice to get the staff that will be coming
         staff = invoke_http(f'http://127.0.0.1:5003/{staff_id}', 'GET')
         # Send back the delivery staff that is on the way to collect the delivery
+        body = {"deliveryId": delivery_id,
+                "staff": staff.json()
+                }
         amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="staff.delivery",
-                                         body=staff.json(), properties=pika.BasicProperties(delivery_mode=2))
+                                         body=body, properties=pika.BasicProperties(delivery_mode=2))
         return jsonify(
             {
                 "code": 200,
@@ -140,15 +147,8 @@ def delete_delivery(delivery_id, staff_id):
     ), 404
 
 
-
-
 # required signature for the callback; no return
-
     # Use an inner join to connect both the measurements and the input
     # Now we will create a crop object
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5005, debug=True)
-    print("\nThis is " + os.path.basename(__file__), end='')
-    print(": monitoring routing key '{}' in exchange '{}' ...".format(
-        monitorBindingKey, amqp_setup.exchangename))
-    receiveRequest()

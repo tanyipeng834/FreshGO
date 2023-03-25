@@ -11,8 +11,8 @@ from datetime import timedelta
 import json
 from invokes import invoke_http
 import requests
-# import amqp_setup
-# import pika
+import amqp_setup
+import pika
 
 # book_URL = "http://localhost:5000/book"
 # shipping_record_URL = "http://localhost:5002/shipping_record"
@@ -25,6 +25,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
+queue_name = 'Delivery_Staff'
 
 
 class Purchase_Activity(db.Model):
@@ -75,11 +76,25 @@ def create_request():
     customer_name = request.json.get('customer_name')
     customer_id = request.json.get('customer_id')
     transaction_amt = request.json.get('transaction_amt')
-    delivery_details = {"customer_name":customer_name,"customer_phone":customer_phone,"customer_location":customer_location}
+    delivery_details = {"customer_name": customer_name,
+                        "customer_phone": customer_phone, "customer_location": customer_location}
     # invoke the delivery microservice and create a delivery request
-    # 
-    delivery_amt =  invoke_http("http://localhost:5005/delivery", method="POST", json=delivery_details)
-    transaction_amt = transaction_amt +delivery_amt
+    #
+    delivery_amt = invoke_http(
+        "http://localhost:5005/delivery", method="POST", json=delivery_details)
+    transaction_amt = transaction_amt + delivery_amt
+    delivery_response = None
+
+    def on_response(ch, method, props, body):
+        nonlocal delivery_response
+        delivery_response = body.decode()
+        amqp_setup.channel.basic_ack(delivery_tag=method.delivery_tag)
+    amqp_setup.channel.basic_consume(
+        queue=queue_name, on_message_callback=on_response, auto_ack=True)
+    amqp_setup.channel.start_consuming()
+    while delivery_response is None:
+        amqp_setup.channel.connection.process_data_events()
+    print(delivery_response)
 
     # We will get the
     create_request = Purchase_Activity(
@@ -135,52 +150,53 @@ def stripe(transaction_amount):
 
 @app.route("/purchase_request")
 def get_all():
-        data = request.get_json()
-        if data!="":
-            filter_after = datetime.today()-timedelta(days=30)
-            requestlist = Purchase_Activity.query.filter(Purchase_Activity.created > filter_after).all()
-            total = 0
-            for i in requestlist:
-                if i.status == "Ongoing/New":
-                    for b in i.crop_purchased:
-                        if b.crop_name == data["name"]:
-                            total += b.quantity
+    data = request.get_json()
+    if data != "":
+        filter_after = datetime.today()-timedelta(days=30)
+        requestlist = Purchase_Activity.query.filter(
+            Purchase_Activity.created > filter_after).all()
+        total = 0
+        for i in requestlist:
+            if i.status == "Ongoing/New":
+                for b in i.crop_purchased:
+                    if b.crop_name == data["name"]:
+                        total += b.quantity
 
-            recommend = total-data['quantity']
-            if recommend < 0:
-                recommend = "You have enough inventory"
-            if len(requestlist):
-                return jsonify(
-                    {
-                        "code": 200,
-                        "data": {
-                            "Recommended": recommend
-                        }
-                    }
-                )
+        recommend = total-data['quantity']
+        if recommend < 0:
+            recommend = "You have enough inventory"
+        if len(requestlist):
             return jsonify(
                 {
-                    "code": 404,
-                    "message": "There are no orders."
-                }
-            ), 404
-        else:
-            requestlist = Purchase_Activity.query.all()
-            if len(requestlist):
-                return jsonify(
-                    {
-                        "code": 200,
-                        "data": {
-                            "Purchase Requests": [order.json() for order in requestlist]
-                        }
+                    "code": 200,
+                    "data": {
+                        "Recommended": recommend
                     }
-                )
+                }
+            )
+        return jsonify(
+            {
+                "code": 404,
+                "message": "There are no orders."
+            }
+        ), 404
+    else:
+        requestlist = Purchase_Activity.query.all()
+        if len(requestlist):
             return jsonify(
                 {
-                    "code": 404,
-                    "message": "There are no orders."
+                    "code": 200,
+                    "data": {
+                        "Purchase Requests": [order.json() for order in requestlist]
+                    }
                 }
-            ), 404
+            )
+        return jsonify(
+            {
+                "code": 404,
+                "message": "There are no orders."
+            }
+        ), 404
 
 
 @app.route("/purchase_request/<int:id>")
