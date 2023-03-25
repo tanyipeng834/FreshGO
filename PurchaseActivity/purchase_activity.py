@@ -76,7 +76,8 @@ def create_request():
     customer_id = request.json.get('customer_id')
     transaction_amt = request.json.get('transaction_amt')
     delivery_details = {"customer_name":customer_name,"customer_phone":customer_phone,"customer_location":customer_location}
-    # invoke the delivery microservice
+    # invoke the delivery microservice and create a delivery request
+    # 
     delivery_amt =  invoke_http("http://localhost:5005/delivery", method="POST", json=delivery_details)
     transaction_amt = transaction_amt +delivery_amt
 

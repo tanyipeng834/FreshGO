@@ -17,7 +17,6 @@ import Home from "../views/Home.vue";
 import HomeView from "../views/HomeView.vue";
 import NotFoundPage from "../views/NotFoundPage.vue";
 //Ignore below for testing
-import Map from "../views/DeliveryStaffUI/Map.vue";
 
 const routes = [
   {
@@ -107,14 +106,7 @@ const routes = [
     },
   },
   // Below for testing
-  {
-    path: "/map",
-    name: "Map",
-    component: Map,
-    meta: {
-      title: "Test Map",
-    },
-  },
+
   //Farmer UI
   {
     path: "/inventory",

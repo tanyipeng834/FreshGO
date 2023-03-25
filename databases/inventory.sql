@@ -34,9 +34,20 @@ DROP TABLE IF EXISTS `inventory`;
 CREATE TABLE IF NOT EXISTS `inventory` (
   `name` varchar(30) NOT NULL,
   `quantity` decimal(5,2) NOT NULL,
+  `price` decimal(5,2) NOT NULL,
+  `type` varchar(30) NOT NULL,
   `status` varchar(30) NOT NULL,
   PRIMARY KEY (`name`) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+-- Inserting some data into the inventory table
+
+
+INSERT INTO `inventory` (`name`, `quantity`,`price`, `type`,`status`) VALUES 
+("Xiao Bai Cai", 2.30,5,"Vegetable", "Low");
+COMMIT;
+
+
+
 
 
 

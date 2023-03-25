@@ -31,6 +31,7 @@ class Deliveries(db.Model):
     customer_location = db.Column(db.String(15), nullable=False)
     # May not need batch for customer not important only needed for farmer
     customer_phone = db.Column(db.String(15), nullable=False)
+    delivery_charge = db.Column(db.Float, nullable=False)
     # Add the init method into the class
     # def __init__(self, name, shell_life, price, quantity, height, type):
     #     self.name = name
@@ -40,13 +41,15 @@ class Deliveries(db.Model):
     #     self.height = height
     #     self.type = type
 
-    def __init__(self, customer_name, customer_location, customer_phone):
+    def __init__(self,id, customer_name, customer_location, customer_phone, delivery_charge):
+        self.id = id
         self.customer_name = customer_name
         self.customer_location = customer_location
         self.customer_phone = customer_phone
+        self.delivery_charge = delivery_charge
 
     def json(self):
-        return {"Customer Name": self.customer_name, "Customer Location": self.customer_location, "Customer Phone Number": self.customer_phone}
+        return {"customerName": self.customer_name, "customerLocation": self.customer_location, "customerPhone": self.customer_phone, "deliveryCharge": self.delivery_charge,"id":self.id}
 
 
 @app.route("/delivery", methods=["GET", "POST"])
@@ -59,7 +62,7 @@ def get_all_deliveries():
                 {
                     "code": 200,
                     "data": {
-                        "inventory": [delivery.json() for delivery in deliveries]
+                        "delivery": [delivery.json() for delivery in deliveries]
                     }
                 }
             )
@@ -82,13 +85,12 @@ def get_all_deliveries():
             'https://maps.googleapis.com/maps/api/distancematrix/json', params=params)
         delivery_distance = return_json.json(
         )['rows'][0]['elements'][0]['distance']['text']
-        delivery_distance= float(delivery_distance.strip('km'))
-        delivery_fee = round(delivery_distance*0.85,2)
-        
+        delivery_distance = float(delivery_distance.strip('km'))
+        delivery_fee = round(delivery_distance*0.85, 2)
 
         # Check if there is a crop with a similar name in the database
         # Create a new object based on the input
-        delivery = Deliveries(**data)
+        delivery = Deliveries(**data, charge=delivery_fee)
 
         try:
             db.session.add(delivery)
@@ -119,7 +121,7 @@ def delete_delivery(delivery_id, staff_id):
 
         Deliveries.query.filter_by(id == delivery_id).delete()
         # Invoke http
-        # Publish the de
+        # Publish the delivery microservice to get the staff that will be coming
         staff = invoke_http(f'http://127.0.0.1:5003/{staff_id}', 'GET')
         # Send back the delivery staff that is on the way to collect the delivery
         amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="staff.delivery",
@@ -127,7 +129,7 @@ def delete_delivery(delivery_id, staff_id):
         return jsonify(
             {
                 "code": 200,
-                "message": "Entry has been succesfully deleted"
+                "message": "Delivery Request  has been succesfully accepted by "
             }
         )
     return jsonify(
@@ -138,35 +140,9 @@ def delete_delivery(delivery_id, staff_id):
     ), 404
 
 
-def receiveRequest():
-    amqp_setup.check_setup()
-
-    queue_name = "Delivery_Staff"
-
-    # set up a consumer and start to wait for coming messages
-    amqp_setup.channel.basic_consume(
-        queue=queue_name, on_message_callback=callback, auto_ack=True)
-    # an implicit loop waiting to receive messages;
-    amqp_setup.channel.start_consuming()
-    # it doesn't exit by default. Use Ctrl+C in the command window to terminate it.
 
 
 # required signature for the callback; no return
-def callback(channel, method, properties, body):
-    print("\nReceived an error by " + __file__)
-    processDelivery(body)
-    print()  # print a new line feed
-
-
-def processDelivery(errorMsg):
-    print("Printing the error message:")
-    try:
-        error = json.loads(errorMsg)
-        print("--JSON:", error)
-    except Exception as e:
-        print("--NOT JSON:", e)
-        print("--DATA:", errorMsg)
-    print()
 
     # Use an inner join to connect both the measurements and the input
     # Now we will create a crop object

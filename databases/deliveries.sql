@@ -27,5 +27,10 @@ CREATE TABLE IF NOT EXISTS `deliveries` (
   `customer_name` varchar(30) NOT NULL,
   `customer_phone` varchar(30) NOT NULL,
   `customer_location` varchar(30) NOT NULL,
+  `delivery_charge` decimal(5,2) NOT NULL,
   PRIMARY KEY (`id`) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `deliveries` (`id`,`customer_name`,`customer_phone`,`customer_location`,`delivery_charge`) VALUES
+('1','Tan Yi Peng','96642813','BLK 835 Woodlands Street 83',3.00);
+COMMIT;

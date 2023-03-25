@@ -4,12 +4,12 @@
       <div
         v-for="product in products"
         class="product-item"
-        :key="product.CropName"
+        :key="product.name"
       >
         <img src="../../assets/caixinhua.jpg" />
-        <h3 class="product-name">{{ product.CropName }}</h3>
-        <p class="product-price">${{ product.Price }}</p>
-        <p class="product-price">{{ product.Type }}</p>
+        <h3 class="product-name">{{ product.name }}</h3>
+        <p class="product-price">${{ product.price }}</p>
+        <p class="product-price">{{ product.type }}</p>
         <div class="input-group mb-3">
           <span class="input-group-text">Quantity</span>
           <input
@@ -56,9 +56,9 @@ export default {
     purchaseProducts() {
       const productsToPurchase = this.products
         .filter((product) => product.quantity > 0)
-        .map(({ CropName, Price, quantity }) => ({
-          CropName,
-          Price,
+        .map(({ name, price, quantity }) => ({
+          name,
+          price,
           quantity,
         }));
 

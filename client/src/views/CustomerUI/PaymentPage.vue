@@ -17,10 +17,10 @@
           <tbody>
             <tr v-for="(crop, index) in this.crops">
               <th scope="row">{{ index + 1 }}</th>
-              <td>{{ crop.CropName }}</td>
-              <td>${{ crop.Price }}</td>
+              <td>{{ crop.name }}</td>
+              <td>${{ crop.price }}</td>
               <td>{{ crop.quantity }}</td>
-              <td>${{ crop.quantity * crop.Price }}</td>
+              <td>${{ crop.quantity * crop.price }}</td>
             </tr>
             <tr>
               <td>Total Price</td>
@@ -33,7 +33,7 @@
       <div
         class="col-md-6 col-sm-12 right-side mb-4 d-flex flex-column justify-content-center"
       >
-        <h3>Credit Card Information</h3>
+        <h3>Customer Information</h3>
         <form>
           <div class="form-group">
             <label for="exampleFormControlInput1">Email address</label>
@@ -132,7 +132,7 @@ export default {
     this.crops = localStorage.getItem("cropsPurchased");
     this.crops = JSON.parse(this.crops);
     for (const crop of this.crops) {
-      this.price += crop.Price * crop.quantity;
+      this.price += crop.price * crop.quantity;
       console.log(this.price);
       // Now post the price to delivery ms
     }
