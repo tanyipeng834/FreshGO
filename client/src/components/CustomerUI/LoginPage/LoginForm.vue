@@ -267,15 +267,14 @@ export default {
       signInWithEmailAndPassword(getAuth(), this.email, this.password)
         .then((data) => {
           signInWithEmailAndPassword(getAuth(), email.value, password.value)
-    .then((data) => {
-      console.log("Successfully Signed in");
-      alert("Successfully logged in");
-      router.push("/Dashboard");
-    })
-    .catch((error) => {
-      console.log(error.code);
-      alert(error.message);
-    });
+            .then((data) => {
+              console.log("Successfully Signed in");
+              alert("Successfully logged in");
+            })
+            .catch((error) => {
+              console.log(error.code);
+              alert(error.message);
+            });
           axios
             .post(`http://127.0.0.1:5003/signIn/${this.userType}`, {
               email: this.email,
@@ -283,7 +282,7 @@ export default {
               profile_type: this.userType,
               phone: this.phone,
               name: this.name,
-              address: this.address
+              address: this.address,
             })
             .then((response) => {
               console.log(response);
@@ -308,36 +307,32 @@ export default {
 
     register() {
       createUserWithEmailAndPassword(getAuth(), this.email, this.password)
-      .then((data) => {
-      console.log("Successfully registered");
-      this.signUp=!this.signUp;
-
-    })
-    .catch((error) => {
-      console.log(error.code);
-      alert(error.message);
-    });
-          axios
-            .post(
-              `http://127.0.0.1:5003/create/${this.userType}/${this.email}`,
-              {
-                email: this.email,
-              password: this.password,
-              profile_type: this.userType,
-              phone: this.phone,
-              name: this.name,
-              address: this.address
-              }
-            )
-            .then((response) => {
-              console.log(response.data);
-              alert("Account Succesfully Created");
-              this.password= ''
-            })
-            .catch((error) => {
-              console.log(error.message);
-              alert("Email already exisits");
-            });
+        .then((data) => {
+          console.log("Successfully registered");
+          this.signUp = !this.signUp;
+        })
+        .catch((error) => {
+          console.log(error.code);
+          alert(error.message);
+        });
+      axios
+        .post(`http://127.0.0.1:5003/create/${this.userType}/${this.email}`, {
+          email: this.email,
+          password: this.password,
+          profile_type: this.userType,
+          phone: this.phone,
+          name: this.name,
+          address: this.address,
+        })
+        .then((response) => {
+          console.log(response.data);
+          alert("Account Succesfully Created");
+          this.password = "";
+        })
+        .catch((error) => {
+          console.log(error.message);
+          alert("Email already exisits");
+        });
     },
   },
 };
