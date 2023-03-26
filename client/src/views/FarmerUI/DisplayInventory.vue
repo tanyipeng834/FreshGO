@@ -22,7 +22,8 @@
                     <td>
                         <button id="statusBtn" 
                         ref="statusBtn" 
-                        :class="`btn btn-${product.status}`">
+                        :class="`btn btn-${product.status}`"
+                        @click=" viewWeather()">
                         {{ product.status }}
                         </button>
                     </td>
@@ -40,6 +41,19 @@ export default {
     return {
         products: [],
     };
+  },
+  methods: {
+    viewWeather() {
+        axios
+        .get("https://api.data.gov.sg/v1/environment/4-day-weather-forecast")
+        .then(response => {
+                this.weather = response.data.items[0].forecasts
+                console.log(this.weather)
+            })
+        .catch(error => {
+            console.log(error.message)
+        });
+    }
   },
   mounted() {
     axios
