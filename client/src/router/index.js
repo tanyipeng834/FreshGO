@@ -16,6 +16,7 @@ import OngoingCrops from "../views/FarmerUI/OngoingCrops.vue";
 import Home from "../views/Home.vue";
 import HomeView from "../views/HomeView.vue";
 import NotFoundPage from "../views/NotFoundPage.vue";
+import CustomerDelivery from "../views/CustomerUI/CustomerDelivery.vue";
 //Ignore below for testing
 
 const routes = [
@@ -86,6 +87,15 @@ const routes = [
     component: PaymentPage,
     meta: {
       title: "Payment",
+    },
+  },
+
+  {
+    path: "/customers/:id/:deliveryId",
+    name: "Customer Delivery",
+    component: CustomerDelivery,
+    meta: {
+      title: "Customer Delivery",
     },
   },
   // Delivery Staff UI

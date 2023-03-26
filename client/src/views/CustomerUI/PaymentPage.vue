@@ -119,6 +119,12 @@ export default {
 
         .then((response) => {
           console.log(response.data);
+          const delivery_data = response["data"]["data"];
+          var delivery_data_json = JSON.parse(delivery_data);
+          
+
+          localStorage.setItem("staffDetails", JSON.stringify(delivery_data_json.staff));
+          this.$router.push(`${delivery_data_json.deliveryId}`);
         })
         .catch((error) => {
           console.log(error.message);
