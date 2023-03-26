@@ -19,7 +19,7 @@
                     <th scope="row">{{ index + 1 }}</th>
                     <td>{{ product.name }}</td>
                     <td>{{ product.quantity }} kg</td>
-                    <td><button class="btn btn-success">{{ product.status }}</button></td>
+                    <td><button id="statusBtn" ref="statusBtn" :class="`btn btn-${product.status}`">{{ product.status }}</button></td>
                 </tr>
             </tbody>
         </table>
@@ -44,9 +44,23 @@ export default {
       .catch((error) => {
         console.log(error.message);
       });
-  }
+  },
 };
 </script>
 
 <style scoped>
+    .btn-Low{
+        background-color: red;
+        color: white;
+    }
+    
+    .btn-Medium{
+        background-color: yellow;
+        color: white;
+    }
+
+    .btn-High{
+        background-color: green;
+        color: white;
+    }
 </style>
