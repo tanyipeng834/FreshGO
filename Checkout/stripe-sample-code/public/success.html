@@ -5,23 +5,68 @@
 	<title>Payment Success</title>
 	<style>
 		body {
-			background-color: #f7f7f7;
+			background-image: url('stripe.png');
+			background-size: cover;
 			font-family: Arial, sans-serif;
-			text-align: center;
-			padding: 50px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			height: 100vh;
 		}
+
+    body::before { /* add a pseudo-element to create the overlay */
+			content: "";
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0, 0, 0, 0.5); /* add a semi-transparent black background */
+		}
+
 		h1 {
 			font-size: 3em;
 			color: #28a745;
+			font-family: 'Open Sans', sans-serif;
+			margin-bottom: 20px;
+      text-align: center;
+      z-index: 1; 
+		}
+		p {
+			font-size: 1.5em;
+      font-weight:bold;
+			color: #fff;
+			margin-top: 20px;
+			margin-bottom: 40px;
+      text-align: center;
+      z-index: 1;
+		}
+		img {
+			width: 200px;
+			height: auto;
+			margin-bottom: 20px;
+		}
+		.btn {
+			display: inline-block;
+			padding: 10px 20px;
+			background-color: #28a745;
+			color: #fff;
+			font-size: 1.2em;
+			text-decoration: none;
+			border-radius: 5px;
+			transition: background-color 0.2s;
+      z-index: 1;
+		}
+		.btn:hover {
+			background-color: #218838;
 		}
 	</style>
 </head>
 <body>
-	<h1>PAYMENT SUCCESS</h1>
-	<script>
-		setTimeout(function() {
-			window.close();
-		}, 1000); // 1000 milliseconds = 1 second
-	</script>
+	<!-- <img src="logo.png" alt="Logo"> -->
+	<h1>Success!</h1>
+	<p>Thank you for your payment. Your transaction has been processed successfully.</p>
+	<a href="https://www.etsy.com/sg-en/listing/667949132/metal-periodic-table-element-cubes-in?show_sold_out_detail=1&source=aw&utm_source=affiliate_window&utm_medium=affiliate&utm_campaign=us_location_buyer&utm_content=141392&awc=6220_1628960193_5ef73872371abb56432b2d34d08c403b&utm_term=0" class="btn">Continue Shopping</a>
 </body>
 </html>

@@ -11,8 +11,8 @@ from datetime import timedelta
 import json
 from invokes import invoke_http
 import requests
-import amqp_setup
-import pika
+# import amqp_setup
+# import pika
 
 # book_URL = "http://localhost:5000/book"
 # shipping_record_URL = "http://localhost:5002/shipping_record"
@@ -25,7 +25,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
-queue_name = 'Delivery_Staff'
 
 
 class Purchase_Activity(db.Model):
@@ -76,37 +75,33 @@ def create_request():
     customer_name = request.json.get('customer_name')
     customer_id = request.json.get('customer_id')
     transaction_amt = request.json.get('transaction_amt')
-    delivery_details = {"customer_name": customer_name,
-                        "customer_phone": customer_phone, "customer_location": customer_location}
-    # invoke the delivery microservice and create a delivery request
-    #
-    delivery_response = invoke_http(
-        "http://localhost:5005/delivery", method="POST", json=delivery_details)
-    delivery_amt = delivery_response['delivery_fee']
-    transaction_amt = transaction_amt + delivery_amt
+    delivery_details = {"customer_name":customer_name,"customer_phone":customer_phone,"customer_location":customer_location}
+    
 
     # We will get the
     create_request = Purchase_Activity(
         customer_id=customer_id, customer_location=customer_location, transaction_amount=transaction_amt)
     for item in cart_item:
-
         create_request.crop_purchased.append(Crop_Purchased(
-            crop_name=item['name'], quantity=item['quantity']))
+            crop_name=item['CropName'], quantity=item['quantity']))
 
     try:
         db.session.add(create_request)
         print(create_request.json())
         db.session.commit()
-        # payment = stripe(json.loads(
-        #     '{"transaction_amt":'+str(transaction_amt)+'}'))
-        # if payment['Payment Status'] != 'Success':
-        #     return jsonify(
-        #         {"code": 500,
-        #             "data":
-        #             payment,
-        #             "message": "An error occurred creating the payment."
-        #          }
-        #     )
+        payment = stripe(json.loads(
+            '{"transaction_amt":'+str(transaction_amt)+'}'))
+        if payment['Payment Status'] != 'Success':
+            return jsonify(
+                {"code": 500,
+                    "data":
+                    payment,
+                    "message": "An error occurred creating the payment."
+                 }
+            )
+        # invoke the delivery microservice
+        delivery_amt =  invoke_http("http://localhost:5005/delivery", method="POST", json=delivery_details)
+        transaction_amt = transaction_amt +delivery_amt
 
     except Exception as e:
         return jsonify(
@@ -117,10 +112,14 @@ def create_request():
                 "message": "An error occurred creating the purchase request." + str(e)
             }
         ), 500
+    print("Order Confirmed, Looking for Driver")
+    print(jsonify(
+        {"code": 201,
+         "data": create_request.json()
+         }
+    ))
 
-    amqp_setup.channel.basic_consume(
-        queue='Delivery_Staff', on_message_callback=callback, auto_ack=True)
-    amqp_setup.channel.start_consuming()
+    return create_request.json() | payment
 
     # message=[cart_item,customer_location]
     # amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="delivery.request",
@@ -128,49 +127,26 @@ def create_request():
     # print("\nDelivery Request published to RabbitMQ Exchange.\n")
 
 
-def callback(ch, method, properties, body):
-    print(body)
-    body = body.decode()
-    return jsonify({
-
-        "code": 201,
-        "data": body,
-        "message": "Delivery Staff has accepted the request"
-    }
-
-
-    ), 201
-
-
 def stripe(transaction_amount):
     payment_result = invoke_http(
-        "http://localhost:4242/make_payment", method="POST", json=transaction_amount)
+        "http://localhost:4242/create-payment-intent", method="POST", json=transaction_amount)
     return payment_result
 
 
 @app.route("/purchase_request")
 def get_all():
-    data = request.get_json()
-    if data != "":
+    if request.is_json:
+        data = request.get_json()
         filter_after = datetime.today()-timedelta(days=30)
-        requestlist = Purchase_Activity.query.filter(
-            Purchase_Activity.created > filter_after).all()
-        total = 0
-        for i in requestlist:
-            if i.status == "Ongoing/New":
-                for b in i.crop_purchased:
-                    if b.crop_name == data["name"]:
-                        total += b.quantity
+        print(filter_after)
 
-        recommend = total-data['quantity']
-        if recommend < 0:
-            recommend = "You have enough inventory"
+        requestlist = Purchase_Activity.query.filter(Purchase_Activity.created > filter_after).all()
         if len(requestlist):
             return jsonify(
                 {
                     "code": 200,
                     "data": {
-                        "Recommended": recommend
+                        "Purchase Requests": [order.json() for order in requestlist]
                     }
                 }
             )
