@@ -11,8 +11,8 @@ from datetime import timedelta
 import json
 from invokes import invoke_http
 import requests
-# import amqp_setup
-# import pika
+import amqp_setup
+import pika
 
 # book_URL = "http://localhost:5000/book"
 # shipping_record_URL = "http://localhost:5002/shipping_record"
@@ -112,11 +112,28 @@ def create_request():
             }
         ), 500
     print("Order Confirmed, Looking for Driver")
-    print(jsonify(
-        {"code": 201,
-         "data": create_request.json()
-         }
-    ))
+    amqp_setup.channel.basic_consume(
+        queue='Delivery_Staff', on_message_callback=callback, auto_ack=True)
+    amqp_setup.channel.start_consuming()
+
+    # message=[cart_item,customer_location]
+    # amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="delivery.request",
+    #         body=message, properties=pika.BasicProperties(delivery_mode = 2))
+    # print("\nDelivery Request published to RabbitMQ Exchange.\n")
+
+
+def callback(ch, method, properties, body):
+    print(body)
+    body = body.decode()
+    return jsonify({
+
+        "code": 201,
+        "data": body,
+        "message": "Delivery Staff has accepted the request"
+    }
+
+
+    ), 201
 
     return create_request.json() | payment
 
