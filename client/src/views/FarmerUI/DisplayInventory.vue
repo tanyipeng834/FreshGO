@@ -63,10 +63,13 @@ export default {
     .btn-Medium{
         background-color: yellow;
         color: white;
+        /* To disable button */
+        pointer-events: none;
     }
 
     .btn-High{
         background-color: green;
         color: white;
+        pointer-events: none;
     }
 </style>
