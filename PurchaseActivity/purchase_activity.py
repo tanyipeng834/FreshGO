@@ -14,6 +14,10 @@ import requests
 import amqp_setup
 import pika
 from threading import Thread
+from queue import Queue
+
+# Create a shared queue to store the data returned by the callback function
+data_queue = Queue()
 
 # book_URL = "http://localhost:5000/book"
 # shipping_record_URL = "http://localhost:5002/shipping_record"
@@ -92,13 +96,17 @@ def create_request():
     for item in cart_item:
         crop_name = item['name']
         quantity = item['orderNo']
+        price = item['price']
         create_request.crop_purchased.append(Crop_Purchased(
             crop_name=crop_name, quantity=quantity))
         quantity = quantity*-1
 
-        # Update the data base
-        purchase_item = {"name": crop_name, "quantity": quantity}
-        invoke_http('http://127.0.0.1:5000', method="PUT", json=purchase_item)
+        # Update the data base with price also
+        purchase_item = {"name": crop_name,
+                         "quantity": quantity, "price": price}
+        update_response = invoke_http(
+            'http://127.0.0.1:5000/inventory', method="PUT", json=purchase_item)
+        print(update_response)
 
     try:
         db.session.add(create_request)
@@ -134,6 +142,16 @@ def create_request():
     # amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="delivery.request",
     #         body=message, properties=pika.BasicProperties(delivery_mode = 2))
     # print("\nDelivery Request published to RabbitMQ Exchange.\n")
+    body = data_queue.get()
+    return jsonify({
+
+        "code": 201,
+        "data": body,
+        "message": "Delivery Staff has accepted the request"
+    }
+
+
+    ), 201
 
 
 def consume_delivery_messages():
@@ -145,19 +163,10 @@ def consume_delivery_messages():
 
 
 def callback(ch, method, properties, body):
-    print(body)
+
     body = body.decode()
-    return jsonify({
-
-        "code": 201,
-        "data": body,
-        "message": "Delivery Staff has accepted the request"
-    }
-
-
-    ), 201
-
-    return create_request.json() | payment
+    print(body)
+    data_queue.put(body)
 
     # message=[cart_item,customer_location]
     # amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="delivery.request",
