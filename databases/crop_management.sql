@@ -3,16 +3,28 @@ SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
-CREATE DATABASE IF NOT EXISTS `crops` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `crops`;
-CREATE TABLE crops (
-    'name' varchar(50) NOT NULL,
-    'current_water_used' decimal(10, 2) NOT NULL,
-    'recommended_water_level' decimal(10, 2) NOT NULL,
-    'recommended_fertiliser' decimal(10, 2) NOT NULL,
-    'max_height' decimal(10, 2) NOT NULL,
-    PRIMARY KEY ('name')
+CREATE DATABASE IF NOT EXISTS `crop_management` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `crop_management`;
+
+DROP TABLE IF EXISTS `crops`;
+CREATE TABLE IF NOT EXISTS `crops`(
+  `batch` int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `name` varchar(50) NOT NULL,
+  `max_height` decimal(10, 2) NOT NULL,
+  `recommended_water_level` decimal(10, 2) NOT NULL,
+  `recommended_fertiliser_level` decimal(10, 2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+INSERT INTO `crops` (`batch`, `name`, `max_height`, `recommended_water_level`, `recommended_fertiliser_level`) VALUES 
+(1, "Xin Gua", 10.2, 10.2, 10.2),
+(2, "Xin Gua", 10.5, 10.5, 10.5),
+(3, "Gua Xin", 2.5, 2.5, 2.5),
+(4, "Gua Xin", 5.7, 5.7, 5.7);
+COMMIT;
+
+
+
 
 -- DROP TABLE IF EXISTS `crops`;
 -- CREATE TABLE crops (

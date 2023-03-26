@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `purchase_activity`(
 
 DROP TABLE IF EXISTS `crop_purchased`;
 CREATE TABLE IF NOT EXISTS `crop_purchased`(
-  `order_id` int primary key not null AUTO_INCREMENT ,
+  `order_id` int primary key not null AUTO_INCREMENT,
   `purchase_id`int NOT NULL,
   `crop_name` varchar(32)  not null,
   `quantity` int not null,
