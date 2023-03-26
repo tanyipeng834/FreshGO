@@ -89,7 +89,7 @@ def create_request():
         customer_id=customer_id, customer_location=customer_location, transaction_amount=transaction_amt)
     for item in cart_item:
         create_request.crop_purchased.append(Crop_Purchased(
-            crop_name=item['name'], quantity=item['quantity']))
+            crop_name=item['name'], quantity=item['orderNo']))
 
     try:
         db.session.add(create_request)
@@ -125,6 +125,8 @@ def create_request():
     # amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="delivery.request",
     #         body=message, properties=pika.BasicProperties(delivery_mode = 2))
     # print("\nDelivery Request published to RabbitMQ Exchange.\n")
+
+
 def consume_delivery_messages():
     # Set up the channel to consume messages from the Delivery_Staff queue
     amqp_setup.channel.basic_consume(
