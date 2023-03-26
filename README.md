@@ -9,7 +9,7 @@ Purchase Activity Microservice
 Inventory and Inventory Managment Microservice
 - Tim:
 Person Microservice
-- Wu Hao 😂:
+- Wu Hao:
 Crop Management and Machine Learning
 - Calista & T-Leng:
 Front end
@@ -20,4 +20,4 @@ Crop Management - port 5001
 Machine Learning - port 5002
 Profile - port 5003
 Checkout - port 5004
-
+Twilio - port 5005
