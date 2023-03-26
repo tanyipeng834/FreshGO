@@ -8,17 +8,28 @@ app = Flask(__name__)
 CORS(app)
 
 # Set up database
-app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL')
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('crop_management_URL') or "mysql+mysqlconnector://root@localhost:3306/crop_management"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 # Define Crop class to map to the crops table
 class Crop(db.Model):
-    name = db.Column(db.String(50), primary_key=True)
-    current_water_used = db.Column(db.Float, nullable=False)
-    recommended_water_level = db.Column(db.Float, nullable=False)
-    recommended_fertiliser = db.Column(db.Float, nullable=False)
+    __tablename__ = 'crops'
+    batch =  db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
     max_height = db.Column(db.Float, nullable=False)
+    recommended_water_level = db.Column(db.Float, nullable=False)
+    recommended_fertiliser_level = db.Column(db.Float, nullable=False)
+    
+    def __init__(self, name, max_height):
+        self.name = name
+        self.max_height = max_height
+        self.recommended_water_level = 5
+        self.recommended_fertiliser_level = 5
+
+    def json(self):
+        return {"Batch": self.batch, "Crop Name": self.name,"Crop Height":self.max_height,"Recommend Water":self.recommended_water_level,"Recommend Fertilliser":self.recommended_fertiliser_level}
+
 
 # Define the route for receiving input from the farmer UI
 @app.route('/crop_management', methods=['POST'])
@@ -43,6 +54,66 @@ def manage_crop():
     return jsonify({
         'message': 'Crop management data updated successfully.'
     }), 200
+
+@app.route('/crop_managements', methods=['GET', 'PUT', 'POST'])
+def managed_crop():
+    if request.method == "GET":
+        data = Crop.query.all()
+        if len(data):
+            return jsonify(
+                {
+                    "code": 200,
+                    "data": {
+                        "inventory": [cropx.json() for cropx in data]
+                    }
+                }
+            )
+        return jsonify(
+            {
+                "code": 404,
+                "message": "There are no crops."
+            }
+        ), 404
+    elif request.method == "PUT":
+        data = request.get_json()
+        crop_batch = data['batch']
+        crop_height = data['height']
+        if (Crop.query.filter_by(batch=crop_batch).first()):
+            crop = Crop.query.filter_by(batch=crop_batch).first()
+            crop.max_height = crop_height
+            try:
+                db.session.add(crop)
+                db.session.commit()
+            except:
+                return jsonify(
+                    {
+                        "code": 500,
+                        "data": {
+                            "Crop Name": data['name']
+                        },
+                        "message": "An error occurred creating the Inventory."
+                    }
+                ), 500
+
+            return jsonify(
+                {
+                    "code": 201,
+                    "data": crop.json()
+                }
+            )
+        else:
+            return jsonify(
+                {
+                    "code": 400,
+                    "data": {
+                        "Crop Name": data['name']
+                    },
+                    "message": "Crop Batch already exists."
+                }
+            ), 400
+
+
+
 
 # Run app
 if __name__ == '__main__':
