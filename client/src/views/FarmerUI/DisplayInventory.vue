@@ -45,6 +45,8 @@
                     <td>{{ product.name }}</td>
                     <td>{{ product.quantity }} kg</td>
                     <td>
+                        <!-- To add more onClick event just insert ";" then the function at @click
+                        e.g. @click=" viewWeather(); weatherForecast=true"; newFunction() -->
                         <button id="statusBtn" 
                         ref="statusBtn" 
                         :class="`btn btn-${product.status}`"
