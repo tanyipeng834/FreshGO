@@ -46,6 +46,7 @@ db = SQLAlchemy(app)
 @app.route("/manager", methods=['POST', 'GET', 'PUT'])
 def place_order():
     # Simple check of input format and data of the request are JSON
+    
     if request.method == "POST":
         if request.is_json:
             try:

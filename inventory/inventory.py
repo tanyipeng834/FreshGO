@@ -3,6 +3,7 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from os import environ
+from invokes import invoke_http
 
 
 app = Flask(__name__)
@@ -126,7 +127,9 @@ def get_all_crops():
                         "message": "An error occurred when updating the Inventory."
                     }
                 ), 500
-
+            
+            # Call wuhao's twillio api to invoke messaging the farmer
+            invoke_http("http://localhost:5008/send-sms", method="GET")
             return jsonify(
                 {
                     "code": 201,

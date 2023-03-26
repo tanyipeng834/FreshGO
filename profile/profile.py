@@ -68,7 +68,7 @@ class Profile(db.Model):
         return (bcrypt.checkpw(passw.encode('utf-8'), self.password.encode('utf-8')))
 
 
-# Creating customer account
+# Creating Profile account
 @app.route("/create/<string:user_type>/<string:email>", methods=['POST'])
 def create_account(email, user_type):
     # Find the profile with the matching particulars
