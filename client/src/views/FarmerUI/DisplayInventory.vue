@@ -19,7 +19,13 @@
                     <th scope="row">{{ index + 1 }}</th>
                     <td>{{ product.name }}</td>
                     <td>{{ product.quantity }} kg</td>
-                    <td><button id="statusBtn" ref="statusBtn" :class="`btn btn-${product.status}`">{{ product.status }}</button></td>
+                    <td>
+                        <button id="statusBtn" 
+                        ref="statusBtn" 
+                        :class="`btn btn-${product.status}`">
+                        {{ product.status }}
+                        </button>
+                    </td>
                 </tr>
             </tbody>
         </table>
