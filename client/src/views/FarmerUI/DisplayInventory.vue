@@ -1,6 +1,7 @@
 <!-- For Scenerio 2 -->
 <template>
     <div class="container-fluid">
+        <!-- Only show when status button is clicked -->
         <div v-show="weatherForecast" class="row">
             <table class="table table-success table-bordered">
                 <thead>
@@ -25,6 +26,7 @@
             </table>
             <br>
         </div>
+        <!-- End of hidden div & table -->
         <div class="row">
         <table class="table table-hover">
             <thead>
