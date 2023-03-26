@@ -81,30 +81,39 @@ def create_request():
     # invoke the delivery microservice
     delivery_response = invoke_http(
         "http://localhost:5005/delivery", method="POST", json=delivery_details)
+    print(delivery_response)
     delivery_amt = delivery_response['delivery_fee']
     transaction_amt = transaction_amt + delivery_amt
 
     # We will get the
     create_request = Purchase_Activity(
         customer_id=customer_id, customer_location=customer_location, transaction_amount=transaction_amt)
+
     for item in cart_item:
+        crop_name = item['name']
+        quantity = item['orderNo']
         create_request.crop_purchased.append(Crop_Purchased(
-            crop_name=item['name'], quantity=item['orderNo']))
+            crop_name=crop_name, quantity=quantity))
+        quantity = quantity*-1
+
+        # Update the data base
+        purchase_item = {"name": crop_name, "quantity": quantity}
+        invoke_http('http://127.0.0.1:5000', method="PUT", json=purchase_item)
 
     try:
         db.session.add(create_request)
         print(create_request.json())
         db.session.commit()
-        payment = stripe(json.loads(
-            '{"transaction_amt":'+str(transaction_amt)+'}'))
-        if payment['Payment Status'] != 'Success':
-            return jsonify(
-                {"code": 500,
-                    "data":
-                    payment,
-                    "message": "An error occurred creating the payment."
-                 }
-            )
+        # payment = stripe(json.loads(
+        #     '{"transaction_amt":'+str(transaction_amt)+'}'))
+        # if payment['Payment Status'] != 'Success':
+        #     return jsonify(
+        #         {"code": 500,
+        #             "data":
+        #             payment,
+        #             "message": "An error occurred creating the payment."
+        #          }
+        #     )
 
     except Exception as e:
         return jsonify(
