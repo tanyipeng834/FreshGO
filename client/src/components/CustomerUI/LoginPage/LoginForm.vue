@@ -291,7 +291,13 @@ export default {
                 console.log(profileId);
                 alert("Account Credentials are Correct");
                 // Now we will start going to the correct route
-                router.push(`/customer/${profileId}`);
+                if (this.userType == "customer") {
+                  router.push(`/customer/${profileId}`);
+                } else if (this.userType == "staff") {
+                  router.push(`/delivery/${profileId}`);
+                } else {
+                  router.push(`farmer/${profileId}`);
+                }
               }
               // console.log(response.data);
             })

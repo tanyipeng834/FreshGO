@@ -1,11 +1,7 @@
 <template>
   <div id="page-wrap">
     <div class="grid-wrap">
-      <div
-        v-for="product in products"
-        class="product-item"
-        :key="product.name"
-      >
+      <div v-for="product in products" class="product-item" :key="product.name">
         <img src="../../assets/caixinhua.jpg" />
         <h3 class="product-name">{{ product.name }}</h3>
         <p class="product-price">${{ product.price }}</p>

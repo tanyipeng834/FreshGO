@@ -1,4 +1,4 @@
-import os
+
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
@@ -7,6 +7,7 @@ import amqp_setup
 import pika
 from invokes import invoke_http
 import requests
+import json
 
 app = Flask(__name__)
 CORS(app)
@@ -41,8 +42,7 @@ class Deliveries(db.Model):
     #     self.height = height
     #     self.type = type
 
-    def __init__(self, id, customer_name, customer_location, customer_phone, delivery_charge):
-        self.id = id
+    def __init__(self, customer_name, customer_location, customer_phone, delivery_charge):
         self.customer_name = customer_name
         self.customer_location = customer_location
         self.customer_phone = customer_phone
@@ -90,7 +90,7 @@ def get_all_deliveries():
 
         # Check if there is a crop with a similar name in the database
         # Create a new object based on the input
-        delivery = Deliveries(**data, charge=delivery_fee)
+        delivery = Deliveries(**data, delivery_charge=delivery_fee)
 
         try:
             db.session.add(delivery)
@@ -124,19 +124,25 @@ def delete_delivery():
     if deliveries:
 
         Deliveries.query.filter_by(id=delivery_id).delete()
+        # Actually delete the entry
+        db.session.commit()
         # Invoke http
-        # Publish the delivery microservice to get the staff that will be coming
-        staff = invoke_http(f'http://127.0.0.1:5003/{staff_id}', 'GET')
+        # Publish the profile  microservice to get the staff that will be coming
+        staff = invoke_http(f'http://127.0.0.1:5003/profile/{staff_id}', 'GET')
+        print(staff)
+        staff_data = staff['data']
+        print(staff_data)
         # Send back the delivery staff that is on the way to collect the delivery
         body = {"deliveryId": delivery_id,
-                "staff": staff.json()
+                "staff": staff_data
                 }
-        amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="staff.delivery",
-                                         body=body, properties=pika.BasicProperties(delivery_mode=2))
+        json_body = json.dumps(body, indent=4)
+        amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="delivery.accept",
+                                         body=json_body, properties=pika.BasicProperties(delivery_mode=2))
         return jsonify(
             {
                 "code": 200,
-                "message": "Delivery Request  has been succesfully accepted by "
+                "message": "Delivery Request  has been succesfully accepted by a driver "
             }
         )
     return jsonify(
