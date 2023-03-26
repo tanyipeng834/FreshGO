@@ -6,10 +6,13 @@
         <h3 class="product-name">{{ product.name }}</h3>
         <p class="product-price">${{ product.price }}</p>
         <p class="product-price">{{ product.type }}</p>
+        <p class="product-price">
+          Quantity in Inventory:{{ product.quantity }}
+        </p>
         <div class="input-group mb-3">
-          <span class="input-group-text">Quantity</span>
+          <span class="input-group-text">Quantity To Purchase</span>
           <input
-            v-model="product.quantity"
+            v-model="product.orderNo"
             type="number"
             class="form-control"
             aria-label="Quantity"
@@ -41,7 +44,7 @@ export default {
       .then((response) => {
         this.products = response.data.data.inventory.map((product) => ({
           ...product,
-          quantity: 0,
+          orderNo: 0,
         }));
       })
       .catch((error) => {
@@ -51,11 +54,11 @@ export default {
   methods: {
     purchaseProducts() {
       const productsToPurchase = this.products
-        .filter((product) => product.quantity > 0)
-        .map(({ name, price, quantity }) => ({
+        .filter((product) => product.orderNo > 0)
+        .map(({ name, price, orderNo }) => ({
           name,
           price,
-          quantity,
+          orderNo,
         }));
 
       localStorage.setItem(
