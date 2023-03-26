@@ -136,7 +136,7 @@ def delete_delivery():
         body = {"deliveryId": delivery_id,
                 "staff": staff_data
                 }
-        json_body = json.dumps(body, indent=4)
+        json_body = json.dumps(body)
         amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="delivery.accept",
                                          body=json_body, properties=pika.BasicProperties(delivery_mode=2))
         return jsonify(

@@ -114,7 +114,6 @@ def get_all_crops():
 
             try:
                 db.session.delete(details)
-                db.session.commit()
                 db.session.add(crop)
                 db.session.commit()
             except:
@@ -129,7 +128,7 @@ def get_all_crops():
                 ), 500
 
             # Call wuhao's twillio api to invoke messaging the farmer
-            invoke_http("http://localhost:5008/send-sms", method="GET")
+            # invoke_http("http://localhost:5008/send-sms", method="GET")
             return jsonify(
                 {
                     "code": 201,

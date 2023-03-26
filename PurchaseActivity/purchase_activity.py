@@ -138,20 +138,16 @@ def create_request():
 
     # Block the main thread until the delivery message is received
     delivery_thread.join()
-    # message=[cart_item,customer_location]
-    # amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="delivery.request",
-    #         body=message, properties=pika.BasicProperties(delivery_mode = 2))
-    # print("\nDelivery Request published to RabbitMQ Exchange.\n")
+
     body = data_queue.get()
+
+    print("hello")
     return jsonify({
 
         "code": 201,
         "data": body,
         "message": "Delivery Staff has accepted the request"
-    }
-
-
-    ), 201
+    }), 201
 
 
 def consume_delivery_messages():
@@ -167,6 +163,7 @@ def callback(ch, method, properties, body):
     body = body.decode()
     print(body)
     data_queue.put(body)
+    amqp_setup.channel.stop_consuming()
 
     # message=[cart_item,customer_location]
     # amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="delivery.request",
