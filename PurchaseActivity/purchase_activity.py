@@ -80,43 +80,33 @@ def create_request():
                         "customer_phone": customer_phone, "customer_location": customer_location}
     # invoke the delivery microservice and create a delivery request
     #
-    delivery_amt = invoke_http(
+    delivery_response = invoke_http(
         "http://localhost:5005/delivery", method="POST", json=delivery_details)
+    delivery_amt = delivery_response['delivery_fee']
     transaction_amt = transaction_amt + delivery_amt
-    delivery_response = None
-
-    def on_response(ch, method, props, body):
-        nonlocal delivery_response
-        delivery_response = body.decode()
-        amqp_setup.channel.basic_ack(delivery_tag=method.delivery_tag)
-    amqp_setup.channel.basic_consume(
-        queue=queue_name, on_message_callback=on_response, auto_ack=True)
-    amqp_setup.channel.start_consuming()
-    while delivery_response is None:
-        amqp_setup.channel.connection.process_data_events()
-    print(delivery_response)
 
     # We will get the
     create_request = Purchase_Activity(
         customer_id=customer_id, customer_location=customer_location, transaction_amount=transaction_amt)
     for item in cart_item:
+
         create_request.crop_purchased.append(Crop_Purchased(
-            crop_name=item['CropName'], quantity=item['quantity']))
+            crop_name=item['name'], quantity=item['quantity']))
 
     try:
         db.session.add(create_request)
         print(create_request.json())
         db.session.commit()
-        payment = stripe(json.loads(
-            '{"transaction_amt":'+str(transaction_amt)+'}'))
-        if payment['Payment Status'] != 'Success':
-            return jsonify(
-                {"code": 500,
-                    "data":
-                    payment,
-                    "message": "An error occurred creating the payment."
-                 }
-            )
+        # payment = stripe(json.loads(
+        #     '{"transaction_amt":'+str(transaction_amt)+'}'))
+        # if payment['Payment Status'] != 'Success':
+        #     return jsonify(
+        #         {"code": 500,
+        #             "data":
+        #             payment,
+        #             "message": "An error occurred creating the payment."
+        #          }
+        #     )
 
     except Exception as e:
         return jsonify(
@@ -127,19 +117,29 @@ def create_request():
                 "message": "An error occurred creating the purchase request." + str(e)
             }
         ), 500
-    print("Order Confirmed, Looking for Driver")
-    print(jsonify(
-        {"code": 201,
-         "data": create_request.json()
-         }
-    ))
 
-    return create_request.json() | payment
+    amqp_setup.channel.basic_consume(
+        queue='Delivery_Staff', on_message_callback=callback, auto_ack=True)
+    amqp_setup.channel.start_consuming()
 
     # message=[cart_item,customer_location]
     # amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="delivery.request",
     #         body=message, properties=pika.BasicProperties(delivery_mode = 2))
     # print("\nDelivery Request published to RabbitMQ Exchange.\n")
+
+
+def callback(ch, method, properties, body):
+    print(body)
+    body = body.decode()
+    return jsonify({
+
+        "code": 201,
+        "data": body,
+        "message": "Delivery Staff has accepted the request"
+    }
+
+
+    ), 201
 
 
 def stripe(transaction_amount):

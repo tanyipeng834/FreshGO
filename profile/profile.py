@@ -291,45 +291,6 @@ def update_staff_profile(id):
 # For adding farmer details
 
 
-@ app.route("/update/farmer/<string:id>", methods=['PUT'])
-def update_farmer_profile(id):
-    if (Farmer.query.filter_by(id=id).first()):
-        customer_details = Farmer.query.filter_by(id=id).first()
-        data = request.get_json()
-        if (data['name'] != ''):
-            customer_details.name = data['name']
-        if (data['phone'] != ''):
-            customer_details.phone = data['phone']
-        if (data['address'] != ''):
-            customer_details.address = data['address']
-        try:
-            db.session.commit()
-        except:
-            return jsonify(
-                {
-                    "code": 500,
-                    "data": {
-                        "id": id
-                    },
-                    "message": "An error occurred creating the profile."
-                }
-            ), 500
-        return jsonify(
-            {
-                "code": 201,
-                "data": Farmer.query.filter_by(id=id).first().json()
-            }
-        ), 201
-    return jsonify(
-        {
-            "code": 400,
-            "data": {
-                "id": id
-            },
-            "message": "No such ID is used."
-        }
-    ), 400
-
 
 # Find  profile
 @ app.route("/profile/<string:id>")

@@ -66,7 +66,7 @@ export default {
         .catch((error) => {
           console.log(error.message);
         });
-      this.$router.push(`http://127.0.0.1:5005/delivery/${id}`);
+      this.$router.push(`${staff}/${id}`);
     },
   },
   mounted() {
