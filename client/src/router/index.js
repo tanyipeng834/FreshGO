@@ -36,16 +36,6 @@ const routes = [
     },
   },
   {
-    path: "/MoreInfo",
-    name: "MoreInfo",
-    component: function () {
-      return import(/* webpackChunkName: "about" */ "../views/MoreInfo.vue");
-    },
-    meta: {
-      title: "MoreInfo",
-    },
-  },
-  {
     path: "/home",
     name: "HomeView",
     component: HomeView,
