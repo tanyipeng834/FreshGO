@@ -11,16 +11,15 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- <tr
-                v-for="item in inventoryList"
+                <tr
+                v-for= "(product, index) in products"
                 class="inventory-item"
-                v-bind:key="item.orderId"
-                > -->
-                <tr>
-                    <th scope="row">1</th> <!-- To be replaced with a count fuction -->
-                    <td>cropName</td>
-                    <td>qty</td>
-                    <td><button class="btn btn-success">Low</button></td>
+                v-bind:key="product.name"
+                >
+                    <th scope="row">{{ index + 1 }}</th>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.quantity }} kg</td>
+                    <td><button class="btn btn-success">{{ product.status }}</button></td>
                 </tr>
             </tbody>
         </table>
@@ -28,8 +27,24 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: 'DisplayInventory',
+  data() {
+    return {
+        products: [],
+    };
+  },
+  mounted() {
+    axios
+      .get("http://127.0.0.1:5000/inventory")
+      .then((response) => {
+        this.products = response.data.data.inventory;
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  }
 };
 </script>
 
