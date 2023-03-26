@@ -185,7 +185,25 @@ def create_farmer(email):
     ), 201
 
 
-
+# Find profile by type
+@app.route('/type/<string:profile_type>', methods=['GET'])
+def get_users_by_profile_type(profile_type):
+    # Query database for users by profile type
+    profiles = Profile.query.filter_by(profile_type=profile_type).all()
+    if profiles:
+        return jsonify(
+            {
+                "code": 200,
+                "data": [profile.json() for profile in profiles]
+            }
+            
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Profile not found."
+        }
+    ), 404
 
 
 # Find  profile

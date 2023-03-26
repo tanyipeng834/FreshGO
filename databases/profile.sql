@@ -56,7 +56,9 @@ ALTER TABLE profile AUTO_INCREMENT=10000;
 -- (2222222222, 'Please', 'Work@gmail.com', '13213315');
 -- COMMIT;
 
-
+INSERT INTO `profile` (`id`,`email`,`password`,`profile_type`, `name`,`phone`,`address`) VALUES
+(3333333333, "Working@gmail.com", "12345","farmer","wuhao","+6593486088","456435");
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

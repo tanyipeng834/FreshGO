@@ -14,6 +14,10 @@ import requests
 import amqp_setup
 import pika
 from threading import Thread
+from queue import Queue
+
+# Create a shared queue to store the data returned by the callback function
+data_queue = Queue()
 
 # book_URL = "http://localhost:5000/book"
 # shipping_record_URL = "http://localhost:5002/shipping_record"
@@ -81,30 +85,43 @@ def create_request():
     # invoke the delivery microservice
     delivery_response = invoke_http(
         "http://localhost:5005/delivery", method="POST", json=delivery_details)
+    print(delivery_response)
     delivery_amt = delivery_response['delivery_fee']
     transaction_amt = transaction_amt + delivery_amt
 
     # We will get the
     create_request = Purchase_Activity(
         customer_id=customer_id, customer_location=customer_location, transaction_amount=transaction_amt)
+
     for item in cart_item:
+        crop_name = item['name']
+        quantity = item['orderNo']
+        price = item['price']
         create_request.crop_purchased.append(Crop_Purchased(
-            crop_name=item['name'], quantity=item['orderNo']))
+            crop_name=crop_name, quantity=quantity))
+        quantity = quantity*-1
+
+        # Update the data base with price also
+        purchase_item = {"name": crop_name,
+                         "quantity": quantity, "price": price}
+        update_response = invoke_http(
+            'http://127.0.0.1:5000/inventory', method="PUT", json=purchase_item)
+        print(update_response)
 
     try:
         db.session.add(create_request)
         print(create_request.json())
         db.session.commit()
-        payment = stripe(json.loads(
-            '{"transaction_amt":'+str(transaction_amt)+'}'))
-        if payment['Payment Status'] != 'Success':
-            return jsonify(
-                {"code": 500,
-                    "data":
-                    payment,
-                    "message": "An error occurred creating the payment."
-                 }
-            )
+        # payment = stripe(json.loads(
+        #     '{"transaction_amt":'+str(transaction_amt)+'}'))
+        # if payment['Payment Status'] != 'Success':
+        #     return jsonify(
+        #         {"code": 500,
+        #             "data":
+        #             payment,
+        #             "message": "An error occurred creating the payment."
+        #          }
+        #     )
 
     except Exception as e:
         return jsonify(
@@ -125,6 +142,16 @@ def create_request():
     # amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="delivery.request",
     #         body=message, properties=pika.BasicProperties(delivery_mode = 2))
     # print("\nDelivery Request published to RabbitMQ Exchange.\n")
+    body = data_queue.get()
+    return jsonify({
+
+        "code": 201,
+        "data": body,
+        "message": "Delivery Staff has accepted the request"
+    }
+
+
+    ), 201
 
 
 def consume_delivery_messages():
@@ -136,19 +163,10 @@ def consume_delivery_messages():
 
 
 def callback(ch, method, properties, body):
-    print(body)
+
     body = body.decode()
-    return jsonify({
-
-        "code": 201,
-        "data": body,
-        "message": "Delivery Staff has accepted the request"
-    }
-
-
-    ), 201
-
-    return create_request.json() | payment
+    print(body)
+    data_queue.put(body)
 
     # message=[cart_item,customer_location]
     # amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="delivery.request",

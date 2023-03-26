@@ -289,7 +289,6 @@ export default {
               if (response.data.code == 200) {
                 var profileId = response.data.userId;
                 console.log(profileId);
-                alert("Account Credentials are Correct");
                 // Now we will start going to the correct route
                 if (this.userType == "customer") {
                   router.push(`/customer/${profileId}`);

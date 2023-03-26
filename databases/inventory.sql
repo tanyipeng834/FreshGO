@@ -33,7 +33,7 @@ USE `inventory`;
 DROP TABLE IF EXISTS `inventory`;
 CREATE TABLE IF NOT EXISTS `inventory` (
   `name` varchar(30) NOT NULL,
-  `quantity` decimal(5,2) NOT NULL,
+  `quantity` int NOT NULL,
   `price` decimal(5,2) NOT NULL,
   `type` varchar(30) NOT NULL,
   `status` varchar(30) NOT NULL,
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `inventory` (
 
 
 INSERT INTO `inventory` (`name`, `quantity`,`price`, `type`,`status`) VALUES 
-("Xiao Bai Cai", 2.30,5,"Vegetable", "Low");
+("Xiao Bai Cai", 15,5,"Vegetable", "Low");
 COMMIT;
 
 

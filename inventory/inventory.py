@@ -22,7 +22,7 @@ db = SQLAlchemy(app)
 class Inventory(db.Model):
     __tablename__ = 'inventory'
     name = db.Column(db.String(15), nullable=False, primary_key=True)
-    quantity = db.Column(db.Float, nullable=False)
+    quantity = db.Column(db.Integer, nullable=False)
     price = db.Column(db.Float, nullable=False)
     type = db.Column(db.String(15), nullable=False)
     status = db.Column(db.String(15), nullable=False)
@@ -109,7 +109,7 @@ def get_all_crops():
         if (Inventory.query.filter_by(name=crop_name).first()):
             # Create a new object based on the input
             details = Inventory.query.filter_by(name=crop_name).first()
-            data['quantity'] = data['quantity'] + details.quantity
+            data['quantity'] = details.quantity + data['quantity']
             crop = Inventory(**data)
 
             try:
@@ -127,7 +127,7 @@ def get_all_crops():
                         "message": "An error occurred when updating the Inventory."
                     }
                 ), 500
-            
+
             # Call wuhao's twillio api to invoke messaging the farmer
             invoke_http("http://localhost:5008/send-sms", method="GET")
             return jsonify(
