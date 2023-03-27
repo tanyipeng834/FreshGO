@@ -117,6 +117,16 @@ const routes = [
     },
   },
   {
+    path: "/recommend",
+    name: "InventoryRecommend",
+    component: function () {
+      return import(/* webpackChunkName: "about" */ "../views/FarmerUI/InventoryRecommendation.vue");
+    },
+    meta: {
+      title: "Recommendation",
+    },
+  },
+  {
     path: "/crops",
     name: "OngoingCrops",
     component: OngoingCrops,
