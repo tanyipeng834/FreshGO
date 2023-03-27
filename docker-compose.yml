@@ -63,7 +63,7 @@ services:
     build:
       context: ./InventoryManager
       dockerfile: dockerfile
-    image: wuhao2021/inventory_manager:1.0
+    image: wuhao2021/inventory_manager:g1t1
     depends_on:
       - inventory
     environment:
