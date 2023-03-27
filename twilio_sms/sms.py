@@ -34,7 +34,7 @@ def check_status():
     for item in inventory:
         if item["status"] == "Low":
             farmer_phone = get_farmer_phone()
-            message = f"The status of {item['name']} is {item['status']}. Please take necessary action."
+            message = f"The status of {item['name']} is {item['status']}. Current quantity: {item['quantity']}. Please take necessary action."
             send_sms(farmer_phone, message)
     return jsonify({"message": "Status checked."})
 # # Twilio account credentials
