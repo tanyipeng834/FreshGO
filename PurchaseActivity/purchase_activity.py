@@ -241,6 +241,37 @@ def find_by_order_id(id):
     ), 404
 
 
+@app.route("/purchase_request/<string:name>")
+# Return the sales history of the crop
+def find_by_crop_name(name):
+    try:
+        crop_sales_history = Crop_Purchased.query.filter_by(crop_name=name).all()
+
+        total_sales = 0
+        if crop_sales_history:
+
+            for crop in crop_sales_history:
+                total_sales += crop.quantity
+
+            return jsonify(
+                {
+                    "code": 200,
+                    "Total Sales": total_sales
+                }
+            )
+        return jsonify(
+            {
+                "code": 404,
+                "data": {
+                    "sales": total_sales
+                },
+                "message": "crop_sales_history not found."
+            }
+        ), 404
+    except Exception as e:
+        return jsonify ({"message": str(e)})
+        
+
 @app.route("/purchase_request/update/<int:id>", methods=['PUT'])
 def update_order(id):
     try:
