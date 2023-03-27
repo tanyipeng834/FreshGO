@@ -108,19 +108,14 @@ const routes = [
   // Below for testing
 
   //Farmer UI
-  {
-    path: "/inventory",
-    name: "DisplayInventory",
-    component: DisplayInventory,
-    meta: {
-      title: "Inventory",
-    },
-  },
+
   {
     path: "/recommend",
     name: "InventoryRecommend",
     component: function () {
-      return import(/* webpackChunkName: "about" */ "../views/FarmerUI/InventoryRecommendation.vue");
+      return import(
+        /* webpackChunkName: "about" */ "../views/FarmerUI/InventoryRecommendation.vue"
+      );
     },
     meta: {
       title: "Recommendation",
@@ -135,11 +130,19 @@ const routes = [
     },
   },
   {
-    path: "/farmerhome",
+    path: "/farmer/:id",
     name: "FarmerHome",
     component: FarmerHome,
     meta: {
       title: "Home",
+    },
+  },
+  {
+    path: "/farmer/:id/inventory",
+    name: "DisplayInventory",
+    component: DisplayInventory,
+    meta: {
+      title: "Inventory",
     },
   },
   {

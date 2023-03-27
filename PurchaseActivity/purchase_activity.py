@@ -38,7 +38,7 @@ class Purchase_Activity(db.Model):
     customer_id = db.Column(db.Integer, nullable=False)
     customer_location = db.Column(db.String, nullable=False)
     transaction_amount = db.Column(db.String, nullable=False)
-    status = db.Column(db.String, default='New/Ongoing', nullable=False)
+    status = db.Column(db.String, default='Completed', nullable=False)
     created = db.Column(db.DateTime, default=datetime.now,
                         nullable=False, onupdate=datetime.now)
 

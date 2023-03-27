@@ -150,39 +150,39 @@ def signIn(user_type):
 # Creating staff account
 
 
-@ app.route("/create/farmer/<string:email>", methods=['POST'])
-def create_farmer(email):
-    if (Profile.query.filter_by(email=email).first()):
-        return jsonify(
-            {
-                "code": 400,
-                "data": {
-                    "email": email
-                },
-                "message": "Email already taken."
-            }
-        ), 400
-    data = request.get_json()
-    profile = Farmer(email, **data)
-    try:
-        db.session.add(profile)
-        db.session.commit()
-    except:
-        return jsonify(
-            {
-                "code": 500,
-                "data": {
-                    "id": email
-                },
-                "message": "An error occurred creating the profile."
-            }
-        ), 500
-    return jsonify(
-        {
-            "code": 201,
-            "data": profile.json()
-        }
-    ), 201
+# @ app.route("/create/farmer/<string:email>", methods=['POST'])
+# def create_farmer(email):
+#     if (Profile.query.filter_by(email=email).first()):
+#         return jsonify(
+#             {
+#                 "code": 400,
+#                 "data": {
+#                     "email": email
+#                 },
+#                 "message": "Email already taken."
+#             }
+#         ), 400
+#     data = request.get_json()
+#     profile = Farmer(email, **data)
+#     try:
+#         db.session.add(profile)
+#         db.session.commit()
+#     except:
+#         return jsonify(
+#             {
+#                 "code": 500,
+#                 "data": {
+#                     "id": email
+#                 },
+#                 "message": "An error occurred creating the profile."
+#             }
+#         ), 500
+#     return jsonify(
+#         {
+#             "code": 201,
+#             "data": profile.json()
+#         }
+#     ), 201
 
 
 # Find profile by type

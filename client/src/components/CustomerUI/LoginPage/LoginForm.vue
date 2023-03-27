@@ -273,7 +273,7 @@ export default {
             })
             .catch((error) => {
               console.log(error.code);
-              alert(error.message);
+              
             });
           axios
             .post(`http://127.0.0.1:5003/signIn/${this.userType}`, {
@@ -295,7 +295,7 @@ export default {
                 } else if (this.userType == "staff") {
                   router.push(`/delivery/${profileId}`);
                 } else {
-                  router.push(`farmer/${profileId}`);
+                  router.push(`/farmer/${profileId}`);
                 }
               }
               // console.log(response.data);

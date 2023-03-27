@@ -1,31 +1,6 @@
 <template>
     <div class="container-fluid">
         <!-- Only show when status button is clicked -->
-        <div class="row">
-            <table class="table table-success table-bordered">
-                <thead>
-                    <tr><th colspan="4" style="background-color: aquamarine;">Weather Forecast (4 Days)</th></tr>
-                    <tr>
-                        <th>Date</th>
-                        <th>Forecast</th>
-                        <th>Relative Humidity</th>
-                        <th>Temperature</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr
-                    v-for="item in weather"
-                    v-bind:key="item.date">
-                        <th>{{ item.date }}</th>
-                        <td>{{ item.forecast }}</td>
-                        <td>High: {{ item.relative_humidity.high }}% | Low: {{ item.relative_humidity.low }}%</td>
-                        <td>High: {{ item.temperature.high }}°C | Low: {{ item.temperature.low }}°C</td>
-                        
-                    </tr>
-                </tbody>
-            </table>
-            <br>
-        </div>
         <!-- End of hidden div & table -->
 
         <div class="row">

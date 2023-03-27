@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `purchase_activity`(
   `customer_id`int NOT NULL,
   `customer_location`varchar(32) NOT NULL,
   `transaction_amount` float not null,
-  `status`varchar(32) NOT NULL DEFAULT 'Ongoing/New',
+  `status`varchar(32) NOT NULL DEFAULT 'Completed',
   `created`timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP  
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;;
 
@@ -51,10 +51,10 @@ CREATE TABLE IF NOT EXISTS `crop_purchased`(
 
 
 INSERT INTO `purchase_activity` (`id`, `customer_id`, `customer_location`, `transaction_amount`, `status`, `created`) VALUES 
-(1, 1, 10000, 10, "Ongoing/New", "2023-01-01 00:00:00"),
-(2, 1, 10000, 10, "Ongoing/New", "2023-03-01 00:00:00"),
-(3, 1, 10000, 10, "Ongoing/New", "2023-03-01 00:00:00"),
-(4, 2, 10000, 10, "Ongoing/New", "2023-03-01 00:00:00");
+(1, 1, 10000, 10, "Completed", "2023-01-01 00:00:00"),
+(2, 1, 10000, 10, "Completed", "2023-03-01 00:00:00"),
+(3, 1, 10000, 10, "Completed", "2023-03-01 00:00:00"),
+(4, 2, 10000, 10, "Completed", "2023-03-01 00:00:00");
 COMMIT;
 
 INSERT INTO `crop_purchased` (`order_id`, `purchase_id`, `crop_name`, `quantity`) VALUES 
