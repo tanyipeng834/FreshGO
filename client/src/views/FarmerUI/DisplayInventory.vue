@@ -52,11 +52,29 @@
                         <button id="statusBtn" 
                         ref="statusBtn" 
                         :class="`btn btn-${product.status}`"
-                        @click=" viewWeather(); weatherForecast=true">
+                        @click=" viewWeather(); weatherForecast=true; viewactivity()">
                         {{ product.status }}
                         </button>
                     </td>
                 </tr>
+            </tbody>
+        </table>
+        </div>
+
+        <div v-show="weatherForecast" class="row">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Type of plant</th>
+                    <th scope="col">Amount to plant</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr
+                    v-for="total in Object.keys(totals)">
+                        <td>{{ total }} KG</td>
+                        <td>{{ totals[total] }} KG</td>    
+                    </tr>
             </tbody>
         </table>
         </div>
@@ -70,8 +88,10 @@ export default {
   data() {
     return {
         products: [],
+        activity:[],
         weather:[],
-        weatherForecast: false
+        weatherForecast: false,
+        totals: {}
     };
   },
   methods: {
@@ -85,6 +105,38 @@ export default {
         .catch(error => {
             console.log(error.message)
         });
+    },
+    viewactivity(){
+        axios
+        .get("http://127.0.0.1:5006/purchase_request")
+        .then((response) => {
+            this.activity = response.data.data["Purchase Requests"];
+            console.log(this.activity)
+            this.totals = {}
+            for(this.i in this.activity){
+                this.crops = this.activity[this.i].crop_purchased
+                this.valid = this.activity[this.i].status == "Complete"
+                //only uncomment below when there is complete status plants
+                //if(this.valid){
+                    for(this.j in this.crops){
+                        this.quantity=this.crops[this.j]['Quantity']
+                        this.name=this.crops[this.j]['Crop Name']
+                        if (isNaN(this.totals[this.name] )){
+                            this.totals[this.name]=this.quantity
+                        }
+                        else{
+                            this.totals[this.name]+= this.quantity
+                        }
+                        
+                    }
+                //}
+                
+            }
+            console.log(Object.keys(this.totals))
+        })
+        .catch((error) => {
+            console.log(error.message);
+        });
     }
   },
   mounted() {
@@ -92,10 +144,12 @@ export default {
       .get("http://127.0.0.1:5000/inventory")
       .then((response) => {
         this.products = response.data.data.inventory;
+        console.log(this.products)
       })
       .catch((error) => {
         console.log(error.message);
       });
+      
   },
 };
 </script>
