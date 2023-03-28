@@ -25,14 +25,14 @@
             <td>
               <!-- To add more onClick event just insert ";" then the function at @click
                         e.g. @click=" viewWeather(); weatherForecast=true"; newFunction() -->
-                <button
-                  id="statusBtn"
-                  ref="statusBtn"
-                  :class="`btn btn-${product.status}`"
-                  @click="saveIndex(product.name)"
-                >
-                  Recommend Quantity
-                </button>
+              <button
+                id="statusBtn"
+                ref="statusBtn"
+                :class="`btn btn-${product.status}`"
+                @click="saveIndex(product.name)"
+              >
+                Recommend Quantity
+              </button>
             </td>
           </tr>
         </tbody>
@@ -43,19 +43,20 @@
 
 <script>
 import axios from "axios";
-import { RouterLink } from "vue-router";
+
 export default {
   name: "DisplayInventory",
   data() {
     return {
       products: [],
-      savedIndex: null,
     };
   },
   methods: {
     saveIndex(name) {
-      this.savedIndex = name;
-      localStorage.setItem("name", this.savedIndex);
+      const farmerId = this.$route.params.id;
+      console.log(name);
+      localStorage.setItem("name", name);
+      this.$router.push(`/farmer/${farmerId}/inventory/${name}`);
     },
   },
   mounted() {
@@ -82,12 +83,10 @@ export default {
   background-color: yellow;
   color: white;
   /* To disable button */
-  pointer-events: none;
 }
 
 .btn-High {
   background-color: green;
   color: white;
-  pointer-events: none;
 }
 </style>

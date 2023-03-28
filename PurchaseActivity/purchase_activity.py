@@ -8,9 +8,9 @@ from sqlalchemy import and_, func
 import os
 from datetime import datetime
 from datetime import timedelta
-import json
+
 from invokes import invoke_http
-import requests
+
 import amqp_setup
 import pika
 from threading import Thread
@@ -242,11 +242,14 @@ def find_by_order_id(id):
 
 
 @app.route("/purchase_request/<string:name>")
-# Return the sales history of the crop
+# Return the sales history of the crop in the past month
 def find_by_crop_name(name):
     try:
-        crop_sales_history = Crop_Purchased.query.filter_by(crop_name=name).all()
-
+        one_month_ago = datetime.now() - timedelta(days=30)
+        crop_sales_history = Crop_Purchased.query.join(Purchase_Activity).filter(
+            Crop_Purchased.crop_name == name,
+            Purchase_Activity.created >= one_month_ago
+        ).all()
         total_sales = 0
         if crop_sales_history:
 
@@ -269,8 +272,8 @@ def find_by_crop_name(name):
             }
         ), 404
     except Exception as e:
-        return jsonify ({"message": str(e)})
-        
+        return jsonify({"message": str(e)})
+
 
 @app.route("/purchase_request/update/<int:id>", methods=['PUT'])
 def update_order(id):

@@ -146,6 +146,27 @@ def get_all_crops():
                 }
             ), 400
 
+# Put another route that will allow the user to get the crop by name
+
+
+@app.route("/inventory/<string:name>", methods=["GET"])
+def get_crops_by_name(name):
+
+    crop = Inventory.query.filter_by(name=name).first()
+    if crop:
+        return jsonify(
+            {
+                "code": 200,
+                "data": crop.json()
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "There are no crops."
+        }
+    ), 404
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
