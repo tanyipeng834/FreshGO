@@ -1,26 +1,35 @@
 version: "3.8"
 
+volumes:
+  rabbitmq_data:
 
 services:
 
   #################################
   # Profile microservice (Simple)
   #################################
-  # profile:
-  #   image: mosengtim2021/profile:1.0
-  #   restart: always
-  #   environment:
-  #     dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/profile
+  profile:
+    build:
+      context: ./profile
+      dockerfile: dockerfile
+    image: mosengtim2021/profile:g1t1
+    restart: always
+    environment:
+      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/profile
+      PYTHONUNBBUFFERED: 1
 
 
   #################################
   # Crop Management (Simple)
   #################################
-  # crop_management:
-  #   image: mosengtim2021/crop_management:1.0
-  #   restart: always
-  #   environment:
-  #     dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/cropmanagement
+  crop_management:
+    build:
+      context: ./CropManagement
+      dockerfile: dockerfile
+    image: mosengtim2021/crop_management:g1t1
+    restart: always
+    environment:
+      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/cropmanagement
 
 
   ###############################################
@@ -30,10 +39,10 @@ services:
     build:
       context: ./inventory
       dockerfile: dockerfile
-    image: wuhao2021/inventory:g1t1
+    image: mosengtim2021/inventory:g1t1
     restart: always
     environment:
-      inventory_URL: http://inventory:5000/inventory
+      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/inventory
       PYTHONUNBUFFERED: 1
 
   ###############################################
@@ -49,12 +58,18 @@ services:
   ###############################################
   # Purchase Activity (Complex)
   ###############################################
-  # purchase_activity:
-  #   image: mosengtim2021/purchase_activity:1.0
-  #   depends_on:
-  #     - profile
-  #   environment:
-  #     purchase_request_URL: mysql+mysqlconnector://is213@host.docker.internal:3306/purchase_activity
+  purchase_activity:
+    build:
+      context: ./PurchaseActivity
+      dockerfile: dockerfile
+    image: mosengtim2021/purchase_activity:g1t1
+    restart: always
+
+    environment: 
+      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/purchase_activity
+
+      PYTHONUNBUFFERED: 1
+
 
   ###############################################
   # Inventory Manager (Complex)
@@ -64,8 +79,54 @@ services:
       context: ./InventoryManager
       dockerfile: dockerfile
     image: wuhao2021/inventory_manager:g1t1
+    restart: always
     depends_on:
       - inventory
+
     environment:
-      inventory_manager_URL: http://inventory_manager:5010/inventory_manager
+      inventory_URL: mysql+mysqlconnector://is213@host.docker.internal:3306/inventory
+
       PYTHONUNBUFFERED: 1
+
+  ###############################################
+  # Twilio 
+  ###############################################
+  twilio_sms:
+    build:
+      context: ./twilio_sms
+      dockerfile: dockerfile
+    image: mosengtim2021/twilio_sms:g1t1
+    restart: always
+    environment:
+      inventory_manager_URL: mysql+mysqlconnector://is213@host.docker.internal:3306/twilio
+      PYTHONUNBUFFERED: 1
+
+  ###############################################
+  # Delivery
+  ###############################################
+  delivery:
+    build:
+      context: ./delivery
+      dockerfile: dockerfile
+    image: mosengtim2021/delivery:g1t1
+    restart: always
+    depends_on:
+      - rabbitmq
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
+      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/deliveries
+      PYTHONUNBUFFERED: 1
+
+  ####################################
+  # RabbitMQ: The messaging broker   
+  ####################################
+  rabbitmq:
+    image: rabbitmq:3-management
+    hostname: rabbit
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes: 
+      - rabbitmq_data:/var/lib/rabbitmq

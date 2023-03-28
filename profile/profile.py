@@ -29,7 +29,7 @@ from flask import Flask, request, jsonify
 app = Flask(__name__)
 CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = environ.get(
-    'inventory_URL') or "mysql+mysqlconnector://root@localhost:3306/profile"
+    'dbURL') or "mysql+mysqlconnector://root@localhost:3306/profile"
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/profile'
 # set dbURL=mysql+mysqlconnector://root@localhost:3306/profile
 # docker run -p 5000:5003 -e dbURL=mysql+mysqlconnector://is213@host.docker.internal:3306/profile mosengtim2021/profile:1.0
