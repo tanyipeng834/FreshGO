@@ -17,6 +17,7 @@ import Home from "../views/Home.vue";
 import HomeView from "../views/HomeView.vue";
 import NotFoundPage from "../views/NotFoundPage.vue";
 import CustomerDelivery from "../views/CustomerUI/CustomerDelivery.vue";
+import InventoryRecommendation from "../views/FarmerUI/InventoryRecommendation.vue";
 //Ignore below for testing
 
 const routes = [
@@ -110,18 +111,6 @@ const routes = [
   //Farmer UI
 
   {
-    path: "/recommend",
-    name: "InventoryRecommend",
-    component: function () {
-      return import(
-        /* webpackChunkName: "about" */ "../views/FarmerUI/InventoryRecommendation.vue"
-      );
-    },
-    meta: {
-      title: "Recommendation",
-    },
-  },
-  {
     path: "/crops",
     name: "OngoingCrops",
     component: OngoingCrops,
@@ -143,6 +132,14 @@ const routes = [
     component: DisplayInventory,
     meta: {
       title: "Inventory",
+    },
+  },
+  {
+    path: "/farmer/:id/inventory/:cropName",
+    name: "Recommend",
+    component: InventoryRecommendation,
+    meta: {
+      title: "Inventory Recommender",
     },
   },
   {
