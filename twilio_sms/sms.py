@@ -1,8 +1,11 @@
-from flask import Flask,jsonify
+from flask import Flask, jsonify
 import requests
 from twilio.rest import Client
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
+
 
 # Fetch farmer phone number from microservice
 def get_farmer_phone():
@@ -11,10 +14,14 @@ def get_farmer_phone():
     return data["data"][0]["phone"]
 
 # Send SMS function
+
+
 def send_sms(to, body):
     account_sid = 'AC486de2818db6343a04d676fcfff76649'
     auth_token = '8053127dfb967c94a7d521d9fd76eac2'
     client = Client(account_sid, auth_token)
+    to = "+65 " + to
+    print(to)
 
     message = client.messages \
         .create(
@@ -26,6 +33,8 @@ def send_sms(to, body):
     print("Message sent to: " + message.to)
 
 # Endpoint to fetch crop data and send SMS to farmer if status is "Low"
+
+
 @app.route('/check_status', methods=['GET'])
 def check_status():
     response = requests.get("http://127.0.0.1:5000/inventory")
@@ -61,6 +70,7 @@ def check_status():
 #         return "SMS Sent"
 #     else:
 #         return "Error retrieving inventory data"
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5005, debug=True)

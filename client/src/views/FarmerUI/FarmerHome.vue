@@ -72,15 +72,15 @@ export default {
     },
   },
   mounted() {
-    // Send a reminder to
-    axios
-      .get("http://localhost:5008/send-sms")
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
+    // Send a reminder to uncomment this shit important!!!!!
+    // axios
+    //   .get("http://localhost:5005/check_status")
+    //   .then((response) => {
+    //     console.log(response.data);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error.message);
+    //   });
 
     axios
       .get("https://api.data.gov.sg/v1/environment/4-day-weather-forecast")
