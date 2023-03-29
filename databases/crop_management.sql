@@ -12,17 +12,39 @@ CREATE TABLE IF NOT EXISTS `crop`(
   `name` varchar(50) NOT NULL,
   `height` decimal(10, 2) NOT NULL,
   `water_used` decimal(10,2) NOT NULL,
+  `quantity` int(10) NOT NULL,
   `fertiliser_used` decimal(10,2) NOT NULL,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT PK_NAME PRIMARY KEY (`batch`, `name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;;
 
-INSERT INTO `crop` (`batch`, `name`, `height`, `water_used`, `fertiliser_used`) VALUES 
-(1, "Xin Gua", 2, 100, 100),
-(2, "Xin Gua", 3, 110, 101),
-(1, "Xin Hua", 4, 100, 120),
-(2, "Xin Hua", 5, 120, 150),
-(1, "Xin Ba", 2.5, 121, 102),
-(1, "Xin Ma", 5.7, 130, 120);
+INSERT INTO `crop` (`batch`, `name`, `height`, `water_used`, `quantity`,`fertiliser_used`) VALUES 
+(1, "Xiao Bai Cai", 2, 100, 12,100),
+(2, "Xiao Bai Cai", 3, 110, 13,101),
+(1, "Xin Hua", 4, 100,12, 120),
+(2, "Xin Hua", 5, 120, 11,150),
+(1, "Xin Ba", 2.5, 121, 11,102),
+(1, "Xin Ma", 5.7, 130, 11,120);
+("Xiao Bai Cai", 2.5, 120, 14, 102),
+("Xiao Bai Cai", 3.2, 130, 15, 103),
+("Xiao Bai Cai", 3.8, 140, 16, 104),
+("Xiao Bai Cai", 4.1, 150, 17, 105),
+("Xiao Bai Cai", 4.5, 160, 18, 106),
+("Xiao Bai Cai", 5.0, 170, 19, 107),
+("Xiao Bai Cai", 5.2, 180, 20, 108),
+("Xiao Bai Cai", 5.5, 190, 21, 109),
+("Xiao Bai Cai", 5.8, 200, 22, 110),
+("Xiao Bai Cai", 6.0, 210, 23, 111),
+("Xiao Bai Cai", 6.2, 220, 24, 112),
+("Xiao Bai Cai", 6.4, 230, 25, 113),
+("Xiao Bai Cai", 6.6, 240, 26, 114),
+("Xiao Bai Cai", 6.8, 250, 27, 115),
+("Xiao Bai Cai", 7.0, 260, 28, 116),
+("Xiao Bai Cai", 7.2, 270, 29, 117),
+("Xiao Bai Cai", 7.4, 280, 30, 118),
+("Xiao Bai Cai", 7.6, 290, 31, 119),
+("Xiao Bai Cai", 7.8, 300, 32, 120),
+("Xiao Bai Cai", 8.0, 310, 33, 121);
 COMMIT;
 
 

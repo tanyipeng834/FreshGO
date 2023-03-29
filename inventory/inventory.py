@@ -27,10 +27,11 @@ class Inventory(db.Model):
     type = db.Column(db.String(15), nullable=False)
     status = db.Column(db.String(15), nullable=False)
 
-    def __init__(self, name, quantity, price):
+    def __init__(self, name, type,quantity, price):
         self.name = name
         self.quantity = quantity
         self.price = price
+        self.type = type
         if self.quantity <= 10:
             self.status = "Low"
         elif self.quantity <= 15:
@@ -105,7 +106,9 @@ def get_all_crops():
     elif request.method == "PUT":
         # Check if there is a crop with a similar name in the database
         data = request.get_json()
+        print(data)
         crop_name = data['name']
+        print(crop_name)
         if (Inventory.query.filter_by(name=crop_name).first()):
             # Create a new object based on the input
             details = Inventory.query.filter_by(name=crop_name).first()
@@ -136,15 +139,27 @@ def get_all_crops():
                 }
             )
         else:
+            crop = Inventory(**data)
+            try:
+                db.session.add(crop)
+                db.session.commit()
+            except:
+                return jsonify(
+                    {
+                        "code": 500,
+                        "data": {
+                            "Crop Name": data['name']
+                        },
+                        "message": "An error occurred when updating the Inventory."
+                    }
+                ), 500
             return jsonify(
                 {
-                    "code": 400,
-                    "data": {
-                        "Crop Name": data['name']
-                    },
-                    "message": "Crop Batch doesn't exists."
+                    "code": 201,
+                    "data": crop.json()
                 }
-            ), 400
+            )
+
 
 # Put another route that will allow the user to get the crop by name
 

@@ -2,26 +2,33 @@ from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from os import environ
+from datetime import datetime
+from invokes import invoke_http
 
 # Initialize Flask app
 app = Flask(__name__)
 CORS(app)
 
 # Set up database
-app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL') or "mysql+mysqlconnector://root@localhost:3306/crop_management"
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get(
+    'dbURL') or "mysql+mysqlconnector://root@localhost:3306/crop_management"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 # Define Crop class to map to the crops table
+
+
 class Crop(db.Model):
     __tablename__ = 'crop'
-    batch =  db.Column(db.Integer, primary_key=True)
+    batch = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), primary_key=True)
     height = db.Column(db.Float, nullable=False)
     water_used = db.Column(db.Float, nullable=False)
+    quantity = db.Column(db.Integer, nullable=False)
     fertiliser_used = db.Column(db.Float, nullable=False)
-    
-    
+    created = db.Column(db.DateTime, default=datetime.now,
+                        nullable=False, onupdate=datetime.now)
+
     def __init__(self, batch, name, height, water_used, fertiliser_used):
         self.batch = batch
         self.name = name
@@ -30,124 +37,130 @@ class Crop(db.Model):
         self.fertiliser_used = fertiliser_used
 
     def json(self):
-        return {"Batch": self.batch, "Name": self.name,"Height":self.height, "Water Used": self.water_used, "Fertiliser Used": self.fertiliser_used}
+        return {"Batch": self.batch, "Name": self.name, "Height": self.height, "Water Used": self.water_used, "Fertiliser Used": self.fertiliser_used}
 
 # Define the route for receiving input from the farmer UI
-@app.route('/crop_management', methods=['POST'])
+
+
+@app.route('/crop_management', methods=['POST', 'GET', 'DELETE'])
 def manage_crop():
     # Extract input data from POST request
-    crop_name = request.json.get('name')
-    current_water_used = request.json.get('current_water_used')
-    
-    # Query inventory microservice for crop data
-    inventory_data = request.get('http://127.0.0.1:5000/inventory/measurements/' + crop_name).json()
-    # Call machine learning microservice to get recommended water level and fertiliser amount
-    recommended_data = request.post('http://127.0.0.1:5002/machine_learning/recommend', json=inventory_data).json()
-    
-    # Update Crop object in database
-    crop = Crop.query.filter_by(name=crop_name).first()
-    crop.current_water_used = current_water_used
-    crop.recommended_water_level = recommended_data['recommended_water_level']
-    crop.recommended_fertiliser = recommended_data['recommended_fertiliser']
-    crop.max_height = recommended_data['max_height']
-    db.session.commit()
-    
-    return jsonify({
-        'message': 'Crop management data updated successfully.'
-    }), 200
-
-@app.route('/crop_managements', methods=['GET', 'PUT', 'POST'])
-def managed_crop():
     if request.method == "GET":
-        data = Crop.query.all()
-        if len(data):
+        crop_batches = Crop.query.all()
+        if len(crop_batches):
             return jsonify(
                 {
                     "code": 200,
-                    "data": {
-                        "inventory": [cropx.json() for cropx in data]
-                    }
+                    "data": [crop_batch.json() for crop_batch in crop_batches]
                 }
             )
         return jsonify(
             {
                 "code": 404,
-                "message": "There are no crops."
+                "message": "There are no ongrowing crop batches."
             }
         ), 404
-    elif request.method == "PUT":
+
+    elif request.method == "POST":
+        # Check if there is a crop batch with the name , if not create a new batch with
         data = request.get_json()
-        crop_batch = data['batch']
-        crop_name = data['name']
-        height = data['height']
-        water_used = data['water used']
-        fertiliser_used = data['fertiliser used']
-        if (Crop.query.filter_by(batch=crop_batch, name=crop_name).first()):
-            crop = Crop.query.filter_by(batch=crop_batch, name=crop_name).first()
-            crop.height = height
-            crop.water_used = water_used
-            crop.fertiliser_used = water_used
+        crop_name = data["name"]
+        crop_height = data["height"]
+        crop_water = data["water"]
+        crop_fertiliser = data["fertiliser"]
+        crop_quantity = data["quantity"]
+        crop = Crop.query.filter_by(name=crop_name).order_by(
+            Crop.batch.desc()).first()
+        if crop:
+            new_batch = crop.batch + 1
+        else:
+            new_batch = 1
+        new_crop = Crop(batch=new_batch, name=crop_name, height=crop_height,
+                        water_used=crop_water, fertiliser_used=crop_fertiliser, quantity=crop_quantity)
+        try:
+            db.session.add(new_crop)
+            db.session.commit()
+
+        except:
+            return jsonify(
+                {
+                    "code": 500,
+                    "data": {
+                        "Crop Batch": data['name']
+                    },
+                    "message": "An error occurred creating the Crop Batch."
+                }
+            ), 500
+
+        return jsonify(
+            {
+                "code": 201,
+                "data": new_crop.json()
+            }
+        )
+    else:
+        data = request.get_json()
+        batch = data["batch"]
+        name = data["name"]
+        # harvest the crops from the farmer POV
+        crop_batch = Crop.query.filter_by(batch=batch, name=name).first()
+        quantity = crop_batch.quantity
+        print(quantity)
+        if crop_batch:
             try:
-                db.session.add(crop)
+                db.session.delete(crop_batch)
                 db.session.commit()
             except:
                 return jsonify(
                     {
                         "code": 500,
                         "data": {
-                            "Crop Name": data['name']
+                            "Crop Batch": data['name']
                         },
-                        "message": "An error occurred creating the Inventory."
+                        "message": "An error occurred deleting the Crop Batch."
                     }
                 ), 500
-
+            update_json = {
+                "name": name,
+                "quantity": quantity,
+                "price": 1.20,
+                "type": "vegetable"
+            }
+            response = invoke_http(
+                f'http://127.0.0.1:5000/inventory', "PUT", update_json)
             return jsonify(
                 {
-                    "code": 201,
-                    "data": crop.json()
+                    "code": 200,
+                    "message": "Harvested the crops Succesfully"
                 }
             )
+
         else:
             return jsonify(
                 {
-                    "code": 400,
-                    "data": {
-                        "Crop Name": data['name']
-                    },
-                    "message": "Crop Batch already exists."
+                    "code": 404,
+                    "message": "There are no ongrowing crop batches."
                 }
-            ), 400
-    elif request.method == "POST":
-        # This will allow the farmer to create a crop in the database
-        data = request.get_json()
-        # crop_name = data['name']
-        crop_name = data['name']
-        # Check if there is a crop with a similar name in the database
-        if not (Inventory.query.filter_by(name=crop_name).first()):
-            # Create a new object based on the input
-            crop = Inventory(**data)
-            print(crop)
-            try:
-                db.session.add(crop)
-                db.session.commit()
-            except:
-                return jsonify(
-                    {
-                        "code": 500,
-                        "data": {
-                            "Crop Name": data['name']
-                        },
-                        "message": "An error occurred creating the Inventory."
-                    }
-                ), 500
+            ), 404
+        
 
-            return jsonify(
-                {
-                    "code": 201,
-                    "data": crop.json()
-                }
-            )
 
+@app.route('/crop_management/<string:name>', methods=['GET'])
+def get_batch_by_name(name):
+    crop_batches = Crop.query.filter_by(name=name).all()
+    if len(crop_batches):
+        return jsonify(
+            {
+                "code": 200,
+                "data": [crop_batch.json() for crop_batch in crop_batches]
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "There are no ongrowing crop batches with that batch name."
+        }
+    ), 404
 
 
 

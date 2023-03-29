@@ -64,6 +64,7 @@
 
 <script>
 import "animate.css";
+
 import LoginForm from "../components/CustomerUI/LoginPage/LoginForm.vue";
 export default {
   name: "Login",
@@ -75,6 +76,7 @@ export default {
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap");
+
 .login {
   margin: 0;
   padding: 0;
