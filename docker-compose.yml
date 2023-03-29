@@ -8,7 +8,6 @@ volumes:
 networks:
   kong-net:
     driver: bridge
-  
 
 services:
 
@@ -94,10 +93,10 @@ services:
       context: ./MachineLearning
       dockerfile: dockerfile
     image: mosengtim2021/machine_learning:g1t1
-    networks:
-        - kong-net
     depends_on:
       - crop_management
+    networks:
+      - kong-net
     environment:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/machine_learning
       PYTHONUNBUFFERED: 1
@@ -111,10 +110,10 @@ services:
       dockerfile: dockerfile
     image: mosengtim2021/purchase_activity:g1t1
     restart: always
-    networks:
-        - kong-net
     depends_on:
       - rabbitmq
+    networks:
+        - kong-net
     environment: 
       rabbit_host: rabbitmq
       rabbit_port: 5672
@@ -165,10 +164,10 @@ services:
       dockerfile: dockerfile
     image: mosengtim2021/delivery:g1t1
     restart: always
-    networks:
-      - kong-net
     depends_on:
       - rabbitmq
+    networks:
+        - kong-net
     environment:
       rabbit_host: rabbitmq
       rabbit_port: 5672
@@ -182,15 +181,11 @@ services:
     image: rabbitmq:3-management
     hostname: rabbit
     restart: always
-    networks:
-        - kong-net
     ports:
       - "5672:5672"
       - "15672:15672"
     volumes: 
       - rabbitmq_data:/var/lib/rabbitmq
-
-
 
   #######################################
   # Postgres: The database used by Kong
