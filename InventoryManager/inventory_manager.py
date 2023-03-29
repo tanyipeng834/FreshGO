@@ -43,157 +43,16 @@ purchase_activity_URL = "http://localhost:5006/purchase_request"
 db = SQLAlchemy(app)
     
 #CRUD Inventory
-@app.route("/manager", methods=['POST', 'GET', 'PUT'])
-def place_order():
+@app.route("/manager/<string:name>", methods=['GET'])
+def recommend(name):
     # Simple check of input format and data of the request are JSON
+    inventory_response = invoke_http(f'http://localhost:5000/inventory/{name}')
+    current_inventory = inventory_response['data']['data']['quantity']
+    purchase_activity = invoke_http(f'http://localhost:5006/purchase_request/{name}')
+    puchase
+
+
     
-    if request.method == "POST":
-        if request.is_json:
-            try:
-                data = request.get_json()
-                print("\nReceived an batch order in JSON:", data)
-
-                # do the actual work
-                # 1. Send harvested batch
-                result = processBatch(data, request.method, inventory_URL)
-                print('\n------------------------')
-                print('\nresult: ', result)
-                return jsonify(result), result["code"]
-
-            except Exception as e:
-                # Unexpected error in code
-                exc_type, exc_obj, exc_tb = sys.exc_info()
-                fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-                ex_str = str(e) + " at " + str(exc_type) + ": " + fname + ": line " + str(exc_tb.tb_lineno)
-                print(ex_str)
-
-                return jsonify({
-                    "code": 500,
-                    "message": "inventory.py internal error: " + ex_str
-                }), 500
-            
-        # if reached here, not a JSON request.
-        return jsonify({
-            "code": 400,
-            "message": "Invalid JSON input: " + str(request.get_data())
-        }), 400
-    if request.method == "GET":
-        try:
-            # 1. Send request
-            data = []
-            result = processBatch(data, request.method, inventory_URL)
-            print('\n------------------------')
-            print('\nresult: ', result)
-            return jsonify(result), result["code"]
-
-        except Exception as e:
-            # Unexpected error in code
-            exc_type, exc_obj, exc_tb = sys.exc_info()
-            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            ex_str = str(e) + " at " + str(exc_type) + ": " + fname + ": line " + str(exc_tb.tb_lineno)
-            print(ex_str)
-
-            return jsonify({
-                "code": 500,
-                "message": "inventory.py internal error: " + ex_str
-            }), 500
-    if request.method == 'PUT':
-        if request.is_json:
-            try:
-                data = request.get_json()
-                result = processBatch(data, request.method, inventory_URL)
-                print('\n------------------------')
-                print('\nresult: ', result)
-                return jsonify(result), result["code"]
-
-            except Exception as e:
-                # Unexpected error in code
-                exc_type, exc_obj, exc_tb = sys.exc_info()
-                fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-                ex_str = str(e) + " at " + str(exc_type) + ": " + fname + ": line " + str(exc_tb.tb_lineno)
-                print(ex_str)
-
-                return jsonify({
-                    "code": 500,
-                    "message": "inventory.py internal error: " + ex_str
-                }), 500
-        return jsonify({
-            "code": 400,
-            "message": "Invalid JSON input: " + str(request.get_data())
-        }), 400
-
-
-#RECOMMEND
-@app.route("/recommend", methods=['GET'])
-def recommend_order():
-    # Simple check of input format and data of the request are JSON
-        if request.is_json:
-            try:
-                data=request.get_json()
-                result = processBatch(data, request.method, purchase_activity_URL)
-                print('\n------------------------')
-                print('\nresult: ', result)
-                return jsonify(result), result["code"]
-
-            except Exception as e:
-                # Unexpected error in code
-                exc_type, exc_obj, exc_tb = sys.exc_info()
-                fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-                ex_str = str(e) + " at " + str(exc_type) + ": " + fname + ": line " + str(exc_tb.tb_lineno)
-                print(ex_str)
-
-                return jsonify({
-                    "code": 500,
-                    "message": "inventory.py internal error: " + ex_str
-                }), 500
-        else:
-            try:
-                data=''
-                result = processBatch(data, request.method, purchase_activity_URL)
-                print('\n------------------------')
-                print('\nresult: ', result)
-                return jsonify(result), result["code"]
-
-            except Exception as e:
-                # Unexpected error in code
-                exc_type, exc_obj, exc_tb = sys.exc_info()
-                fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-                ex_str = str(e) + " at " + str(exc_type) + ": " + fname + ": line " + str(exc_tb.tb_lineno)
-                print(ex_str)
-
-                return jsonify({
-                    "code": 500,
-                    "message": "inventory.py internal error: " + ex_str
-                }), 500
-
-
-
-def processBatch(data, method, ms):
-    # Send the batch info to inventory
-    # Invoke the inventory MS
-    print('\n-----Invoking inventory microservice-----')
-    URL = ms
-    print(URL)
-    order_result = invoke_http(URL, method=method, json=data)
-    print('order_result:', order_result)
-
-    # Check the order result;
-    code = order_result["code"]
-    message = json.dumps(order_result)
-
-    if code not in range(200, 300):
-        return {
-            "code": 500,
-            "data": {"order_result": order_result},
-            "message": "Batch insert failed."
-        }
-
-    return {
-        "code": 201,
-        "data": {
-            "order_result": order_result,
-        }
-    }
 
 
 

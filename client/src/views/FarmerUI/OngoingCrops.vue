@@ -26,7 +26,7 @@
             <button
               type="button"
               class="btn btn-success"
-              @click="recommend(item.name,item.quantity)"
+              @click="recommend(item.name, item.quantity)"
             >
               Recommend
             </button>
@@ -200,7 +200,7 @@ export default {
         })
         .then((response) => {
           console.log(response.data);
-          this.model = !this.modal;
+          location.reload()
         })
         .catch((error) => {
           console.log(error.message);
@@ -217,15 +217,16 @@ export default {
         })
         .then((response) => {
           console.log(response.data);
+          alert("Crop Harvested");
+          location.reload()
         })
         .catch((error) => {
           console.log(error.message);
         });
     },
-    recommend(name,quantity) {
+    recommend(name, quantity) {
       const farmerId = this.$route.params.id;
-      localStorage.setItem("cropQuantity",quantity);
-      
+      localStorage.setItem("cropQuantity", quantity);
 
       localStorage.setItem("cropName", name);
       this.$router.push(`/farmer/${farmerId}/crops/${name}`);
