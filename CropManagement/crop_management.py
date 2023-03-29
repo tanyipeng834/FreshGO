@@ -29,15 +29,16 @@ class Crop(db.Model):
     created = db.Column(db.DateTime, default=datetime.now,
                         nullable=False, onupdate=datetime.now)
 
-    def __init__(self, batch, name, height, water_used, fertiliser_used):
+    def __init__(self, batch, name, height, water_used, fertiliser_used,quantity):
         self.batch = batch
         self.name = name
         self.height = height
         self.water_used = water_used
         self.fertiliser_used = fertiliser_used
+        self.quantity = quantity
 
     def json(self):
-        return {"Batch": self.batch, "Name": self.name, "Height": self.height, "Water Used": self.water_used, "Fertiliser Used": self.fertiliser_used}
+        return {"batch": self.batch, "name": self.name, "height": self.height, "water": self.water_used, "fertiliser": self.fertiliser_used,"quantity":self.quantity}
 
 # Define the route for receiving input from the farmer UI
 
@@ -100,6 +101,7 @@ def manage_crop():
         )
     else:
         data = request.get_json()
+        print(data)
         batch = data["batch"]
         name = data["name"]
         # harvest the crops from the farmer POV
@@ -142,7 +144,6 @@ def manage_crop():
                     "message": "There are no ongrowing crop batches."
                 }
             ), 404
-        
 
 
 @app.route('/crop_management/<string:name>', methods=['GET'])
@@ -161,7 +162,6 @@ def get_batch_by_name(name):
             "message": "There are no ongrowing crop batches with that batch name."
         }
     ), 404
-
 
 
 # Run app

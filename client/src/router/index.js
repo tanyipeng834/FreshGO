@@ -18,6 +18,7 @@ import HomeView from "../views/HomeView.vue";
 import NotFoundPage from "../views/NotFoundPage.vue";
 import CustomerDelivery from "../views/CustomerUI/CustomerDelivery.vue";
 import InventoryRecommendation from "../views/FarmerUI/InventoryRecommendation.vue";
+import CropRecommendation from "../views/FarmerUI/CropRecommendation";
 //Ignore below for testing
 
 const routes = [
@@ -111,14 +112,6 @@ const routes = [
   //Farmer UI
 
   {
-    path: "/crops",
-    name: "OngoingCrops",
-    component: OngoingCrops,
-    meta: {
-      title: "Crops",
-    },
-  },
-  {
     path: "/farmer/:id",
     name: "FarmerHome",
     component: FarmerHome,
@@ -140,6 +133,22 @@ const routes = [
     component: InventoryRecommendation,
     meta: {
       title: "Inventory Recommender",
+    },
+  },
+  {
+    path: "/farmer/:id/crops",
+    name: "OngoingCrops",
+    component: OngoingCrops,
+    meta: {
+      title: "Crops",
+    },
+  },
+  {
+    path: "/farmer/:id/crops/:cropName",
+    name: "recommendCrops",
+    component: CropRecommendation,
+    meta: {
+      title: "Crops",
     },
   },
   {

@@ -48,9 +48,9 @@
       </div>
 
       <div class="col-md-6 button-right">
-        <router-link v-bind:to="'/crops'">
-          <button class="btn btn-success">View On-Growing Crops</button>
-        </router-link>
+        <button class="btn btn-success" @click="redirectCrops()">
+          View On-Growing Crops
+        </button>
       </div>
     </div>
   </div>
@@ -69,6 +69,10 @@ export default {
     redirectInventory() {
       const userId = this.$route.params.id;
       this.$router.push(`${userId}/inventory`);
+    },
+    redirectCrops() {
+      const userId = this.$route.params.id;
+      this.$router.push(`${userId}/crops`);
     },
   },
   mounted() {
