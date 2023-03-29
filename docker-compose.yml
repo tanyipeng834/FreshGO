@@ -184,7 +184,7 @@ services:
   ####################################
   rabbitmq:
     image: rabbitmq:3-management
-    hostname: localhost
+    hostname: rabbit
     restart: always
     networks:
         - kong-net
