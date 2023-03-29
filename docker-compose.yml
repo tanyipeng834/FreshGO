@@ -119,7 +119,7 @@ services:
     depends_on:
       - rabbitmq
     environment: 
-      rabbit_host: localhost
+      rabbit_host: rabbitmq
       rabbit_port: 5672
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/purchase_activity
       PYTHONUNBUFFERED: 1
@@ -174,7 +174,7 @@ services:
     depends_on:
       - rabbitmq
     environment:
-      rabbit_host: localhost
+      rabbit_host: rabbitmq
       rabbit_port: 5672
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/deliveries
       PYTHONUNBUFFERED: 1
