@@ -48,8 +48,8 @@ def recommend(name):
     # Simple check of input format and data of the request are JSON
     inventory_response = invoke_http(f'http://localhost:5000/inventory/{name}')
     current_inventory = inventory_response['data']['data']['quantity']
-    purchase_activity = invoke_http(f'http://localhost:5006/purchase_request/{name}')
-    puchase
+    purchase_reponse = invoke_http(f'http://localhost:5006/purchase_request/{name}')
+    puchase_activity = purchase_reponse["data"]["Total Sales"]
 
 
     
