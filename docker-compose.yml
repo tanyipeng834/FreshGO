@@ -13,6 +13,21 @@ networks:
 services:
 
   #################################
+  # Client
+  #################################
+  client:
+    build:
+      context: ./client
+      dockerfile: dockerfile
+    image: mosengtim2021/client:g1t1
+    restart: always
+    networks:
+        - kong-net
+    environment:
+      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/client
+      PYTHONUNBBUFFERED: 1
+
+  #################################
   # Profile microservice (Simple)
   #################################
   profile:
@@ -25,6 +40,21 @@ services:
         - kong-net
     environment:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/profile
+      PYTHONUNBBUFFERED: 1
+
+  #################################
+  # Checkout microservice
+  #################################
+  checkout:
+    build:
+      context: ./checkout
+      dockerfile: dockerfile
+    image: mosengtim2021/checkout:g1t1
+    restart: always
+    networks:
+        - kong-net
+    environment:
+      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/checkout
       PYTHONUNBBUFFERED: 1
 
 
@@ -89,11 +119,10 @@ services:
     depends_on:
       - rabbitmq
     environment: 
-      rabbit_host: rabbit
+      rabbit_host: localhost
       rabbit_port: 5672
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/purchase_activity
       PYTHONUNBUFFERED: 1
-
 
 
   ###############################################
@@ -145,7 +174,7 @@ services:
     depends_on:
       - rabbitmq
     environment:
-      rabbit_host: rabbit
+      rabbit_host: localhost
       rabbit_port: 5672
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/deliveries
       PYTHONUNBUFFERED: 1
@@ -155,7 +184,7 @@ services:
   ####################################
   rabbitmq:
     image: rabbitmq:3-management
-    hostname: rabbit
+    hostname: localhost
     restart: always
     networks:
         - kong-net

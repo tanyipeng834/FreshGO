@@ -5,6 +5,8 @@ from sklearn.linear_model import LinearRegression
 # Initialize Flask app
 app = Flask(__name__)
 
+CORS(app)
+
 # Route for the machine learning recommendation
 @app.route('/recommend', methods=['POST'])
 def predict_height():
