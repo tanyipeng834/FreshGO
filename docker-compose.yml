@@ -186,6 +186,9 @@ services:
       - "15672:15672"
     volumes: 
       - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+        - kong-net
+
 
   #######################################
   # Postgres: The database used by Kong
