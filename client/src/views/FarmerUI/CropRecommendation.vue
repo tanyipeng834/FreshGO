@@ -18,8 +18,8 @@
           <tr>
             <td>{{ this.name }}</td>
             <td>{{ this.quantity }}</td>
-            <td>{{ this.water * 10 }} litres</td>
-            <td>{{ this.fertiliser }}kg</td>
+            <td>{{ this.water * 10 }} ml</td>
+            <td>{{ this.fertiliser }}g</td>
             <td>{{ this.height }} cm</td>
           </tr>
         </tbody>
