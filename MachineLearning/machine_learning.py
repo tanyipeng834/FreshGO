@@ -1,5 +1,6 @@
 import requests
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from sklearn.linear_model import LinearRegression
 
 # Initialize Flask app
