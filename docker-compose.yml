@@ -23,9 +23,6 @@ services:
     restart: always
     networks:
         - kong-net
-    environment:
-      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/client
-      PYTHONUNBBUFFERED: 1
 
   #################################
   # Profile microservice (Simple)
@@ -156,7 +153,6 @@ services:
     networks:
         - kong-net
     environment:
-      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/twilio
       PYTHONUNBUFFERED: 1
 
 
