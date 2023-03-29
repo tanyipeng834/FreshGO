@@ -26,7 +26,8 @@ data_queue = Queue()
 
 app = Flask(__name__)
 CORS(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/purchase_activity'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
+    'dbURL') or 'mysql+mysqlconnector://root@localhost:3306/purchase_activity'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -141,7 +142,7 @@ def create_request():
 
     body = data_queue.get()
 
-    print("hello")
+   
     return jsonify({
 
         "code": 201,

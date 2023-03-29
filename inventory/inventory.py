@@ -9,7 +9,7 @@ from invokes import invoke_http
 app = Flask(__name__)
 CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = environ.get(
-    'inventory_URL') or "mysql+mysqlconnector://root@localhost:3306/inventory"
+    'dbURL') or "mysql+mysqlconnector://root@localhost:3306/inventory"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # set dbURL=mysql+mysqlconnector://root@localhost:3306/inventory

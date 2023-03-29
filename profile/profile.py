@@ -144,7 +144,7 @@ def signIn(user_type):
                 "code": 404,
                 "message": "User Provided Invalid Username"
             }
-        ), 201
+        ), 404
 
 
 # Creating staff account

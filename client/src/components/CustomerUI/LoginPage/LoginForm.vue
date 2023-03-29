@@ -268,7 +268,6 @@ export default {
         .then((data) => {
           signInWithEmailAndPassword(getAuth(), email.value, password.value)
             .then((data) => {
-              console.log("Successfully Signed in");
               alert("Successfully logged in");
             })
             .catch((error) => {
