@@ -10,16 +10,18 @@
             <th scope="col">Crop Name</th>
             <th scope="col">Crops Sold Last Month</th>
             <th scope="col">Current Amount Of Crops in Inventory</th>
-            <th scope="col">Recommnded Amount of Crops to Grow</th>
+            <th scope="col">Current Amount Of On-Growing Crops</th>
+            <th scope="col">Recommended Amount of Crops to Grow</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>{{ this.name }}</td>
-            <td>{{ this.previous }}</td>
-            <td>{{ this.current }}</td>
+            <td>{{ this.purchase }}</td>
+            <td>{{ this.inventory }}</td>
+            <td>{{ this.onGrowing }}</td>
             <td>
-              {{ this.recommendAmount }}
+              {{ this.totalCrop }}
             </td>
           </tr>
         </tbody>
@@ -35,33 +37,22 @@ export default {
   data() {
     return {
       name: "",
-      current: 0,
-      previous: 0,
+      inventory: 0,
+      purchase: 0,
+      onGrowing: 0,
+      totalCrop: 0,
     };
-  },
-  computed: {
-    recommendAmount() {
-      return this.previous - this.current;
-    },
   },
 
   mounted() {
     this.name = localStorage.getItem("name");
     axios
-      .get(`http://localhost:5000/inventory/${this.name}`)
+      .get(`http://localhost:5010/manager/${this.name}`)
       .then((response) => {
-        console.log(response.data);
-        this.current = response.data.data.quantity;
-        return axios
-          .get(`http://localhost:5006/purchase_request/${this.name}`)
-          .then((response) => {
-            console.log(response.data);
-            this.previous = response.data["Total Sales"];
-            console.log(this.previous);
-          })
-          .catch((error) => {
-            console.log(error.message);
-          });
+        this.inventory = response.data.inventory;
+        this.purchase = response.data.purchaseActivity;
+        this.onGrowing = response.data.ongrowingCrops;
+        this.totalCrop = response.data.totalCrop;
       })
       .catch((error) => {
         console.log(error.message);
