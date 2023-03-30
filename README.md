@@ -15,9 +15,13 @@ Crop Management and Machine Learning
 Front end
 
 ## Other things to work on:
-Inventory Microservice - port 5000
+Inventory - port 5000
 Crop Management - port 5001
-Machine Learning - port 5002
 Profile - port 5003
-Checkout - port 5004
-Twilio - port 5005
+Twilio - port 5004
+Purchase Activity - port 5006
+Machine Learning - port 5007
+Delivery - port 5008
+Inventory Manager - port 5010
+
+Checkout - port 4243

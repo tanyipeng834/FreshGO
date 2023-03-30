@@ -29,17 +29,13 @@ from os import environ
 app = Flask(__name__)
 CORS(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = environ.get(
-    'inventory_manager_URL') or "mysql+mysqlconnector://root@localhost:3306/inventory_manager"
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # docker run --name inventory_manager --network my-net -e inventory_manager_URL=mysql+mysqlconnector://is213@host.docker.internal:3306/inventory_manager mosengtim2021/inventory_manager:1.0
 
 # This will be the code for the farmer
-inventory_URL = environ.get("inventory_URL") or "http://localhost:5000/inventory"
-purchase_activity_URL = "http://localhost:5006/purchase_request"
+inventory_URL = environ.get('inventory_URL') or "http://localhost:5000/inventory"
+purchase_activity_URL = environ.get('purchase_activity_URL') or "http://localhost:5006/purchase_request"
 
 
-db = SQLAlchemy(app)
 
 # CRUD Inventory
 

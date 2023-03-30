@@ -40,7 +40,7 @@ services:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/profile
       PYTHONUNBBUFFERED: 1
     ports:
-    - "5003:5003"
+      - "5003:5003"
 
   #################################
   # Checkout microservice
@@ -58,6 +58,7 @@ services:
       PYTHONUNBBUFFERED: 1
     ports:
     - "4243:4243"
+
 
 
   #################################
@@ -96,7 +97,7 @@ services:
     - "5000:5000"
 
   ###############################################
-  # Machine learning (Simple)
+  # Machine learning (Complex)
   ###############################################
   machine_learning:
     build: 
@@ -111,7 +112,7 @@ services:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/machine_learning
       PYTHONUNBUFFERED: 1
     ports:
-    - "5007:5007"
+      - "5007:5007"
 
   ###############################################
   # Purchase Activity (Complex)
@@ -124,6 +125,7 @@ services:
     restart: always
     depends_on:
       - rabbitmq
+      - delivery
     networks:
         - kong-net
     environment: 
@@ -148,10 +150,10 @@ services:
         - kong-net
     depends_on:
       - inventory
-
+      - purchase_activity
     environment:
-      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/inventory_manager
-      inventory_url: mysql+mysqlconnector://is213@host.docker.internal:3306/inventory
+      inventory_URL: http://inventory:5000/inventory
+      purchase_activity_URL: http://purchase_activity:5006/purchase_activity
       PYTHONUNBUFFERED: 1
     ports:
     - "5010:5010"
@@ -192,7 +194,7 @@ services:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/deliveries
       PYTHONUNBUFFERED: 1
     ports:
-    - "5005:5005"
+      - "5008:5008"
 
   ####################################
   # RabbitMQ: The messaging broker   
