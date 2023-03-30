@@ -9,7 +9,7 @@ CORS(app)
 
 # Fetch farmer phone number from microservice
 def get_farmer_phone():
-    response = requests.get("http://127.0.0.1:5003/type/farmer")
+    response = requests.get("http://localhost:5003/type/farmer")
     data = response.json()
     return data["data"][0]["phone"]
 
@@ -37,7 +37,7 @@ def send_sms(to, body):
 
 @app.route('/check_status', methods=['GET'])
 def check_status():
-    response = requests.get("http://127.0.0.1:5000/inventory")
+    response = requests.get(inventory_URL)
     data = response.json()
     inventory = data["data"]["inventory"]
     for item in inventory:

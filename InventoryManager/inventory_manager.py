@@ -35,7 +35,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # docker run --name inventory_manager --network my-net -e inventory_manager_URL=mysql+mysqlconnector://is213@host.docker.internal:3306/inventory_manager mosengtim2021/inventory_manager:1.0
 
 # This will be the code for the farmer
-inventory_URL = "http://localhost:5000/inventory"
+inventory_URL = environ.get("inventory_URL") or "http://localhost:5000/inventory"
 purchase_activity_URL = "http://localhost:5006/purchase_request"
 
 
