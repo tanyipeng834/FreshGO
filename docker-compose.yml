@@ -41,8 +41,6 @@ services:
       PYTHONUNBBUFFERED: 1
     ports:
       - "5003:5003"
-    ports:
-    - "5003:5003"
 
   #################################
   # Checkout microservice
@@ -174,7 +172,7 @@ services:
     environment:
       PYTHONUNBUFFERED: 1
     ports:
-     - "5005:5005"
+     - "5004:5004"
 
 
   ###############################################
