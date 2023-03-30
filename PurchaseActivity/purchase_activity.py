@@ -19,11 +19,6 @@ from queue import Queue
 # Create a shared queue to store the data returned by the callback function
 data_queue = Queue()
 
-# book_URL = "http://localhost:5000/book"
-# shipping_record_URL = "http://localhost:5002/shipping_record"
-# activity_log_URL = "http://localhost:5003/activity_log"
-# error_URL = "http://localhost:5004/error"
-
 app = Flask(__name__)
 CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
