@@ -2,5 +2,5 @@ FROM python:3.8-slim
 WORKDIR /usr/src/app
 COPY requirements.txt ./
 RUN python -m pip install --no-cache-dir -r requirements.txt
-COPY ./machine_learning.py .
+COPY ./machine_learning.py ./invokes.py ./
 CMD [ "python", "./machine_learning.py" ]

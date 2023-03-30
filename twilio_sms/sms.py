@@ -73,4 +73,4 @@ def check_status():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5005, debug=True)
+    app.run(host='0.0.0.0', port=5004, debug=True)

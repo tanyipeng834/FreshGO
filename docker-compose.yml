@@ -22,6 +22,8 @@ services:
     restart: always
     networks:
         - kong-net
+    ports:
+    - "8080:8080"
 
   #################################
   # Profile microservice (Simple)
@@ -37,6 +39,8 @@ services:
     environment:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/profile
       PYTHONUNBBUFFERED: 1
+    ports:
+    - "5003:5003"
 
   #################################
   # Checkout microservice
@@ -52,6 +56,8 @@ services:
     environment:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/checkout
       PYTHONUNBBUFFERED: 1
+    ports:
+    - "4243:4243"
 
 
   #################################
@@ -68,6 +74,8 @@ services:
     environment:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/crop_management
       PYTHONUNBUFFERED: 1
+    ports:
+    - "5001:5001"
 
 
   ###############################################
@@ -84,6 +92,8 @@ services:
     environment:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/inventory
       PYTHONUNBUFFERED: 1
+    ports:
+    - "5000:5000"
 
   ###############################################
   # Machine learning (Simple)
@@ -100,6 +110,8 @@ services:
     environment:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/machine_learning
       PYTHONUNBUFFERED: 1
+    ports:
+    - "5007:5007"
 
   ###############################################
   # Purchase Activity (Complex)
@@ -119,6 +131,8 @@ services:
       rabbit_port: 5672
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/purchase_activity
       PYTHONUNBUFFERED: 1
+    ports:
+    - "5006:5006"
 
 
   ###############################################
@@ -139,6 +153,8 @@ services:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/inventory_manager
       inventory_url: mysql+mysqlconnector://is213@host.docker.internal:3306/inventory
       PYTHONUNBUFFERED: 1
+    ports:
+    - "5010:5010"
 
   ###############################################
   # Twilio 
@@ -153,6 +169,8 @@ services:
         - kong-net
     environment:
       PYTHONUNBUFFERED: 1
+    ports:
+     - "5004:5004"
 
 
   ###############################################
@@ -173,6 +191,8 @@ services:
       rabbit_port: 5672
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/deliveries
       PYTHONUNBUFFERED: 1
+    ports:
+    - "5005:5005"
 
   ####################################
   # RabbitMQ: The messaging broker   

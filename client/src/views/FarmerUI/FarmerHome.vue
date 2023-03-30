@@ -78,7 +78,7 @@ export default {
   mounted() {
     // Send a reminder to uncomment this shit important!!!!!
     // axios
-    //   .get("http://localhost:5005/check_status")
+    //   .get("http://localhost:5004/check_status")
     //   .then((response) => {
     //     console.log(response.data);
     //   })

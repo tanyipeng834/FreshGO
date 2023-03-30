@@ -2,10 +2,9 @@ from invokes import invoke_http
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
-import os
-import sys
+
 from os import environ
-import json
+
 
 # /manager method=GET retrieves all crops and quantity and their status
 # /manager method=POST inserts crop into table: name must be unique
