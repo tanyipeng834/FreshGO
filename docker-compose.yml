@@ -57,6 +57,23 @@ services:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/checkout
       PYTHONUNBBUFFERED: 1
     ports:
+    - "4242:4242"
+
+    #################################
+  # Stripe API
+  #################################
+  stripe:
+    build:
+      context: ./stripe adapter
+      dockerfile: dockerfile
+    image: mosengtim2021/stripeapi:g1t1
+    restart: always
+    networks:
+        - kong-net
+    environment:
+      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/checkout
+      PYTHONUNBBUFFERED: 1
+    ports:
     - "4243:4243"
 
 
