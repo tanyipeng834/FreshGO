@@ -15,6 +15,7 @@ import amqp_setup
 import pika
 from threading import Thread
 from queue import Queue
+import json
 
 # Create a shared queue to store the data returned by the callback function
 data_queue = Queue()

@@ -21,7 +21,7 @@ app = Flask(__name__, static_folder='public',
 def create_payment():
     try:
 
-        # data = json.loads(request.data)
+        #data = json.loads(request.data)
         # Create a PaymentIntent with the order amount and currency
         intent = stripe.PaymentIntent.create(
             amount=1000,
@@ -35,11 +35,13 @@ def create_payment():
         webbrowser.open_new_tab('http://localhost:4243/checkout.html')
         return jsonify({
             'clientSecret': intent['client_secret'],
-            'Payment Status':"Success"
+            'Payment Status': "Success"
         })
         # return jsonify({"Payment Status":'Success'}),200
-        
+
     except Exception as e:
         return jsonify(error=str(e)), 403
+
+
 if __name__ == '__main__':
-    app.run(port=4242)
+    app.run(host='0.0.0.0', port=4242)
