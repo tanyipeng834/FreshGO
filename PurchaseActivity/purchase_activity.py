@@ -8,6 +8,7 @@ from sqlalchemy import and_, func
 import os
 from datetime import datetime
 from datetime import timedelta
+import json
 
 from invokes import invoke_http
 
@@ -80,7 +81,7 @@ def create_request():
                         "customer_phone": customer_phone, "customer_location": customer_location}
     # invoke the delivery microservice
     delivery_response = invoke_http(
-        delivery_URL , method="POST", json=delivery_details)
+        'http://127.0.0.1:5008/delivery' , method="POST", json=delivery_details)
     print(delivery_response)
     delivery_amt = delivery_response['delivery_fee']
     transaction_amt = transaction_amt + delivery_amt
