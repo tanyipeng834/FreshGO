@@ -27,7 +27,7 @@ class Inventory(db.Model):
     type = db.Column(db.String(15), nullable=False)
     status = db.Column(db.String(15), nullable=False)
 
-    def __init__(self, name, type,quantity, price):
+    def __init__(self, name, type, quantity, price):
         self.name = name
         self.quantity = quantity
         self.price = price
@@ -131,7 +131,7 @@ def get_all_crops():
                 ), 500
 
             # Call wuhao's twillio api to invoke messaging the farmer
-            # invoke_http("http://localhost:5008/send-sms", method="GET")
+            # invoke_http("http://twilio_sms:5004/send-sms", method="GET")
             return jsonify(
                 {
                     "code": 201,
