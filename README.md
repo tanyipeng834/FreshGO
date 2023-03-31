@@ -109,7 +109,7 @@ FreshGo aims to give farmers more control over their products, both in terms of 
 - [Weather API](https://openweathermap.org/current)
 - [Google Maps API](https://www.npmjs.com/package/vue2-google-maps)
 - [Twilio API](https://www.twilio.com/docs/sms/api/message-resource)
-- [Nodemailer API](https://nodemailer.com)
+- [Stripe API](https://stripe.com/docs/api/payment_intents)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -147,7 +147,7 @@ Kong Admin URL: http://kong:8001
 
 ### Prerequisites
 
-- Docker - 20.10.13
+- Docker - 23.10.2
 - Node - 16.13.0
 
 Ensure you are running the same version by running the packages with `--version` in the terminal
@@ -178,7 +178,7 @@ Ensure you are running the same version by running the packages with `--version`
 
 ## Scenario 1
 
-Driver logs in and views his dashboard
+Customer makes purchase from Farmer via our app
 
 <div align="center">
 	<img src="images/user_scenario1.png" alt="Logo" width="600" height="300">
@@ -193,15 +193,13 @@ Driver logs in and views his dashboard
 
 - Kong’s Bot detection and rate limiting was used to prevent any bot attacks, DoS attack, and limit login attempts in case an attacker tries to brute force through the login.
 - Key-auth plugin was also used to add another layer of security by allowing only users with an api key belonging to Driver type consumer to access the microservices through kong.
-
-2. Driver microservice is coded in Java SpringBoot. This is to highlight that the microservices are language agnostic.
-3. To handle exceptions in business logic, Error handling is implemented if username or password is incorrect when logging in. User will be notified of the incorrect username or password
+2. To handle exceptions in business logic, Error handling is implemented if username or password is incorrect when logging in. User will be notified of the incorrect username or password
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Scenario 2
 
-Driver views map of all his parcels for delivery
+Farmers receive low-supply crop updates on demand to maintain adequate inventory
 
 <div align="center">
 	<img src="images/user_scenario2.png" alt="Logo" width="600" height="300">
@@ -214,7 +212,7 @@ Driver views map of all his parcels for delivery
 
 ## Scenario 3
 
-Driver completes a delivery of a parcel and marks it as either completed or failed
+Farmers track crop growth
 
 <div align="center">
 	<img src="images/user_scenario3.png" alt="Logo" width="600" height="300">
@@ -224,10 +222,7 @@ Driver completes a delivery of a parcel and marks it as either completed or fail
 </div>
 	
 ### Additional Points
-1. Used Kafka as our message broker between Update Parcel Status and SMS microservice. Kafka is designed for holding and distributing large volumes of messages. Considering how there are hundreds of thousands of parcels delivered daily, kafka would be a good choice to handle the large amount of messages.
-2. Kafka uses their own custom kafka protocol.
-3. SMS microservice is built with Node.js. This is to highlight that the microservices are language agnostic.
-4. To handle exceptions in business logic, Error handling is implemented if delivery has not been fulfilled.
+1. Used machine learning microservice to hit beyond the classroom
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
