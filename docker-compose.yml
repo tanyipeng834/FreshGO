@@ -46,7 +46,7 @@ services:
         - kong-net
     environment:
       PYTHONUNBBUFFERED: 1
-      stripe_URL: http://stripeapi:4243/create-payment-intent
+      stripe_URL: http://stripeapi:4242/create-payment-intent
     ports:
     - "4242:4242"
 

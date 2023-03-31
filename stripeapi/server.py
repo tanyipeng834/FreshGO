@@ -24,6 +24,7 @@ def calculate_order_amount(items):
 
 @app.route('/create-payment-intent', methods=['POST'])
 def create_payment():
+    
     try:
         data = json.loads(request.data)
         # Create a PaymentIntent with the order amount and currency
@@ -42,9 +43,4 @@ def create_payment():
 
 
 if __name__ == '__main__':
-<<<<<<< HEAD
-    app.run(port=4243)
-
-=======
-    app.run(host='0.0.0.0', port=4243)
->>>>>>> 5f0ea7bc3bde3fe45a494545cebd10d78b17921d
+    app.run(host='0.0.0.0', port=4243, debug = True)
