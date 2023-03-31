@@ -32,9 +32,10 @@ CORS(app)
 # docker run --name inventory_manager --network my-net -e inventory_manager_URL=mysql+mysqlconnector://is213@host.docker.internal:3306/inventory_manager mosengtim2021/inventory_manager:1.0
 
 # This will be the code for the farmer
-inventory_URL = environ.get('inventory_URL') or "http://localhost:5000/inventory"
-purchase_activity_URL = environ.get('purchase_activity_URL') or "http://localhost:5006/purchase_request"
-
+inventory_URL = environ.get(
+    'inventory_URL') or "http://localhost:5000/inventory"
+purchase_activity_URL = environ.get(
+    'purchase_activity_URL') or "http://localhost:5006/purchase_request"
 
 
 # CRUD Inventory
@@ -42,22 +43,22 @@ purchase_activity_URL = environ.get('purchase_activity_URL') or "http://localhos
 
 @app.route("/manager/<string:name>", methods=['GET'])
 def recommend(name):
-    
+
     try:
         # Simple check of input format and data of the request are JSON
         inventory_response = invoke_http(
-            f'http://localhost:5000/inventory/{name}')
+            f'http://inventory:5000/inventory/{name}')
 
         current_inventory = inventory_response['data']['quantity']
 
         purchase_response = invoke_http(
-            f'http://localhost:5006/purchase_request/{name}')
+            f'http://purchase_request:5006/purchase_request/{name}')
 
         purchase_activity = purchase_response["Total Sales"]
 
         # Get the
         crop_management_response = invoke_http(
-            f'http://localhost:5001/crop_management/{name}')
+            f'http://crop_management:5001/crop_management/{name}')
         ongrowing_crops = crop_management_response["data"]
         number_of_on_growing_crops = len(ongrowing_crops)
         total_crops_grown = purchase_activity - \

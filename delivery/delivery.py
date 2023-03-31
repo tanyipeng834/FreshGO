@@ -128,7 +128,7 @@ def delete_delivery():
         db.session.commit()
         # Invoke http
         # Publish the profile  microservice to get the staff that will be coming
-        staff = invoke_http(f'http://127.0.0.1:5003/profile/{staff_id}', 'GET')
+        staff = invoke_http(f'http://profile:5003/profile/{staff_id}', 'GET')
         print(staff)
         staff_data = staff['data']
         print(staff_data)
