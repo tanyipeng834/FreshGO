@@ -105,6 +105,7 @@ export default {
     submitPurchaseActivity() {
       const customerId = this.$route.params.id;
       this.waiting = true;
+      window.open("https://buy.stripe.com/test_28oaGWgBv6yT5i06oo", "_blank");
 
       axios
         .post("http://127.0.0.1:5006/purchase_request", {
@@ -121,9 +122,11 @@ export default {
           console.log(response.data);
           const delivery_data = response["data"]["data"];
           var delivery_data_json = JSON.parse(delivery_data);
-          
 
-          localStorage.setItem("staffDetails", JSON.stringify(delivery_data_json.staff));
+          localStorage.setItem(
+            "staffDetails",
+            JSON.stringify(delivery_data_json.staff)
+          );
           this.$router.push(`${delivery_data_json.deliveryId}`);
         })
         .catch((error) => {

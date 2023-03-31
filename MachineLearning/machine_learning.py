@@ -17,8 +17,11 @@ def predict_height(name):
     # Get data from microservice in JSON format
 
     # Extract relevant data
+
     crop_data = invoke_http(
         f"http://crop_management:5001/crop_management/{name}", "GET")
+    print('-------------------------')
+    print(crop_data)
     crop_data = crop_data['data']
     X = [[d['fertiliser'], d['water']] for d in crop_data]
     y = [d['height'] for d in crop_data]
