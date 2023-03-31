@@ -52,7 +52,7 @@ def recommend(name):
         current_inventory = inventory_response['data']['quantity']
 
         purchase_response = invoke_http(
-            f'http://purchase_request:5006/purchase_request/{name}')
+            f'http://purchase_activity:5006/purchase_request/{name}')
 
         purchase_activity = purchase_response["Total Sales"]
 
