@@ -139,7 +139,7 @@ services:
       rabbit_host: rabbitmq
       rabbit_port: 5672
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/purchase_activity
-      
+
       PYTHONUNBUFFERED: 1
     ports:
     - "5006:5006"
@@ -200,7 +200,6 @@ services:
       rabbit_host: rabbitmq
       rabbit_port: 5672
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/deliveries
-      delivery_url: http://inventory:5008/delivery
       PYTHONUNBUFFERED: 1
     ports:
       - "5008:5008"
