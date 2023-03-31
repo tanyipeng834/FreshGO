@@ -45,24 +45,23 @@ services:
     networks:
         - kong-net
     environment:
-      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/checkout
       PYTHONUNBBUFFERED: 1
+      stripe_URL: http://stripeapi:4243/create-payment-intent
     ports:
     - "4242:4242"
 
-    #################################
+  #################################
   # Stripe API
   #################################
-  stripe:
+  stripeapi:
     build:
-      context: ./stripe adapter
+      context: ./stripeapi
       dockerfile: dockerfile
     image: mosengtim2021/stripeapi:g1t1
     restart: always
     networks:
         - kong-net
     environment:
-      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/checkout
       PYTHONUNBBUFFERED: 1
     ports:
     - "4243:4243"
