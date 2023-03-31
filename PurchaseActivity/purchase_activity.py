@@ -100,7 +100,7 @@ def create_request():
 
         # Update the data base with price also
         purchase_item = {"name": crop_name,
-                         "quantity": quantity, "price": price}
+                         "quantity": quantity, "price": price, "type": "vegetable"}
         update_response = invoke_http(
             'http://inventory:5000/inventory', method="PUT", json=purchase_item)
         print(update_response)

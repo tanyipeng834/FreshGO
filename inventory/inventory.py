@@ -27,7 +27,7 @@ class Inventory(db.Model):
     type = db.Column(db.String(15), nullable=False)
     status = db.Column(db.String(15), nullable=False)
 
-    def __init__(self, name, type,quantity, price):
+    def __init__(self, name, type, quantity, price):
         self.name = name
         self.quantity = quantity
         self.price = price

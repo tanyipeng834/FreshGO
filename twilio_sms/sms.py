@@ -11,8 +11,8 @@ CORS(app)
 # Fetch farmer phone number from microservice
 def get_farmer_phone():
     response = invoke_http('http://profile:5003/type/farmer')
-    data = response.json()
-    return data["data"][0]["phone"]
+    print(response)
+    return response["data"][0]["phone"]
 
 # Send SMS function
 
@@ -39,8 +39,8 @@ def send_sms(to, body):
 @app.route('/check_status', methods=['GET'])
 def check_status():
     response = invoke_http('http://inventory:5000/inventory')
-    data = response.json()
-    inventory = data["data"]["inventory"]
+    print(response)
+    inventory = response["data"]["inventory"]
     for item in inventory:
         if item["status"] == "Low":
             farmer_phone = get_farmer_phone()

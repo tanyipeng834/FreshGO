@@ -24,7 +24,7 @@ def create_payment():
         #data = json.loads(request.data)
         # Create a PaymentIntent with the order amount and currency
         intent = stripe.PaymentIntent.create(
-            amount=1000,
+            amount=2.40,
             currency='sgd',
             # indicate that the payment should be made with a credit card
             # payment_method_types=['card'],
@@ -32,7 +32,7 @@ def create_payment():
                 'enabled': True,
             },
         )
-        webbrowser.open_new_tab('http://localhost:4243/checkout.html')
+        webbrowser.open_new_tab('http://stripeapi:4243/checkout.html')
         return jsonify({
             'clientSecret': intent['client_secret'],
             'Payment Status': "Success"
