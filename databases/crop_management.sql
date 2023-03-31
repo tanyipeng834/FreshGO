@@ -58,7 +58,7 @@ INSERT INTO `crop` (`batch`, `name`, `height`, `water_used`, `quantity`,`fertili
 (37, "Xiao Bai Cai", 3.3, 53, 12,6.3),
 (38, "Xiao Bai Cai", 3.1, 57, 12,6.0),
 (39, "Xiao Bai Cai", 3.2, 56, 12,6.3),
-(40, "Xiao Bai Cai", 3.4, 56, 12,6.2),
+(40, "Xiao Bai Cai", 3.4, 56, 12,6.2);
 COMMIT;
 
 

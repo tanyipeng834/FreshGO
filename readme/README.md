@@ -4,7 +4,7 @@
   <img src="FreshGoNormal.png" alt="Logo" width="600" height="300">
 
   <p align="center">
-    This outlines the project codebase for AY2021/2022 Semester 2 IS213 ESD - G5T7 
+    This outlines the project codebase for AY2022/2023 Semester 2 IS213 ESD - G1T1 
   </p>
 </div>
 
@@ -59,7 +59,7 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-NinjaTruck aims to be the last mile delivery management solution for delivery drivers. The application covers the most essential features a delivery driver will need when carrying out their day to day responsibilities of delivering a parcel to customers. 
+FreshGo aims to give farmers more control over their products, both in terms of sale as well as growth of their crops. This ultimately reduces costs for both customers and consumers by cutting out the middle-man and provides more job opportunities for would-be delivery staff.
 
 ### Technical Diagrams
 <div align="center">
