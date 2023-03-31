@@ -29,7 +29,7 @@ class Crop(db.Model):
     created = db.Column(db.DateTime, default=datetime.now,
                         nullable=False, onupdate=datetime.now)
 
-    def __init__(self, batch, name, height, water_used, fertiliser_used,quantity):
+    def __init__(self, batch, name, height, water_used, fertiliser_used, quantity):
         self.batch = batch
         self.name = name
         self.height = height
@@ -38,7 +38,7 @@ class Crop(db.Model):
         self.quantity = quantity
 
     def json(self):
-        return {"batch": self.batch, "name": self.name, "height": self.height, "water": self.water_used, "fertiliser": self.fertiliser_used,"quantity":self.quantity}
+        return {"batch": self.batch, "name": self.name, "height": self.height, "water": self.water_used, "fertiliser": self.fertiliser_used, "quantity": self.quantity}
 
 # Define the route for receiving input from the farmer UI
 
@@ -129,7 +129,7 @@ def manage_crop():
                 "type": "vegetable"
             }
             response = invoke_http(
-                f'http://127.0.0.1:5000/inventory', "PUT", update_json)
+                f'http://inventory:5000/inventory', "PUT", update_json)
             return jsonify(
                 {
                     "code": 200,

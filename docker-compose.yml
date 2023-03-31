@@ -14,16 +14,7 @@ services:
   #################################
   # Client
   #################################
-  client:
-    build:
-      context: ./client
-      dockerfile: dockerfile
-    image: mosengtim2021/client:g1t1
-    restart: always
-    networks:
-        - kong-net
-    ports:
-    - "8080:8080"
+
 
   #################################
   # Profile microservice (Simple)
@@ -148,6 +139,7 @@ services:
       rabbit_host: rabbitmq
       rabbit_port: 5672
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/purchase_activity
+
       PYTHONUNBUFFERED: 1
     ports:
     - "5006:5006"

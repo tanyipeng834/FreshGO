@@ -131,7 +131,7 @@ def get_all_crops():
                 ), 500
 
             # Call wuhao's twillio api to invoke messaging the farmer
-            # invoke_http("http://localhost:5008/send-sms", method="GET")
+            # invoke_http("http://twilio_sms:5004/send-sms", method="GET")
             return jsonify(
                 {
                     "code": 201,

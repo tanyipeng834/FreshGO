@@ -18,7 +18,7 @@ def predict_height(name):
 
     # Extract relevant data
     crop_data = invoke_http(
-        f"http://localhost:5001/crop_management/{name}", "GET")
+        f"http://crop_management:5001/crop_management/{name}", "GET")
     crop_data = crop_data['data']
     X = [[d['fertiliser'], d['water']] for d in crop_data]
     y = [d['height'] for d in crop_data]

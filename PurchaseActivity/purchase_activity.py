@@ -15,6 +15,7 @@ import amqp_setup
 import pika
 from threading import Thread
 from queue import Queue
+import json
 
 # Create a shared queue to store the data returned by the callback function
 data_queue = Queue()
@@ -26,7 +27,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
-delivery_URL = os.environ.get('delivery_URL')
+
 
 class Purchase_Activity(db.Model):
     __tablename__ = 'purchase_activity'
@@ -80,7 +81,7 @@ def create_request():
                         "customer_phone": customer_phone, "customer_location": customer_location}
     # invoke the delivery microservice
     delivery_response = invoke_http(
-        delivery_URL , method="POST", json=delivery_details)
+        'http://delivery:5008/delivery', method="POST", json=delivery_details)
     print(delivery_response)
     delivery_amt = delivery_response['delivery_fee']
     transaction_amt = transaction_amt + delivery_amt
@@ -101,7 +102,7 @@ def create_request():
         purchase_item = {"name": crop_name,
                          "quantity": quantity, "price": price}
         update_response = invoke_http(
-            'http://127.0.0.1:5000/inventory', method="PUT", json=purchase_item)
+            'http://inventory:5000/inventory', method="PUT", json=purchase_item)
         print(update_response)
 
     try:
@@ -137,7 +138,6 @@ def create_request():
 
     body = data_queue.get()
 
-   
     return jsonify({
 
         "code": 201,
@@ -169,7 +169,7 @@ def callback(ch, method, properties, body):
 
 def stripe(transaction_amount):
     payment_result = invoke_http(
-        "http://localhost:4242/create-payment-intent", method="POST", json=transaction_amount)
+        "http://checkout:4242/create-payment-intent", method="POST", json=transaction_amount)
     return payment_result
 
 
