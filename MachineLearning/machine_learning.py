@@ -32,6 +32,7 @@ def predict_height(name):
     lon = '103.8198'
     weather_api_url = f'http://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={weather_api_key}'
     weather_data = requests.get(weather_api_url).json()
+    print(weather_data)
     humidity = weather_data['list'][0]['main']['humidity']
 
     print(humidity)
