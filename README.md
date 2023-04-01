@@ -67,7 +67,8 @@ FreshGo aims to give farmers more control over their products, both in terms of 
 
 <div align="center">
 	<img src="images/soa.png" alt="Logo" width="500" height="250">
-	<img src="images/technical_overview.png" alt="Logo" width="500" height="250">
+	<img src="images/technicalp1.png" alt="Logo" width="500" height="250">
+  <img src="images/technicalp2.png" alt="Logo" width="500" height="250">
 </div>
 
 <p align="right">(<a href="#top">back to top</a>)</p>
