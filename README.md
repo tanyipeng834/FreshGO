@@ -217,7 +217,7 @@ Farmers track crop growth
 </div>
 	
 ### Additional Points
-1. Used machine learning microservice to hit beyond the labs
+1. Used machine learning microservice, more specifically the multiple regression model
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -228,7 +228,7 @@ Farmers track crop growth
 - Docker Swarm facilitates seamless scaling of services through either vertical or horizontal Pod Autoscaler, along with their automated load-balancer.
 
 <div align="center">
-	<img src="images/kubernetes.png" alt="Logo" width="733" height="329">
+	<img src="images/dockerswarm.png" alt="Logo" width="733" height="329">
 </div>
 
 <p align="right">(<a href="#top">back to top</a>)</p>
