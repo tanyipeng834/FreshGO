@@ -47,7 +47,11 @@ export default {
   mounted() {
     this.name = localStorage.getItem("name");
     axios
-      .get(`http://localhost:5010/manager/${this.name}`)
+      .post(`http://localhost:5010/manager`,
+      {
+        name:this.name
+
+      })
       .then((response) => {
         this.inventory = response.data.inventory;
         this.purchase = response.data.purchaseActivity;
@@ -58,6 +62,8 @@ export default {
         console.log(error.message);
       });
   },
+
+  
 };
 //
 </script>

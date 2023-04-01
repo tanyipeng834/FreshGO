@@ -45,7 +45,9 @@ export default {
     this.name = localStorage.getItem("cropName");
     this.quantity = localStorage.getItem("cropQuantity");
     axios
-      .get(`http://localhost:5007/recommend/${this.name}`)
+      .post(`http://localhost:8000/api/v1/recommend`, {
+        cropName: this.name,
+      })
       .then((response) => {
         console.log(response.data);
         this.fertiliser = response.data.fertiliser;

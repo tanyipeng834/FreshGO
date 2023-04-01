@@ -108,7 +108,7 @@ export default {
       window.open("https://buy.stripe.com/test_28oaGWgBv6yT5i06oo", "_blank");
 
       axios
-        .post("http://127.0.0.1:5006/purchase_request", {
+        .post("http://127.0.0.1:8000/api/v1/purchase_request", {
           // Check for order no
           cart_item: this.crops,
           customer_location: this.customer_location,

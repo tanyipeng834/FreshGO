@@ -69,9 +69,13 @@ class Profile(db.Model):
 
 
 # Creating Profile account
-@app.route("/create/<string:user_type>/<string:email>", methods=['POST'])
-def create_account(email, user_type):
+@app.route("/create", methods=['POST'])
+def create_account():
     # Find the profile with the matching particulars
+    data = request.get_json()
+    email = data['email']
+    user_type =data['profile_type']
+    
 
     user_profiles = Profile.query.filter(
         db.and_(Profile.email == email, Profile.profile_type == user_type))
@@ -114,9 +118,10 @@ def create_account(email, user_type):
     ), 201
 
 
-@app.route("/signIn/<string:user_type>", methods=['POST'])
-def signIn(user_type):
+@app.route("/signIn", methods=['POST'])
+def signIn():
     data = request.get_json()
+    user_type = data['profile_type']
 
     # If there is such an user with such then we will go and check the password
     user_profile = Profile.query.filter(db.and_(

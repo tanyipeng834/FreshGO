@@ -178,7 +178,7 @@ export default {
   },
   mounted() {
     axios
-      .get(`http://localhost:5001/crop_management`)
+      .get(`http://localhost:8000/api/v1/crop_management`)
       .then((response) => {
         console.log(response.data);
         this.batches = response.data.data;
@@ -190,7 +190,7 @@ export default {
   methods: {
     createNewBatch() {
       axios
-        .post("http://localhost:5001/crop_management", {
+        .post("http://localhost:8000/api/v1/crop_management", {
           name: this.name,
           water: this.water,
           fertiliser: this.fertiliser,
@@ -200,7 +200,7 @@ export default {
         })
         .then((response) => {
           console.log(response.data);
-          location.reload()
+          location.reload();
         })
         .catch((error) => {
           console.log(error.message);
@@ -209,7 +209,7 @@ export default {
 
     harvestCrops(name, batch) {
       axios
-        .delete("http://localhost:5001/crop_management", {
+        .delete("http://localhost:8000/api/v1/crop_management", {
           data: {
             name: name,
             batch: batch,
@@ -218,7 +218,7 @@ export default {
         .then((response) => {
           console.log(response.data);
           alert("Crop Harvested");
-          location.reload()
+          location.reload();
         })
         .catch((error) => {
           console.log(error.message);

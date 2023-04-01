@@ -54,7 +54,7 @@ export default {
 
       const staff = this.$route.params.staffId;
       axios
-        .delete("http://127.0.0.1:5008/delivery/delete", {
+        .delete("http://127.0.0.1:8000/api/v1/delivery/delete", {
           data: {
             staffId: staff,
             deliveryId: id,
@@ -71,7 +71,7 @@ export default {
   },
   mounted() {
     axios
-      .get("http://127.0.0.1:5008/delivery")
+      .get("http://127.0.0.1:8000/api/v1/delivery")
       .then((response) => {
         this.delivery = response.data.data.delivery;
         console.log(this.delivery);

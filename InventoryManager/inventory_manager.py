@@ -41,9 +41,10 @@ purchase_activity_URL = environ.get(
 # CRUD Inventory
 
 
-@app.route("/manager/<string:name>", methods=['GET'])
-def recommend(name):
-
+@app.route("/manager", methods=['POST'])
+def recommend():
+    data = request.get_json()
+    name = data['name']
     try:
         # Simple check of input format and data of the request are JSON
         inventory_response = invoke_http(

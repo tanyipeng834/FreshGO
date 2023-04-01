@@ -12,9 +12,11 @@ CORS(app)
 # Route for the machine learning recommendation
 
 
-@app.route('/recommend/<string:name>', methods=['GET'])
-def predict_height(name):
+@app.route('/recommend', methods=['POST'])
+def predict_height():
     # Get data from microservice in JSON format
+    data = request.get_json()
+    name = data['cropName']
 
     # Extract relevant data
 

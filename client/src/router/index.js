@@ -14,7 +14,7 @@ import DisplayInventory from "../views/FarmerUI/DisplayInventory.vue";
 import OngoingCrops from "../views/FarmerUI/OngoingCrops.vue";
 //Unrelated to any UIs
 import Home from "../views/Home.vue";
-import HomeView from "../views/HomeView.vue";
+
 import NotFoundPage from "../views/NotFoundPage.vue";
 import CustomerDelivery from "../views/CustomerUI/CustomerDelivery.vue";
 import InventoryRecommendation from "../views/FarmerUI/InventoryRecommendation.vue";

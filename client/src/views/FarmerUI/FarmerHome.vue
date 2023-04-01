@@ -76,15 +76,15 @@ export default {
     },
   },
   mounted() {
-    // Send a reminder to uncomment this shit important!!!!!
-    // axios
-    //   .get("http://localhost:5004/check_status")
-    //   .then((response) => {
-    //     console.log(response.data);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error.message);
-    //   });
+    
+    axios
+      .get("http://localhost:8000/api/v1/twilio")
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
 
     axios
       .get("https://api.data.gov.sg/v1/environment/4-day-weather-forecast")
