@@ -43,25 +43,51 @@ export default {
       totalCrop: 0,
     };
   },
+  mounted(){
+    const query = `
+  query {
+    ongrowingCrops
+    inventory
+    purchaseActivity
+    totalCrop
+  }
+`;
 
-  mounted() {
-    this.name = localStorage.getItem("name");
-    axios
-      .post(`http://localhost:5010/manager`,
-      {
-        name:this.name
+// Define your GraphQL API endpoint
+const url = 'http://localhost:5010/graphql';
 
-      })
-      .then((response) => {
-        this.inventory = response.data.inventory;
-        this.purchase = response.data.purchaseActivity;
-        this.onGrowing = response.data.ongrowingCrops;
-        this.totalCrop = response.data.totalCrop;
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
+// Make a POST request to the GraphQL API endpoint with the query as the body
+axios.post(url, { query })
+  .then(response => {
+    // Handle the response from the GraphQL API endpoint
+    const data = response.data.data;
+    console.log(data);
+  })
+  .catch(error => {
+    // Handle any errors that occurred during the request
+    console.error(error);
+  });
+
   },
+
+  // mounted() {
+  //   this.name = localStorage.getItem("name");
+  //   axios
+  //     .post(`http://localhost:5010/manager`,
+  //     {
+  //       name:this.name
+
+  //     })
+  //     .then((response) => {
+  //       this.inventory = response.data.inventory;
+  //       this.purchase = response.data.purchaseActivity;
+  //       this.onGrowing = response.data.ongrowingCrops;
+  //       this.totalCrop = response.data.totalCrop;
+  //     })
+  //     .catch((error) => {
+  //       console.log(error.message);
+  //     });
+  // },
 
   
 };
