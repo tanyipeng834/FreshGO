@@ -274,7 +274,7 @@ export default {
               console.log(error.code);
             });
           axios
-            .post(`http://127.0.0.1:8000/api/v1/profile/signIn`, {
+            .post("http://127.0.0.1:8000/api/v1/profile/signIn", {
               email: this.email,
               password: this.password,
               profile_type: this.userType,
@@ -319,7 +319,7 @@ export default {
           alert(error.message);
         });
       axios
-        .post(`http://127.0.0.1:8000/api/v1/create`, {
+        .post(`http://127.0.0.1:8000/api/v1/profile/create`, {
           email: this.email,
           password: this.password,
           profile_type: this.userType,

@@ -5,6 +5,7 @@ from os import environ
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, request, jsonify
+from flask import make_response
 
 
 # Add the parent directory to the system path
@@ -62,7 +63,7 @@ class Profile(db.Model):
         self.profile_type = profile_type
 
     def json(self):
-        return {"id": self.id, "email": self.email,"phone":self.phone,"name":self.name,"address":self.address}
+        return {"id": self.id, "email": self.email, "phone": self.phone, "name": self.name, "address": self.address}
 
     def verify_password(self, passw):
         return (bcrypt.checkpw(passw.encode('utf-8'), self.password.encode('utf-8')))
@@ -72,10 +73,10 @@ class Profile(db.Model):
 @app.route("/create", methods=['POST'])
 def create_account():
     # Find the profile with the matching particulars
+
     data = request.get_json()
     email = data['email']
-    user_type =data['profile_type']
-    
+    user_type = data['profile_type']
 
     user_profiles = Profile.query.filter(
         db.and_(Profile.email == email, Profile.profile_type == user_type))
@@ -120,15 +121,17 @@ def create_account():
 
 @app.route("/signIn", methods=['POST'])
 def signIn():
+
     data = request.get_json()
     user_type = data['profile_type']
 
     # If there is such an user with such then we will go and check the password
+
     user_profile = Profile.query.filter(db.and_(
         Profile.email == data['email'], Profile.profile_type == user_type)).first()
     if user_profile:
         if (user_profile.verify_password(data['password'])):
-            return jsonify(
+            response = jsonify(
 
                 {
                     "code": "200",
@@ -136,6 +139,8 @@ def signIn():
                     "message": "User provided Valid Login details"
                 }
             )
+
+            return response
         else:
             return jsonify(
                 {
@@ -201,7 +206,7 @@ def get_users_by_profile_type(profile_type):
                 "code": 200,
                 "data": [profile.json() for profile in profiles]
             }
-            
+
         )
     return jsonify(
         {

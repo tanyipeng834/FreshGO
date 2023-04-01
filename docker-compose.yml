@@ -176,6 +176,9 @@ services:
       dockerfile: dockerfile
     image: mosengtim2021/twilio_sms:g1t1
     restart: always
+    depends_on:
+      - inventory
+      - profile
     networks:
         - kong-net
     environment:
