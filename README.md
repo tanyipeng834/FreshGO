@@ -77,7 +77,6 @@ FreshGo aims to give farmers more control over their products, both in terms of 
 ### Frontend
 
 - [Vue.js](https://vuejs.org/)
-- [Quasar](https://quasar.dev/)
 
 ### API Gateway
 
@@ -97,8 +96,6 @@ FreshGo aims to give farmers more control over their products, both in terms of 
 ### DevOps
 
 - [Docker](https://docker.com)
-- [Kubernetes](https://kubernetes.io/)
-- [Octant](https://octant.dev/)
 
 ### Deployment
 
@@ -166,13 +163,13 @@ Ensure you are running the same version by running the packages with `--version`
 	$ npm install
 ```
 
-3. Launch NinjaTruck Application
+3. Launch FreshGo Application
 
 ```sh
 	$ quasar dev
 ```
 
-4. In browser, tap f12 to open console (as platform is only compatible for mobile)
+4. Platform is only compatible for browser
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -222,7 +219,7 @@ Farmers track crop growth
 </div>
 	
 ### Additional Points
-1. Used machine learning microservice to hit beyond the classroom
+1. Used machine learning microservice to hit beyond the labs
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
