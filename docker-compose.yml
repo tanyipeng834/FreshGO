@@ -134,6 +134,7 @@ services:
     depends_on:
       - rabbitmq
       - delivery
+      - inventory
     networks:
         - kong-net
     environment: 
@@ -268,6 +269,8 @@ services:
   #######################################
   kong:
     image: kong:2.0.4
+    links: 
+    - rabbitmq
     restart: always
     networks:
       - kong-net

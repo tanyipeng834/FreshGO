@@ -72,7 +72,10 @@
             <button
               type="button"
               class="btn btn-primary mt-5"
-              @click="submitPurchaseActivity()"
+              @click="
+                payment();
+                submitPurchaseActivity();
+              "
             >
               Pay With Stripe
             </button>
@@ -102,10 +105,12 @@ export default {
     };
   },
   methods: {
+    payment() {
+      window.open("https://buy.stripe.com/test_28oaGWgBv6yT5i06oo", "_blank");
+    },
     submitPurchaseActivity() {
       const customerId = this.$route.params.id;
       this.waiting = true;
-      window.open("https://buy.stripe.com/test_28oaGWgBv6yT5i06oo", "_blank");
 
       axios
         .post("http://127.0.0.1:8000/api/v1/purchase_request", {

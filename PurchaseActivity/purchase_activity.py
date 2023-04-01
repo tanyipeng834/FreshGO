@@ -110,16 +110,16 @@ def create_request():
         db.session.add(create_request)
         print(create_request.json())
         db.session.commit()
-        payment = stripe(json.loads(
-            '{"transaction_amt":'+str(transaction_amt)+'}'))
-        if payment['Payment Status'] != 'Success':
-            return jsonify(
-                {"code": 500,
-                    "data":
-                    payment,
-                    "message": "An error occurred creating the payment."
-                 }
-            )
+        # payment = stripe(json.loads(
+        #     '{"transaction_amt":'+str(transaction_amt)+'}'))
+        # if payment['Payment Status'] != 'Success':
+        #     return jsonify(
+        #         {"code": 500,
+        #             "data":
+        #             payment,
+        #             "message": "An error occurred creating the payment."
+        #          }
+        #     )
 
     except Exception as e:
         return jsonify(
