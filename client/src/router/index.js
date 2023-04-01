@@ -13,7 +13,7 @@ import FarmerHome from "../views/FarmerUI/FarmerHome.vue";
 import DisplayInventory from "../views/FarmerUI/DisplayInventory.vue";
 import OngoingCrops from "../views/FarmerUI/OngoingCrops.vue";
 //Unrelated to any UIs
-import Home from "../views/Home.vue";
+// import Home from "../views/Home.vue";
 
 import NotFoundPage from "../views/NotFoundPage.vue";
 import CustomerDelivery from "../views/CustomerUI/CustomerDelivery.vue";
@@ -22,11 +22,11 @@ import CropRecommendation from "../views/FarmerUI/CropRecommendation";
 //Ignore below for testing
 
 const routes = [
-  {
-    path: "/home",
-    name: "Home",
-    component: Home,
-  },
+  // {
+  //   path: "/home",
+  //   name: "Home",
+  //   component: Home,
+  // },
   {
     path: "/",
     name: "Login",
@@ -37,11 +37,11 @@ const routes = [
       title: "Login",
     },
   },
-  {
-    path: "/home",
-    name: "HomeView",
-    component: HomeView,
-  },
+  // {
+  //   path: "/home",
+  //   name: "HomeView",
+  //   component: HomeView,
+  // },
   {
     path: "/dashboard",
     name: "dashboard",
