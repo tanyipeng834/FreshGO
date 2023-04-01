@@ -107,7 +107,7 @@ FreshGo aims to give farmers more control over their products, both in terms of 
 - [Google Maps API](https://www.npmjs.com/package/vue2-google-maps)
 - [Twilio API](https://www.twilio.com/docs/sms/api/message-resource)
 - [Stripe API](https://stripe.com/docs/api/payment_intents)
-
+- [Firebase API](https://firebase.google.com/docs/reference)
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
@@ -118,7 +118,7 @@ FreshGo aims to give farmers more control over their products, both in terms of 
 
 Make sure you have a clean environment with no other containers as it can possibly conflict with this project’s ports mapping, image or container naming/labeling. Make sure that the Kong container and image is also deleted along with its network to set up a new kong configuration.
 
-1. From the directory ./IS213-driver-app, open the terminal and enter `docker compose up`
+1. From the directory ./ESD-G1T1, open the terminal and enter `docker compose up`
 2. Access [http://localhost:1337](http://localhost:1337) in a browser to create an admin user for Konga
 
 ```
@@ -137,7 +137,7 @@ Kong Admin URL: http://kong:8001
 
 5. Go to Snapshots located on bottom right of the sidebar
 6. Select IMPORT FROM FILE and import ./tools/kongSnapshot.json
-7. Click on DETAILS for the new snapshot created which ends with Ninjatruck
+7. Click on DETAILS for the new snapshot created
 8. Select RESTORE, tick all of the boxes, and click on IMPORT OBJECTS
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -159,14 +159,14 @@ Ensure you are running the same version by running the packages with `--version`
 2. Install required dependencies
 
 ```sh
-	$ cd Frontend
+	$ cd client
 	$ npm install
 ```
 
 3. Launch FreshGo Application
 
 ```sh
-	$ quasar dev
+	$ npm run serve
 ```
 
 4. Platform is only compatible for browser
@@ -186,10 +186,8 @@ Customer makes purchase from Farmer via our app
 
 ### Additional Points
 
-1. KONG is used as our API Gateway mainly for security implementation. Kong keeps the internal microservices from being directly exposed to external clients. 3 Plugins was also used to configure Kong:
+1.Firebase is used as our API gateway for security implementations. Kong keeps the internal microservices frmo being directly exposed to external clients. 
 
-- Kong’s Bot detection and rate limiting was used to prevent any bot attacks, DoS attack, and limit login attempts in case an attacker tries to brute force through the login.
-- Key-auth plugin was also used to add another layer of security by allowing only users with an api key belonging to Driver type consumer to access the microservices through kong.
 2. To handle exceptions in business logic, Error handling is implemented if username or password is incorrect when logging in. User will be notified of the incorrect username or password
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -235,19 +233,6 @@ Farmers track crop growth
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-## Kubernetes Deployment
-
-- Utilized Tanzu Community edition to provision and set up our aws infrastructure, and deploy our Kubernetes management cluster onto an ec2 instance, which would contain our downloaded packages and tooling.
-- From there, we created our workload cluster to run in another ec2 instance which would contain our application. To monitor our workload cluster, we use octant which helps to display the lifecycle of our pods in the cluster and the logs.
-
-<div align="center">
-	<img src="images/sa.png" alt="Logo" width="713" height="362">
-</div>
-<div align="center">
-	<img src="images/octant.png" alt="Logo" width="613" height="283">
-</div>
-
-<p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- ACKNOWLEDGMENTS -->
 
