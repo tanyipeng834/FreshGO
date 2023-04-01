@@ -50,7 +50,12 @@ export default {
       })
       .then((response) => {
         console.log(response.data);
-        this.fertiliser = response.data.fertiliser;
+        if (response.data.fertiliser < 0) {
+          this.fertiliser = response.data.fertiliser * -1;
+        } else {
+          this.fertiliser = response.data.fertiliser;
+        }
+
         this.water = response.data.water;
         this.height = response.data.height;
         this.height = this.height.toFixed(2);

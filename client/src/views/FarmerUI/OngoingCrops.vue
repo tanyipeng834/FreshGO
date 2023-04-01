@@ -15,7 +15,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in this.batches">
+        <tr v-for="(item, index) in this.batches" :key="index">
           <td>{{ item.name }}</td>
           <td>{{ item.batch }}</td>
           <td>{{ item.quantity }}</td>
@@ -173,7 +173,7 @@ export default {
       fertiliser: 0,
       water: 0,
       height: 0,
-      modal: false,
+      componentKey: 0,
     };
   },
   mounted() {
@@ -200,7 +200,8 @@ export default {
         })
         .then((response) => {
           console.log(response.data);
-          location.reload();
+
+          this.componentKey += 1;
         })
         .catch((error) => {
           console.log(error.message);
@@ -219,6 +220,7 @@ export default {
           console.log(response.data);
           alert("Crop Harvested");
           location.reload();
+          this.componentKey += 1;
         })
         .catch((error) => {
           console.log(error.message);
