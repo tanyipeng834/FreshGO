@@ -19,54 +19,58 @@ const schema = buildSchema(`
     purchaseActivity: Int!
     totalCrop: Int!
   }
-
-  
 `);
 
 // Root resolver
 const root = {
   manager: async ({ name }) => {
     console.log(name);
+    let currentInventory = 0;
+    let purchaseActivity = 0;
+    let numberOfOnGrowingCrops = 0;
+    let totalCropsGrown = 0;
+
     try {
       const inventoryResponse = await axios.get(
         `http://inventory:5000/inventory/${name}`
       );
-      const currentInventory = inventoryResponse.data.data.quantity || 0;
+      currentInventory = inventoryResponse.data.data.quantity;
+    } catch (error) {
+      console.error(error);
+    }
 
+    try {
       const purchaseResponse = await axios.get(
         `http://purchase_activity:5006/purchase_request/${name}`
       );
-     
-      const purchaseActivity = purchaseResponse.data["Total Sales"] || 0;
+      purchaseActivity = purchaseResponse.data["Total Sales"];
+    } catch (error) {
+      console.error(error);
+    }
 
+    try {
       const cropManagementResponse = await axios.get(
         `http://crop_management:5001/crop_management/${name}`
       );
       const ongrowingCrops = cropManagementResponse.data.data;
-
-      const numberOfOnGrowingCrops = ongrowingCrops.length || 0;
-
-      let totalCropsGrown =
-        purchaseActivity - numberOfOnGrowingCrops - currentInventory;
-      if (totalCropsGrown < 0) {
-        totalCropsGrown = 0;
-      }
-
-      return {
-        code: 200,
-        ongrowingCrops: numberOfOnGrowingCrops,
-        inventory: currentInventory,
-        purchaseActivity: purchaseActivity,
-        totalCrop: totalCropsGrown,
-      };
+      numberOfOnGrowingCrops = ongrowingCrops.length;
     } catch (error) {
       console.error(error);
-      return {
-        code: 404,
-        message:
-          "There is an error accessing the Inventory Manager microservice.",
-      };
     }
+
+    totalCropsGrown =
+      purchaseActivity - numberOfOnGrowingCrops - currentInventory;
+    if (totalCropsGrown < 0) {
+      totalCropsGrown = 0;
+    }
+
+    return {
+      code: 200,
+      ongrowingCrops: numberOfOnGrowingCrops || 0,
+      inventory: currentInventory || 0,
+      purchaseActivity: purchaseActivity || 0,
+      totalCrop: totalCropsGrown,
+    };
   },
 };
 

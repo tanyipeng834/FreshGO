@@ -70,6 +70,7 @@ export default {
         // Handle the response from the GraphQL API endpoint
 
         const data = response.data.data.manager;
+        console.log(data);
 
         this.inventory = data.inventory;
         this.purchase = data.purchaseActivity;

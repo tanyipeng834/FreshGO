@@ -12,6 +12,7 @@
           <th scope="col">Batch Crop Height (Average)</th>
           <th scope="col">Recommnded Inputs</th>
           <th scope="col">Harvest</th>
+          <th scope="col">Update Height</th>
         </tr>
       </thead>
       <tbody>
@@ -39,6 +40,73 @@
             >
               Harvest
             </button>
+          </td>
+          <td>
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModal"
+            >
+              Update Height
+            </button>
+
+            <!-- Modal -->
+            <div
+              class="modal fade"
+              id="exampleModal"
+              tabindex="-1"
+              aria-labelledby="exampleModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                      Update Height
+                    </h5>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="mb-3">
+                      <label for="exampleFormControlInput1" class="form-label"
+                        >New Height</label
+                      >
+
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="exampleFormControlInput1"
+                        placeholder="height"
+                        v-model="this.newHeight"
+                      />
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-bs-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-primary"
+                      data-bs-dismiss="modal"
+                      @click="updateHeight(item.name, item.batch)"
+                    >
+                      Save changes
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </td>
         </tr>
       </tbody>
@@ -174,8 +242,10 @@ export default {
       water: 0,
       height: 0,
       componentKey: 0,
+      newHeight: 0,
     };
   },
+
   mounted() {
     axios
       .get(`http://localhost:8000/api/v1/crop_management`)
@@ -219,6 +289,28 @@ export default {
         .then((response) => {
           console.log(response.data);
           alert("Crop Harvested");
+          location.reload();
+          this.componentKey += 1;
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
+    },
+
+    updateHeight(name, batch) {
+      console.log(name);
+      console.log(batch);
+      console.log(this.newHeight);
+
+      axios
+        .put("http://localhost:8000/api/v1/crop_management", {
+          name: name,
+          batch: batch,
+          height: this.newHeight,
+        })
+        .then((response) => {
+          console.log(response.data);
+          alert("Height Updated");
           location.reload();
           this.componentKey += 1;
         })
