@@ -105,6 +105,24 @@ Farmers track crop growth
 ### Additional Points
 1. Used machine learning microservice, more specifically the multiple regression model
 
+<!-- Beyond the Labs -->
+## Beyond the Labs
+
+* External API
+  - Firebase Authentication API
+  - Stripe Payment API
+  - Google Maps API
+  - Google Distance Matrix API
+  - Data.Gov Weather API
+  - Twilio Messaging API
+
+* API Gateway
+  - Kong
+
+* Microservice
+  - Express JS - Inventory Management MS
+  - GraphQL - Inventory Management MS
+
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
