@@ -184,11 +184,11 @@ Customer makes purchase from Farmer via our app
 <div align="center">
 	<details>
 	  <summary>Screenshots</summary>
-	  <img src="image-url" name="image-name">
-	  <img src="image-url" name="image-name">
-	  <img src="image-url" name="image-name">
+	  <img src="images/Scenario1_Screenshot1" name="image-name">
+	  <img src="images/Scenario1_Screenshot2" name="image-name">
+	  <img src="images/Scenario1_Screenshot3" name="image-name">
+	  <img src="images/Scenario1_Screenshot4" name="image-name">
 	</details>
-	<img src="images/scenario1.png" alt="Logo" width="600" height="300">
 </div>
 
 ### Additional Points
