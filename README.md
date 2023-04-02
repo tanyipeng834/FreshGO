@@ -194,7 +194,7 @@ Customer makes purchase from Farmer via our app
 
 1.Firebase is our api used for account verification. Kong keeps the internal microservices from being directly exposed to external clients. 
 
-2. To handle exceptions in business logic, Error handling is implemented if username or password is incorrect when logging in. User will be notified of the incorrect username or password
+2.To handle exceptions in business logic, error handling is implemented. If username or password is incorrect when logging in. User will be notified of the incorrect username or password
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
