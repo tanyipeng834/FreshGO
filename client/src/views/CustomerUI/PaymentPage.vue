@@ -106,7 +106,7 @@ export default {
   },
   methods: {
     payment() {
-      window.open("https://buy.stripe.com/test_28oaGWgBv6yT5i06oo", "_blank");
+      window.open("https://buy.stripe.com/test_3cs02i1GB5uP4dWdQS", "_blank");
     },
     submitPurchaseActivity() {
       const customerId = this.$route.params.id;

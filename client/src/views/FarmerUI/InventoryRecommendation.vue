@@ -43,31 +43,43 @@ export default {
       totalCrop: 0,
     };
   },
-  mounted(){
+  mounted() {
+    this.name = localStorage.getItem("name");
     const query = `
   query {
+    manager(name: "${this.name}"){
+    code
     ongrowingCrops
     inventory
     purchaseActivity
     totalCrop
+
+
+ 
+    }
   }
 `;
 
-// Define your GraphQL API endpoint
-const url = 'http://localhost:5010/graphql';
+    // Define your GraphQL API endpoint
+    const url = "http://localhost:8000/api/v1/inventory_manager";
 
-// Make a POST request to the GraphQL API endpoint with the query as the body
-axios.post(url, { query })
-  .then(response => {
-    // Handle the response from the GraphQL API endpoint
-    const data = response.data.data;
-    console.log(data);
-  })
-  .catch(error => {
-    // Handle any errors that occurred during the request
-    console.error(error);
-  });
+    // Make a POST request to the GraphQL API endpoint with the query as the body
+    axios
+      .post(url, { query })
+      .then((response) => {
+        // Handle the response from the GraphQL API endpoint
 
+        const data = response.data.data.manager;
+
+        this.inventory = data.inventory;
+        this.purchase = data.purchaseActivity;
+        this.onGrowing = data.ongrowingCrops;
+        this.totalCrop = data.totalCrop;
+      })
+      .catch((error) => {
+        // Handle any errors that occurred during the request
+        console.error(error);
+      });
   },
 
   // mounted() {
@@ -79,17 +91,12 @@ axios.post(url, { query })
 
   //     })
   //     .then((response) => {
-  //       this.inventory = response.data.inventory;
-  //       this.purchase = response.data.purchaseActivity;
-  //       this.onGrowing = response.data.ongrowingCrops;
-  //       this.totalCrop = response.data.totalCrop;
+  //
   //     })
   //     .catch((error) => {
   //       console.log(error.message);
   //     });
   // },
-
-  
 };
 //
 </script>

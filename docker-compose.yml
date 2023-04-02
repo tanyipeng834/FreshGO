@@ -152,7 +152,7 @@ services:
   ###############################################
   inventory_manager:
     build:
-      context: ./InventoryManager
+      context: ./inventory_manager
       dockerfile: dockerfile
     image: mosengtim2021/inventory_manager:g1t1
     restart: always
