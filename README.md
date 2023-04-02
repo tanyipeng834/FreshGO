@@ -177,11 +177,11 @@ Customer makes purchase from Farmer via our app
 </div>
 <div align="center">
 	<details>
-	  <summary>Screenshots of Scenario 1</summary>
-	  <img src="images/Scenario1_Screenshot1.png" name="Payment Page" width="600" height="300">
-	  <img src="images/Scenario1_Screenshot2.png" name="Stripe Success" width="600" height="300">
-	  <img src="images/Scenario1_Screenshot3.png" name="(Delivery UI) Delivery Request" width="600" height="300">
-	  <img src="images/Scenario1_Screenshot4.png" name="Delivery Accepted" width="600" height="300">
+	  <summary>Expand for Screenshots of Scenario 1</summary>
+	  <img src="images/Scenario1_Screenshot1.png" name="Payment Page" width="600" >
+	  <img src="images/Scenario1_Screenshot2.png" name="Stripe Success" width="600" >
+	  <img src="images/Scenario1_Screenshot3.png" name="(Delivery UI) Delivery Request" width="600" >
+	  <img src="images/Scenario1_Screenshot4.png" name="Delivery Accepted" width="600" >
 	</details>
 </div>
 
@@ -200,8 +200,16 @@ Farmers receive low-supply crop updates on demand to maintain adequate inventory
 <div align="center">
 	<img src="images/user_scenario2.png" alt="Logo" width="600" height="300">
 </div>
+
+
 <div align="center">
-	<img src="images/scenario2.png" alt="Logo" width="600" height="300">
+	<details>
+	  <summary>Expand for Screenshots of Scenario 2</summary>
+	  <img src="images/scenario2.1.png" name="login page" width="600" >
+	  <img src="images/scenario2.2.png" name="farmer dashboard" width="600" >
+	  <img src="images/scenario2.3.png" name="inventory" width="600" >
+	  <img src="images/scenario2.4.png" name="recommend" width="600" >
+	</details>
 </div>
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -213,8 +221,19 @@ Farmers track crop growth
 <div align="center">
 	<img src="images/user_scenario3.png" alt="Logo" width="600" height="300">
 </div>
+
+
 <div align="center">
-	<img src="images/scenario3.png" alt="Logo" width="600" height="300">
+	<details>
+		<summary>Expand for Screenshots of Scenario 3</summary>
+		<img src="images/scenario3.1.png" name="farmer dashboard" width="600" >
+		<img src="images/scenario3.2.png" name="ongoing crops" width="600" >
+		<img src="images/scenario3.3.png" name="add new crop" width="600" >
+		<img src="images/scenario3.4.png" name="added crop to table" width="600" >
+		<img src="images/scenario3.5.png" name="recommend water and fert" width="600" >
+		<img src="images/scenario3.6.png" name="harvest" width="600">
+		<img src="images/scenario3.7.png" name="harvest update" width="600">
+	</details>
 </div>
 	
 ### Additional Points
