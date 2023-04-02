@@ -165,7 +165,7 @@ Ensure you are running the same version by running the packages with `--version`
 	$ npm run serve
 ```
 
-4. Launch FreshGo application
+4. Launch FreshGo Microservices
 
 ```sh
 	$ docker-compose up
