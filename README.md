@@ -159,13 +159,17 @@ Ensure you are running the same version by running the packages with `--version`
 	$ npm install
 ```
 
-3. Launch FreshGo Application
+3. Launch FreshGo Frontend
 
 ```sh
 	$ npm run serve
 ```
 
-4. Platform is only compatible for browser
+4. Launch FreshGo application
+
+```sh
+	$ docker-compose up
+```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
