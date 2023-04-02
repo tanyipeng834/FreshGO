@@ -256,7 +256,7 @@ Farmers track crop growth
 </div>
 	
 ### Additional Points
-1. Used Multivariate Regression Machine Learning Model to recommned the optimal amount of fertilizer and water to use to achieve optimal Crop Growth.
+1. Used Multivariate Regression Machine Learning Model to recommend the optimal amount of fertilizer and water to use to achieve optimal Crop Growth.
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
