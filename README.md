@@ -182,7 +182,13 @@ Customer makes purchase from Farmer via our app
 	<img src="images/user_scenario1.png" alt="Logo" width="600" height="300">
 </div>
 <div align="center">
-	<img src="images/scenario1.png" alt="Logo" width="600" height="300">
+	<details>
+	  <summary>Screenshots of Scenario 1</summary>
+	  <img src="images/Scenario1_Screenshot1.png" name="Payment Page" width="600" height="300">
+	  <img src="images/Scenario1_Screenshot2.png" name="Stripe Success" width="600" height="300">
+	  <img src="images/Scenario1_Screenshot3.png" name="(Delivery UI) Delivery Request" width="600" height="300">
+	  <img src="images/Scenario1_Screenshot4.png" name="Delivery Accepted" width="600" height="300">
+	</details>
 </div>
 
 ### Additional Points
