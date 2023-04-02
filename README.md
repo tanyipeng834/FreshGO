@@ -192,11 +192,13 @@ Customer makes purchase from Farmer via our app
 
 ### Additional Points
 
-1.Firebase is the api used for account verification. Kong keeps the internal microservices from being directly exposed to external clients. 
+1.Firebase is used in conjunction with Profile Microservice. This helps to authenticate the email before it is stored in the Profile Microservice.
 
-2.To handle exceptions in business logic, error handling is implemented. If username or password is incorrect when logging in, user will be notified of the incorrect username or password
+2.Stripe API is used to process payment, payment is calculated through the use of Google Distance Matrix Api.
 
-3.Stripe api is used to process payment, payment is calculated through the use of google map and google distance matrix api.
+3. There is also a use of AMQP Message broker which helps to asynchronously request and reply between the Purchase Activity Microservice and the Delivery Microservice.
+
+4. We also use embed the Google Maps in the UI which allows the customer to track the live location of the Delivery Rider .
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -222,7 +224,12 @@ Farmers receive low-supply crop updates on demand to maintain adequate inventory
 ### Additional Points
 
 1. Twilio api is used to give farmers notification through their mobile numbers when their inventory reach critical level.
-2. Weather api for farmers to get essential information about upcoming weather.
+
+2. Weather api for farmers to get essential information about the forecasted weather conditions.
+
+3. Farmer can use our UI to predict how much he has to plant to meet their demand based on past Purchases, On-Growing Crops and the current number of Crops in the inventory.
+
+4. Inventory Manager Microservice utilizes Express Js which invokes graphQL. This is to highlight that microservice are language agnostic and can use different communication protocols other than REST.
 
 
 
@@ -249,7 +256,8 @@ Farmers track crop growth
 </div>
 	
 ### Additional Points
-1. Used multiple regression model for Machine Learning
+1. Used Multivariate Regression Machine Learning Model to recommned the optimal amount of fertilizer and water to use to achieve optimal Crop Growth.
+
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
