@@ -43,7 +43,7 @@ class Crop(db.Model):
 # Define the route for receiving input from the farmer UI
 
 
-@app.route('/crop_management', methods=['POST', 'GET', 'DELETE'])
+@app.route('/crop_management', methods=['POST', 'GET', 'DELETE','PUT'])
 def manage_crop():
     # Extract input data from POST request
     if request.method == "GET":
@@ -99,7 +99,7 @@ def manage_crop():
                 "data": new_crop.json()
             }
         )
-    else:
+    elif request.method=="DELETE":
         data = request.get_json()
         print(data)
         batch = data["batch"]
@@ -144,6 +144,36 @@ def manage_crop():
                     "message": "There are no ongrowing crop batches."
                 }
             ), 404
+    else:
+        data = request.get_json()
+        
+        batch = data["batch"]
+        name = data["name"]
+        height = data["height"]
+        crop = Crop.query.filter_by(name=name, batch=batch).first()
+        if crop:
+            crop.height = height
+            db.session.commit()
+            return jsonify(
+                {
+                    "code": 200,
+                    "message": "Crop Height has been  updated Succesfully"
+                }
+            )
+        else:
+            return jsonify(
+        {
+            "code": 404,
+            "message": "There are no ongrowing crop batches with that batch name."
+        }
+    ), 404
+
+
+
+
+
+
+
 
 
 @app.route('/crop_management/<string:name>', methods=['GET'])
@@ -162,6 +192,10 @@ def get_batch_by_name(name):
             "message": "There are no ongrowing crop batches with that batch name."
         }
     ), 404
+
+
+# Add another route for them to update the height
+
 
 
 # Run app
