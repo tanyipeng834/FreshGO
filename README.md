@@ -135,6 +135,10 @@ Kong Admin URL: http://kong:8001
 6. Select IMPORT FROM FILE and import ./kong.json
 7. Click on DETAILS for the new snapshot created
 8. Select RESTORE, tick all of the boxes, and click on IMPORT OBJECTS
+### Configuring DataBases
+
+1. Start Wamp Server and Log In to PhpMyAdmin
+2. Import all the SQL files from the database Folder into WAMP Server
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
