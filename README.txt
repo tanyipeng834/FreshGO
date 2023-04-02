@@ -105,13 +105,6 @@ Farmers track crop growth
 ### Additional Points
 1. Used machine learning microservice, more specifically the multiple regression model
 
-
-## Container Orchestration
-
-- The services enclosed within the red box represent a collection of Docker Swarm pods that contain our services.
-- Our Kong gateway serves as a bridge between the clients and the pods. By leveraging Docker Swarm, we can readily scale our services.
-- Docker Swarm facilitates seamless scaling of services through either vertical or horizontal Pod Autoscaler, along with their automated load-balancer.
-
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 

@@ -239,19 +239,6 @@ Farmers track crop growth
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-## Container Orchestration
-
-- The services enclosed within the red box represent a collection of Docker Swarm pods that contain our services.
-- Our Kong gateway serves as a bridge between the clients and the pods. By leveraging Docker Swarm, we can readily scale our services.
-- Docker Swarm facilitates seamless scaling of services through either vertical or horizontal Pod Autoscaler, along with their automated load-balancer.
-
-<div align="center">
-	<img src="images/dockerswarm.png" alt="Logo" width="733" height="329">
-</div>
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
 <!-- ACKNOWLEDGMENTS -->
 
 ## Acknowledgments
