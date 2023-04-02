@@ -192,9 +192,11 @@ Customer makes purchase from Farmer via our app
 
 ### Additional Points
 
-1.Firebase is our api used for account verification. Kong keeps the internal microservices from being directly exposed to external clients. 
+1.Firebase is the api used for account verification. Kong keeps the internal microservices from being directly exposed to external clients. 
 
-2.To handle exceptions in business logic, error handling is implemented. If username or password is incorrect when logging in. User will be notified of the incorrect username or password
+2.To handle exceptions in business logic, error handling is implemented. If username or password is incorrect when logging in, user will be notified of the incorrect username or password
+
+3.Stripe api is used to process payment, payment is calculated through the use of google map and google distance matrix api.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -216,6 +218,12 @@ Farmers receive low-supply crop updates on demand to maintain adequate inventory
 	  <img src="images/scenario2.4.png" name="recommend" width="600" >
 	</details>
 </div>
+
+### Additional Points'
+
+1.Twilio api is used to give farmers notification through their mobile numbers when their inventory reach critical level.
+
+2. Weather api for farmers to get essential information about upcoming weather.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
