@@ -222,8 +222,7 @@ Farmers receive low-supply crop updates on demand to maintain adequate inventory
 ### Additional Points'
 
 1.Twilio api is used to give farmers notification through their mobile numbers when their inventory reach critical level.
-
-2. Weather api for farmers to get essential information about upcoming weather.
+2.Weather api for farmers to get essential information about upcoming weather.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
