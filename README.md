@@ -265,6 +265,8 @@ Farmers track crop growth
   - Express JS - Inventory Management MS
   - GraphQL - Inventory Management MS
 
+<p align="right">(<a href="#top">back to top</a>)</p>
+
 <!-- ACKNOWLEDGMENTS -->
 
 ## Acknowledgments
