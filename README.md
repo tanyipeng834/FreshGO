@@ -183,7 +183,7 @@ Customer makes purchase from Farmer via our app
 </div>
 <div align="center">
 	<details>
-	  <summary>Screenshots</summary><details>
+	  <summary>Screenshots</summary>
 	  <img src="image-url" name="image-name">
 	  <img src="image-url" name="image-name">
 	  <img src="image-url" name="image-name">
