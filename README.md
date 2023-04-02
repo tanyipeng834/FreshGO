@@ -183,7 +183,7 @@ Customer makes purchase from Farmer via our app
 </div>
 <div align="center">
 	<details>
-	  <summary>Screenshots of Scenario 1</summary>
+	  <summary>Expand for Screenshots of Scenario 1</summary>
 	  <img src="images/Scenario1_Screenshot1.png" name="Payment Page" width="600" height="300">
 	  <img src="images/Scenario1_Screenshot2.png" name="Stripe Success" width="600" height="300">
 	  <img src="images/Scenario1_Screenshot3.png" name="(Delivery UI) Delivery Request" width="600" height="300">
@@ -207,7 +207,13 @@ Farmers receive low-supply crop updates on demand to maintain adequate inventory
 	<img src="images/user_scenario2.png" alt="Logo" width="600" height="300">
 </div>
 <div align="center">
-	<img src="images/scenario2.png" alt="Logo" width="600" height="300">
+	<details>
+	  <summary>Expand for Screenshots of Scenario 2</summary>
+	  <img src="images/Scenario2_Screenshot1.png" name="" width="600" height="300">
+	  <img src="images/Scenario2_Screenshot2.png" name="" width="600" height="300">
+	  <img src="images/Scenario2_Screenshot3.png" name="" width="600" height="300">
+	  <img src="images/Scenario2_Screenshot4.png" name="" width="600" height="300">
+	</details>
 </div>
 
 <div align="center">
@@ -230,7 +236,13 @@ Farmers track crop growth
 	<img src="images/user_scenario3.png" alt="Logo" width="600" height="300">
 </div>
 <div align="center">
-	<img src="images/scenario3.png" alt="Logo" width="600" height="300">
+	<details>
+	  <summary>Expand for Screenshots of Scenario 3</summary>
+	  <img src="images/Scenario3_Screenshot1.png" name="" width="600" height="300">
+	  <img src="images/Scenario3_Screenshot2.png" name="" width="600" height="300">
+	  <img src="images/Scenario3_Screenshot3.png" name="" width="600" height="300">
+	  <img src="images/Scenario3_Screenshot4.png" name="" width="600" height="300">
+	</details>
 </div>
 
 <div align="center">
