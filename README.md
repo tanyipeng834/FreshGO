@@ -26,7 +26,6 @@
 	<li><a href="#backend">Backend</a></li>
         <li><a href="#message-brokers">Message Brokers</a></li>
 	<li><a href="#devops">DevOps</a></li>
-        <li><a href="#deployment">Deployment</a></li>
 	<li><a href="#external-apis-used">External APIs used</a></li>
       </ul>
     </li>
@@ -52,7 +51,6 @@
       </ul>
     </li>
     <li><a href="#container-orchestration">Container Orchestration</a></li>
-    <li><a href="#kubernetes-deployment">Kubernetes Deployment</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
