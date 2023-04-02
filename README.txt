@@ -105,12 +105,23 @@ Farmers track crop growth
 ### Additional Points
 1. Used machine learning microservice, more specifically the multiple regression model
 
+<!-- Beyond the Labs -->
+## Beyond the Labs
 
-## Container Orchestration
+* External API
+  - Firebase Authentication API
+  - Stripe Payment API
+  - Google Maps API
+  - Google Distance Matrix API
+  - Data.Gov Weather API
+  - Twilio Messaging API
 
-- The services enclosed within the red box represent a collection of Docker Swarm pods that contain our services.
-- Our Kong gateway serves as a bridge between the clients and the pods. By leveraging Docker Swarm, we can readily scale our services.
-- Docker Swarm facilitates seamless scaling of services through either vertical or horizontal Pod Autoscaler, along with their automated load-balancer.
+* API Gateway
+  - Kong
+
+* Microservice
+  - Express JS - Inventory Management MS
+  - GraphQL - Inventory Management MS
 
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments

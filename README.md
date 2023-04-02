@@ -26,7 +26,6 @@
 	<li><a href="#backend">Backend</a></li>
         <li><a href="#message-brokers">Message Brokers</a></li>
 	<li><a href="#devops">DevOps</a></li>
-        <li><a href="#deployment">Deployment</a></li>
 	<li><a href="#external-apis-used">External APIs used</a></li>
       </ul>
     </li>
@@ -52,7 +51,6 @@
       </ul>
     </li>
     <li><a href="#container-orchestration">Container Orchestration</a></li>
-    <li><a href="#kubernetes-deployment">Kubernetes Deployment</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
@@ -87,20 +85,16 @@ FreshGo aims to give farmers more control over their products, both in terms of 
 
 - [Python](https://python.org/)
 - [Node.js](https://nodejs.org/)
-- [Java Spring Boot](https://spring.io/)
+- [Express JS](https://expressjs.com/)
+- [GraphQL](https://graphql.org/)
 
 ### Message Brokers
 
 - [RabbitMQ](https://rabbitmq.com)
-- [Apache Kafka](https://kafka.apache.com)
 
 ### DevOps
 
 - [Docker](https://docker.com)
-
-### Deployment
-
-- [Tanzu Community Edition](https://tanzucommunityedition.io/)
 
 ### External APIs used
 
@@ -108,6 +102,7 @@ FreshGo aims to give farmers more control over their products, both in terms of 
 - [Google Maps API](https://www.npmjs.com/package/vue2-google-maps)
 - [Twilio API](https://www.twilio.com/docs/sms/api/message-resource)
 - [Stripe API](https://stripe.com/docs/api/payment_intents)
+- [Google Distance API](https://developers.google.com/maps/documentation/distance-matrix/overview)
 - [Firebase API](https://firebase.google.com/docs/reference)
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -164,13 +159,17 @@ Ensure you are running the same version by running the packages with `--version`
 	$ npm install
 ```
 
-3. Launch FreshGo Application
+3. Launch FreshGo Frontend
 
 ```sh
 	$ npm run serve
 ```
 
-4. Platform is only compatible for browser
+4. Launch FreshGo Microservices
+
+```sh
+	$ docker-compose up
+```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -183,19 +182,19 @@ Customer makes purchase from Farmer via our app
 </div>
 <div align="center">
 	<details>
-	  <summary>Screenshots of Scenario 1</summary>
-	  <img src="images/Scenario1_Screenshot1.png" name="Payment Page" width="600" height="300">
-	  <img src="images/Scenario1_Screenshot2.png" name="Stripe Success" width="600" height="300">
-	  <img src="images/Scenario1_Screenshot3.png" name="(Delivery UI) Delivery Request" width="600" height="300">
-	  <img src="images/Scenario1_Screenshot4.png" name="Delivery Accepted" width="600" height="300">
+	  <summary>Expand for Screenshots of Scenario 1</summary>
+	  <img src="images/Scenario1_Screenshot1.png" name="Payment Page" width="600" >
+	  <img src="images/Scenario1_Screenshot2.png" name="Stripe Success" width="600" >
+	  <img src="images/Scenario1_Screenshot3.png" name="(Delivery UI) Delivery Request" width="600" >
+	  <img src="images/Scenario1_Screenshot4.png" name="Delivery Accepted" width="600" >
 	</details>
 </div>
 
 ### Additional Points
 
-1.Firebase is used as our API gateway for security implementations. Kong keeps the internal microservices frmo being directly exposed to external clients. 
+1.Firebase is our api used for account verification. Kong keeps the internal microservices from being directly exposed to external clients. 
 
-2. To handle exceptions in business logic, Error handling is implemented if username or password is incorrect when logging in. User will be notified of the incorrect username or password
+2.To handle exceptions in business logic, error handling is implemented. If username or password is incorrect when logging in. User will be notified of the incorrect username or password
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -206,8 +205,16 @@ Farmers receive low-supply crop updates on demand to maintain adequate inventory
 <div align="center">
 	<img src="images/user_scenario2.png" alt="Logo" width="600" height="300">
 </div>
+
+
 <div align="center">
-	<img src="images/scenario2.png" alt="Logo" width="600" height="300">
+	<details>
+	  <summary>Expand for Screenshots of Scenario 2</summary>
+	  <img src="images/scenario2.1.png" name="login page" width="600" >
+	  <img src="images/scenario2.2.png" name="farmer dashboard" width="600" >
+	  <img src="images/scenario2.3.png" name="inventory" width="600" >
+	  <img src="images/scenario2.4.png" name="recommend" width="600" >
+	</details>
 </div>
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -219,27 +226,46 @@ Farmers track crop growth
 <div align="center">
 	<img src="images/user_scenario3.png" alt="Logo" width="600" height="300">
 </div>
+
+
 <div align="center">
-	<img src="images/scenario3.png" alt="Logo" width="600" height="300">
+	<details>
+		<summary>Expand for Screenshots of Scenario 3</summary>
+		<img src="images/scenario3.1.png" name="farmer dashboard" width="600" >
+		<img src="images/scenario3.2.png" name="ongoing crops" width="600" >
+		<img src="images/scenario3.3.png" name="add new crop" width="600" >
+		<img src="images/scenario3.4.png" name="added crop to table" width="600" >
+		<img src="images/scenario3.5.png" name="recommend water and fert" width="600" >
+		<img src="images/scenario3.6.png" name="harvest" width="600">
+		<img src="images/scenario3.7.png" name="harvest update" width="600">
+	</details>
 </div>
 	
 ### Additional Points
-1. Used machine learning microservice, more specifically the multiple regression model
+1. Used multiple regression model for Machine Learning
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-## Container Orchestration
+<!-- Beyond the Labs -->
 
-- The services enclosed within the red box represent a collection of Docker Swarm pods that contain our services.
-- Our Kong gateway serves as a bridge between the clients and the pods. By leveraging Docker Swarm, we can readily scale our services.
-- Docker Swarm facilitates seamless scaling of services through either vertical or horizontal Pod Autoscaler, along with their automated load-balancer.
+## Beyond the Labs
 
-<div align="center">
-	<img src="images/dockerswarm.png" alt="Logo" width="733" height="329">
-</div>
+* External API
+  - Firebase Authentication API
+  - Stripe Payment API
+  - Google Maps API
+  - Google Distance Matrix API
+  - Data.Gov Weather API
+  - Twilio Messaging API
+
+* API Gateway
+  - Kong
+
+* Microservice
+  - Express JS - Inventory Management MS
+  - GraphQL - Inventory Management MS
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
 
 <!-- ACKNOWLEDGMENTS -->
 
