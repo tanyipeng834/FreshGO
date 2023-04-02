@@ -201,9 +201,9 @@ Customer makes purchase from Farmer via our app
 
 2.Stripe API is used to process payment, payment is calculated through the use of Google Distance Matrix Api.
 
-3. There is also a use of AMQP Message broker which helps to asynchronously request and reply between the Purchase Activity Microservice and the Delivery Microservice.
+3.There is also a use of AMQP Message broker which helps to asynchronously request and reply between the Purchase Activity Microservice and the Delivery Microservice.
 
-4. We also use embed the Google Maps in the UI which allows the customer to track the live location of the Delivery Rider .
+4.We also use embed the Google Maps in the UI which allows the customer to track the live location of the Delivery Rider .
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
