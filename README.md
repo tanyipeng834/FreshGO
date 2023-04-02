@@ -66,8 +66,9 @@ FreshGo aims to give farmers more control over their products, both in terms of 
 ### Technical Diagrams
 
 <div align="center">
-	<img src="images/soa.png" alt="Logo" width="500" height="250">
-	<img src="images/technical_overview.png" alt="Logo" width="500" height="250">
+	<img src="images/soa.png" alt="Logo" width="500" height="250"><br>
+	<img src="images/technicalp1.png" alt="Logo" width="500" height="250"><br>
+  <img src="images/technicalp2.png" alt="Logo" width="500" height="250">
 </div>
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -217,7 +218,7 @@ Farmers track crop growth
 </div>
 	
 ### Additional Points
-1. Used machine learning microservice to hit beyond the labs
+1. Used machine learning microservice, more specifically the multiple regression model
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -228,7 +229,7 @@ Farmers track crop growth
 - Docker Swarm facilitates seamless scaling of services through either vertical or horizontal Pod Autoscaler, along with their automated load-balancer.
 
 <div align="center">
-	<img src="images/kubernetes.png" alt="Logo" width="733" height="329">
+	<img src="images/dockerswarm.png" alt="Logo" width="733" height="329">
 </div>
 
 <p align="right">(<a href="#top">back to top</a>)</p>
