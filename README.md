@@ -87,20 +87,14 @@ FreshGo aims to give farmers more control over their products, both in terms of 
 
 - [Python](https://python.org/)
 - [Node.js](https://nodejs.org/)
-- [Java Spring Boot](https://spring.io/)
 
 ### Message Brokers
 
 - [RabbitMQ](https://rabbitmq.com)
-- [Apache Kafka](https://kafka.apache.com)
 
 ### DevOps
 
 - [Docker](https://docker.com)
-
-### Deployment
-
-- [Tanzu Community Edition](https://tanzucommunityedition.io/)
 
 ### External APIs used
 
@@ -193,7 +187,7 @@ Customer makes purchase from Farmer via our app
 
 ### Additional Points
 
-1.Firebase is used as our API gateway for security implementations. Kong keeps the internal microservices frmo being directly exposed to external clients. 
+1.Firebase is our api used for account verification. Kong keeps the internal microservices from being directly exposed to external clients. 
 
 2. To handle exceptions in business logic, Error handling is implemented if username or password is incorrect when logging in. User will be notified of the incorrect username or password
 
