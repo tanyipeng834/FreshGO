@@ -55,9 +55,18 @@ export default {
         } else {
           this.fertiliser = response.data.fertiliser;
         }
+        this.fertiliser = this.fertiliser.toFixed(2);
+        if (response.data.water < 0) {
+          this.water = response.data.water * -1;
+        } else {
+          this.water = response.data.water;
+        }
+        if (response.data.height < 0) {
+          this.height = response.data.height * -1;
+        } else {
+          this.height = response.data.height;
+        }
 
-        this.water = response.data.water;
-        this.height = response.data.height;
         this.height = this.height.toFixed(2);
       })
       .catch((error) => {
