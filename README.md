@@ -50,7 +50,6 @@
         <li><a href="#additional-points">Additional Points</a></li>
       </ul>
     </li>
-    <li><a href="#container-orchestration">Container Orchestration</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
