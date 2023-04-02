@@ -85,6 +85,8 @@ FreshGo aims to give farmers more control over their products, both in terms of 
 
 - [Python](https://python.org/)
 - [Node.js](https://nodejs.org/)
+- [Express JS](https://expressjs.com/)
+- [GraphQL](https://graphql.org/)
 
 ### Message Brokers
 
@@ -100,6 +102,7 @@ FreshGo aims to give farmers more control over their products, both in terms of 
 - [Google Maps API](https://www.npmjs.com/package/vue2-google-maps)
 - [Twilio API](https://www.twilio.com/docs/sms/api/message-resource)
 - [Stripe API](https://stripe.com/docs/api/payment_intents)
+- [Google Distance API](https://developers.google.com/maps/documentation/distance-matrix/overview)
 - [Firebase API](https://firebase.google.com/docs/reference)
 <p align="right">(<a href="#top">back to top</a>)</p>
 
