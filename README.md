@@ -132,7 +132,7 @@ Kong Admin URL: http://kong:8001
 ```
 
 5. Go to Snapshots located on bottom right of the sidebar
-6. Select IMPORT FROM FILE and import ./tools/kongSnapshot.json
+6. Select IMPORT FROM FILE and import ./kong.json
 7. Click on DETAILS for the new snapshot created
 8. Select RESTORE, tick all of the boxes, and click on IMPORT OBJECTS
 
