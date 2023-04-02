@@ -182,6 +182,12 @@ Customer makes purchase from Farmer via our app
 	<img src="images/user_scenario1.png" alt="Logo" width="600" height="300">
 </div>
 <div align="center">
+	<details>
+	  <summary>Screenshots</summary><details>
+	  <img src="image-url" name="image-name">
+	  <img src="image-url" name="image-name">
+	  <img src="image-url" name="image-name">
+	</details>
 	<img src="images/scenario1.png" alt="Logo" width="600" height="300">
 </div>
 
