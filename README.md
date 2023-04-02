@@ -242,7 +242,7 @@ Farmers track crop growth
 </div>
 	
 ### Additional Points
-1. Used machine learning microservice, more specifically the multiple regression model
+1. Used multiple regression model for Machine Learning
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -264,7 +264,7 @@ Farmers track crop growth
 * Microservice
   - Express JS - Inventory Management MS
   - GraphQL - Inventory Management MS
-  
+
 <!-- ACKNOWLEDGMENTS -->
 
 ## Acknowledgments
